@@ -1,0 +1,117 @@
+.text-accent {
+    color: #1a565e;
+    letter-spacing: 3px;
+    font-size: 14px;
+}
+
+.header-line {
+    width: 80px;
+    height: 4px;
+    background-color: #0B2E33;
+    margin-top: 15px;
+}
+
+.history-frame {
+    border: 15px solid #fff;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.image-caption {
+    background-color: #0B2E33;
+}
+
+.history-content p {
+    line-height: 1.9;
+    color: #4a4a4a;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+}
+
+.founder-quote {
+    background-color: #f8fafd;
+    border-color: #0B2E33 !important;
+}
+
+.founder-quote p {
+    color: #0B2E33;
+    font-weight: 500;
+}
+
+@media (max-width: 991px) {
+    .history-section {
+        text-align: center;
+    }
+    .founder-quote {
+        text-align: left;
+    }
+}
+/* --- Base Styles --- */
+.header-line { width: 80px; height: 4px; background-color: #0B2E33; margin-top: 15px; }
+.history-frame { border: 15px solid #fff; border-radius: 4px; overflow: hidden; }
+.image-caption { background-color: #0B2E33; }
+.founder-quote { background-color: #f8fafd; border-color: #0B2E33 !important; }
+
+/* --- Animation States --- */
+.reveal-fade-down, .reveal-slide-right, .reveal-slide-left {
+    opacity: 0;
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-fade-down { transform: translateY(-50px); }
+.reveal-slide-right { transform: translateX(-100px); }
+.reveal-slide-left { transform: translateX(100px); }
+
+/* --- Active Class (Triggered by JS) --- */
+.reveal-active {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+}
+
+/* Smooth Image Hover */
+.history-frame img {
+    transition: transform 0.8s ease;
+}
+.history-frame:hover img {
+    transform: scale(1.1);
+}
+/* The outer border container */
+.history-image-wrapper {
+    padding: 15px;
+    border: 2px solid #0B2E33; /* Your theme color */
+    border-radius: 8px;
+    background-color: transparent;
+    transition: all 0.4s ease;
+}
+
+/* The white "Matte" frame inside the border */
+.history-frame {
+    border: 12px solid #ffffff; /* Thick white frame */
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Hover effect to make the border "glow" */
+.history-image-wrapper:hover {
+    border-color: #1a565e; /* Lighter shade on hover */
+    box-shadow: 0 0 20px rgba(11, 46, 51, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Ensure the caption stays at the bottom of the frame */
+.image-caption {
+    background-color: #0B2E33;
+    margin-top: -1px; /* Prevents tiny white line gap */
+}
+
+/* Smooth zoom on the image itself */
+.history-frame img {
+    transition: transform 0.8s ease;
+}
+
+.history-frame:hover img {
+    transform: scale(1.08);
+}

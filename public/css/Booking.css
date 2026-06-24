@@ -1,0 +1,42 @@
+.booking-hero {
+    background: linear-gradient(rgba(11, 46, 51, 0.8), rgba(11, 46, 51, 0.8)), 
+                url('/Assert/spilt-image1.png') center/cover;
+    height: 300px;
+}
+
+.info-card {
+    margin-top: -60px;
+    z-index: 5;
+    position: relative;
+}
+
+.step-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0B2E33;
+    margin-bottom: 10px;
+}
+
+.booking-page-wrapper {
+    background-color: #f8fafd;
+    min-height: 80vh;
+    border: 2px solid #0B2E33;
+}
+
+/* Transitions */
+.reveal-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal-up.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Page Entrance Animation */
+body.page-fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}

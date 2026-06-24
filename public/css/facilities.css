@@ -1,0 +1,79 @@
+.facilities-stacked-section {
+    padding: 100px 0;
+    background-color: #f8fafd;
+}
+
+.hostel-tag {
+    background: c;
+    color: #fff;
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.stacked-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Cards overlap via sticky */
+}
+
+.stacked-card-wrapper {
+    position: sticky;
+    top: 100px; /* How much of the card stays visible at the top */
+    padding-bottom: 50px;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s;
+}
+
+.facility-card-main {
+    height: 450px;
+    border-radius: 60px; /* Large radius as shown in image */
+    color: white;
+    overflow: hidden;
+    position: relative;
+    padding: 40px;
+}
+
+.card-header-label {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.card-heading-large {
+    font-size: 3.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.card-text-detail {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 450px;
+}
+
+.card-image-container {
+    height: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+.card-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Scroll Animation States */
+.reveal-active {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
+}
+
+.stacked-card-wrapper {
+    opacity: 0;
+    transform: translateY(100px) scale(0.95);
+}

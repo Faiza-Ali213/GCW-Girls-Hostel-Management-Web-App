@@ -1,0 +1,117 @@
+/* public/css/student.css */
+
+.student-container {
+    padding: 20px;
+}
+
+/* 1. Top Heading Section */
+.page-header-section {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.page-header-section h2 {
+    color: #0B2E33;
+    font-weight: 800;
+    margin: 0;
+}
+
+/* 2. Action Row (Search + Add Button) */
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    gap: 20px;
+}
+
+.search-container {
+    position: relative;
+    flex: 1;
+    max-width: 450px;
+}
+
+.search-container i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #0B2E33;
+}
+
+.custom-search {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    background: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.custom-search:focus {
+    outline: none;
+    border-color: #0B2E33;
+    box-shadow: 0 0 0 4px rgba(11, 46, 51, 0.1);
+}
+
+.btn-add-student {
+    background: #0B2E33;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 12px;
+    font-weight: 600;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-add-student:hover {
+    background: #144d55;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(11, 46, 51, 0.2);
+    color: white;
+}
+
+/* 3. Table Card Styling */
+.data-table-card {
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    padding: 10px;
+    border: 1px solid #f0f0f0;
+}
+
+.student-table thead th {
+    background: #0B2E33;
+    color: #ffffff;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 20px;
+    border: none;
+}
+
+.student-table tbody td {
+    padding: 20px;
+    color: #555;
+    vertical-align: middle;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+/* Action Dots */
+.btn-action-dots {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: 0.2s;
+}
+
+.btn-action-dots:hover {
+    background: #f0f0f0;
+    color: #0B2E33;
+}

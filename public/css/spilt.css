@@ -1,0 +1,50 @@
+
+/* 1. Ensure the section is visible but the elements inside are prepped */
+.split-section {
+    padding: 100px 0 !important;
+    background-color: #FFFFFF !important;
+    overflow: hidden;
+    display: block !important; /* Forces visibility */
+    border-bottom: 1px solid #0B2E33;
+}
+
+/* 2. Initial Hidden States */
+.reveal-left, .reveal-right, .reveal-fade-up {
+    opacity: 0;
+    transition: all 2.5s cubic-bezier(0.2, 1, 0.3, 1) !important;
+    will-change: transform, opacity;
+}
+
+.reveal-left { transform: translateX(-120px); }
+.reveal-right { transform: translateX(120px); }
+.reveal-fade-up { transform: translateY(50px); }
+
+/* 3. The "Triggered" state - If this class is added, items MUST show */
+.is-visible {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+}
+
+/* 4. Layout Fixes */
+.split-img-tall {
+    border-radius: 20px;
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+    box-shadow: 0 15px 35px rgba(11, 46, 51, 0.2);
+}
+
+.split-img-small {
+    border-radius: 15px;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(11, 46, 51, 0.2);
+}
+
+.split-title {
+    font-family: 'Georgia', serif;
+    color: #0B2E33;
+    font-size: 3rem;
+    font-weight: 700;
+}

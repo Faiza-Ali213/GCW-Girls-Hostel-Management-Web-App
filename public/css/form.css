@@ -1,0 +1,117 @@
+.contact-section {
+    padding: 100px 0;
+    background-color: #f8fafd;
+}
+
+.contact-content {
+    padding-right: 30px;
+}
+
+.accent-text {
+    color: #FFA07A; /* Peach accent color from your hero section */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.contact-title {
+    color: #0B2E33; /* Your Main Theme Color */
+    font-weight: 800;
+    font-size: 2.5rem;
+}
+
+/* Form Elements with your required 2px border and Radius */
+.form-control {
+    border: 2px solid #0B2E33; /* Added 2px Brand Border */
+    padding: 15px;
+    border-radius: 12px; /* Added Radius */
+    background-color: #ffffff;
+    transition: 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #FFA07A; /* Changes to accent on focus */
+    box-shadow: 0 0 10px rgba(11, 46, 51, 0.1);
+    outline: none;
+}
+
+.btn-submit {
+    background-color: #0B2E33;
+    color: #fff;
+    padding: 15px 45px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    transition: 0.4s;
+    width: 100%; /* Making button prominent */
+}
+
+.btn-submit:hover {
+    background-color: #082125;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(11, 46, 51, 0.2);
+}
+
+/* --- IMAGE STYLING WITH MARGIN --- */
+.map-visual-wrapper {
+    margin-left: 50px; /* Space from form */
+    border: 2px solid #0B2E33; /* Consistent Border */
+    border-radius: 25px; /* Consistent Radius */
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.map-img-custom {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- ANIMATION: INSIDE TO OUTSIDE --- */
+.reveal-zoom {
+    opacity: 0;
+    transform: scale(0.6); /* Start small (Inside) */
+    transition: all 1.5s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.reveal-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1.2s ease-out;
+}
+
+/* Active State triggered by JS */
+.is-active {
+    opacity: 1 !important;
+    transform: scale(1) translateY(0) !important; /* Move to Outside */
+}
+/* Custom SweetAlert2 Styling */
+.hostel-popup-style {
+    border-top: 8px solid #0B2E33 !important; /* Theme color highlight */
+    border-radius: 20px !important;
+    padding: 2rem !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2) !important;
+}
+
+.hostel-popup-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700 !important;
+    color: #0B2E33 !important;
+    font-size: 24px !important;
+}
+
+.hostel-popup-button {
+    padding: 12px 40px !important;
+    border-radius: 50px !important; /* Rounded pill shape */
+    font-weight: 600 !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 14px !important;
+}
+
+/* Optional: Add a subtle entry animation if you aren't using Animate.css */
+@keyframes popupEntrance {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}

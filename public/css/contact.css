@@ -1,0 +1,102 @@
+/* Hero Section Styling */
+.contact-hero {
+    background-color: #0B2E33;
+    min-height: 85vh;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-top: 60px; /* Space for Navbar */
+}
+
+.contact-hero-text {
+    padding: 0 10%;
+    color: #ffffff;
+}
+
+.contact-hero-title {
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 15px;
+}
+
+.heading-line {
+    width: 100px;
+    height: 5px;
+    background-color: #FFA07A; /* Peach Accent */
+    margin-bottom: 30px;
+}
+
+/* FIX: Word spacing for typewriter effect */
+.word-span {
+    display: inline-block;
+    margin-right: 0.35em; 
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Hero Right Side */
+.contact-hero-img-col {
+    background-color: #ffffff;
+    height: 85vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-bg-blob {
+    position: absolute;
+    width: 120%;
+    height: 120%;
+    background-color: #0B2E33;
+    clip-path: circle(50% at 0% 50%);
+    z-index: 1;
+}
+
+.contact-hero-image {
+    position: relative;
+    z-index: 2;
+    width: 80%;
+}
+
+.contact-hero-image img {
+    width: 100%;
+    filter: drop-shadow(20px 20px 50px rgba(0,0,0,0.2));
+}
+
+/* Form Component Styling */
+.contact-section {
+    padding: 100px 0;
+    background-color: #f8fafd;
+}
+
+.form-control {
+    border: 2px solid #0B2E33 !important; /* 2px Border */
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #fff;
+}
+
+.btn-submit {
+    background-color: #0B2E33;
+    color: #fff;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    width: 100%;
+    transition: 0.3s;
+}
+
+/* Universal Animation States */
+.reveal-down { opacity: 0; transform: translateY(-60px); transition: 1s ease-out; }
+.reveal-right-slide { opacity: 0; transform: translateX(200px); transition: 1.2s cubic-bezier(0.2, 1, 0.3, 1); }
+.reveal-up-btn, .reveal-up { opacity: 0; transform: translateY(60px); transition: 1s ease-out; }
+.reveal-zoom { opacity: 0; transform: scale(0.5); transition: 1.8s cubic-bezier(0.2, 1, 0.3, 1); }
+
+.is-active {
+    opacity: 1 !important;
+    transform: translate(0, 0) scale(1) !important;
+}

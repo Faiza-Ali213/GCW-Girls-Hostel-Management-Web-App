@@ -1,0 +1,66 @@
+.mess-section { padding: 80px 0; background-color: #f8fafd; }
+
+.badge-accent {
+    color: #0B2E33;
+    background: rgba(11, 46, 51, 0.1);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.menu-card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(11, 46, 51, 0.15);
+}
+
+.menu-day-header {
+    background: #0B2E33;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.menu-day-header i { font-size: 24px; display: block; margin-bottom: 5px; }
+
+.menu-body { padding: 25px; }
+
+.meal-item { margin-bottom: 15px; border-bottom: 1px dashed #eee; padding-bottom: 10px; }
+.meal-item:last-child { border: none; }
+
+.meal-item label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #0B2E33;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.meal-item span { font-size: 15px; color: #555; font-weight: 500; }
+
+/* Treat Card */
+.treat-card { background: linear-gradient(135deg, #0B2E33 0%, #1a565e 100%); border: none; position: relative; }
+.special-badge {
+    position: absolute;
+    top: 15px;
+    right: -30px;
+    background: #ffc107;
+    color: #000;
+    padding: 5px 40px;
+    transform: rotate(45deg);
+    font-size: 12px;
+    font-weight: bold;
+}
