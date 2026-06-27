@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="content-text">
-                    <p style="line-height: 1.8; color: #0B2E33; opacity: 0.8;" class="mb-4">
+                    <p style="line-height: 1.8; color: #0b3332; opacity: 0.8;" class="mb-4">
                       At GCW Hostel, we understand that a hostel is more than just a bed. It is a place where friendships are forged and futures are built...
                     Govt Graduate College for Women Satellite town Gujranwala, Hostel is located in the heart of Satellite Town, Gujranwala — A perfect living space for women working of government sector and our own students! Enjoy hygienic food, lush green lawns, 24/7 security, a fully equipped dining area, and furnished rooms — all at an economical cost. With every facility just a few minutes' walk away, comfort and convenience are guaranteed. Come and visit us!
                     </p>
