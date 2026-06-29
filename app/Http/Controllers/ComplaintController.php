@@ -104,4 +104,13 @@ class ComplaintController extends Controller
 
         return redirect()->route('complaints.index')->with('success', 'Complaint deleted successfully!');
     }
+      public function Complain_request()
+    {
+        $complaints = Complaint::orderBy('created_at', 'desc')->get();
+        $pendingCount = Complaint::where('status', 'pending')->count();
+        $inProgressCount = Complaint::where('status', 'in_progress')->count();
+        $resolvedCount = Complaint::where('status', 'resolved')->count();
+        
+        return view('Pages.Admin.Complain_request', compact('complaints', 'pendingCount', 'inProgressCount', 'resolvedCount'));
+    }
 }

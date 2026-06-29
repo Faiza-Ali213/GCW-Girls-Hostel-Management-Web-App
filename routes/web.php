@@ -21,13 +21,18 @@ Route::get('/faq', [PageController::class, 'faq']);
 Route::get('/rules', [PageController::class, 'rules']);
 Route::get('/booking', [PageController::class, 'booking']);
 
+// Admin routes - CHANGE THIS LINE
+Route::get('/complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
+
+// OR you can keep both routes - one for page display and one for CRUD
+Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint.management');
+
 // Admin routes
 Route::get('/student-records', [PageController::class, 'student_records'])->name('student_records');
 Route::get('/room-allocation', [PageController::class, 'Room_allocation'])->name('Room_allocation');
 Route::get('/fee-record', [PageController::class, 'fee_record'])->name('fee_record');
 Route::get('/staff-records', [PageController::class, 'staff_records'])->name('staff_records');
 Route::get('/vistors-records', [PageController::class, 'vistors_records'])->name('vistors_records');
-Route::get('/complain-request', [PageController::class, 'Complain_request'])->name('Complain_request');
 Route::get('/notification', [PageController::class, 'Notification'])->name('Notification');
 Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 

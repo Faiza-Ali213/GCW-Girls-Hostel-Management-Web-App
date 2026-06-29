@@ -40,7 +40,7 @@
                         <div class="col-md-3">
                             <div class="small-box bg-danger">
                                 <div class="inner">
-                                    <h3>{{ $complaints->count() ?? 0 }}</h3>
+                                    <h3>{{ isset($complaints) ? $complaints->count() : 0 }}</h3>
                                     <p>Total Complaints</p>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($complaints as $complaint)
+                            @forelse($complaints ?? [] as $complaint)
                             <tr>
                                 <td>{{ $complaint->id }}</td>
                                 <td>{{ $complaint->title }}</td>
