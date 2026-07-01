@@ -48,7 +48,7 @@ Route::get('/visitors-records', [PageController::class, 'visitors_records'])->na
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
 
 // Notifications
-Route::get('/notification', [PageController::class, 'notification'])->name('notification');
+Route::get('/Notification', [PageController::class, 'Notification'])->name('Notification');
 
 /*
 |--------------------------------------------------------------------------
