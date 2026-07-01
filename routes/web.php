@@ -3,6 +3,7 @@
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,10 +29,20 @@ Route::get('/booking', [PageController::class, 'booking'])->name('booking');
 // Dashboard
 Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 
-// Student Management
-Route::get('/student-records', [PageController::class, 'student_records'])->name('student_records');
-Route::get('/student-records/create', [PageController::class, 'student_records_create'])->name('student_records_create');
-Route::get('/student-records/{id}/edit', [PageController::class, 'student_records_edit'])->name('student_records_edit');
+// Student Management - MAIN ROUTES ✅
+Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
+Route::get('/student/create', [StudentController::class, 'create'])->name('student.create');
+Route::post('/student', [StudentController::class, 'store'])->name('student.store');
+Route::get('/student/{id}', [StudentController::class, 'show'])->name('student.show');
+Route::get('/student/{id}/edit', [StudentController::class, 'edit'])->name('student.edit');
+Route::put('/student/{id}', [StudentController::class, 'update'])->name('student.update');
+Route::delete('/student/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
+Route::get('/student/export', [StudentController::class, 'export'])->name('student.export');
+Route::get('/student/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('student.by-room');
+
+// OR Use Resource Route (Alternative - Uncomment if you want)
+// Route::resource('student', StudentController::class);
+// Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
 
 // Room Allocation
 Route::get('/room-allocation', [PageController::class, 'room_allocation'])->name('room_allocation');
@@ -47,9 +58,14 @@ Route::get('/staff-records', [PageController::class, 'staff_records'])->name('st
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('visitors_records');
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
 
+<<<<<<< HEAD
 // Notifications ✅ YEH ROUTE ADD KAREN
 Route::get('/notification', [PageController::class, 'notification'])->name('notification');
 Route::get('/notification', [PageController::class, 'notification'])->name('Notification'); // Capital 'N' wala bhi
+=======
+// Notifications
+Route::get('/Notification', [PageController::class, 'Notification'])->name('Notification');
+>>>>>>> 5a4d0b7f7d3da95591d09f34658fea503ed00976
 
 /*
 |--------------------------------------------------------------------------

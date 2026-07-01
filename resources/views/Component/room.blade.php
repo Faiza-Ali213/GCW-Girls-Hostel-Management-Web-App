@@ -7,7 +7,7 @@
                 <h2 class="split-title mb-0">Tailored sharing options for every student</h2>
             </div>
             <div class="col-12 col-md-4 text-center text-md-end mt-4 mt-md-0">
-                <a href="{{ route('Rooms') }}" class="btn-all-rooms">View All Rooms <span class="arrow-icon">↗</span></a>
+                <a href="{{ route('rooms') }}" class="btn-all-rooms">View All Rooms <span class="arrow-icon">↗</span></a>
             </div>
         </div>
 
