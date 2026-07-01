@@ -10,39 +10,7 @@
         <p class="text-muted">Database of all residents currently staying in GCW Hostel.</p>
     </div>
 
-    <!-- Statistics Cards -->
-    <div class="row mb-4">
-        <div class="col-md-3 col-sm-6 mb-3">
-            <div class="stat-card total-students">
-                <div class="stat-icon"><i class="bi bi-people"></i></div>
-                <div class="stat-number">{{ $totalStudents ?? 0 }}</div>
-                <div class="stat-label">Total Students</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <div class="stat-card active-students">
-                <div class="stat-icon"><i class="bi bi-person-check"></i></div>
-                <div class="stat-number">{{ $activeStudents ?? 0 }}</div>
-                <div class="stat-label">Active Students</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <div class="stat-card total-rooms">
-                <div class="stat-icon"><i class="bi bi-door-open"></i></div>
-                <div class="stat-number">{{ $totalRooms ?? 0 }}</div>
-                <div class="stat-label">Occupied Rooms</div>
-            </div>
-        </div>
-        <div class="col-md-3 col-sm-6 mb-3">
-            <div class="stat-card total-rooms">
-                <div class="stat-icon"><i class="bi bi-building"></i></div>
-                <div class="stat-number">{{ ($totalStudents ?? 0) - ($activeStudents ?? 0) }}</div>
-                <div class="stat-label">Inactive Students</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Search and Filter Row -->
+    <!-- Simple Search Bar Only -->
     <div class="action-row">
         <div class="search-container">
             <i class="bi bi-search"></i>
@@ -53,27 +21,17 @@
                 <button type="submit" class="btn btn-sm btn-primary ms-2">
                     <i class="bi bi-search"></i> Search
                 </button>
+                @if(request('search'))
+                    <a href="{{ route('student_records') }}" class="btn btn-sm btn-secondary ms-1">
+                        <i class="bi bi-x-circle"></i> Clear
+                    </a>
+                @endif
             </form>
         </div>
         
-        <div class="d-flex gap-2">
-            <a href="{{ route('student.create') }}" class="btn-add-student shadow-sm">
-                <i class="bi bi-person-plus"></i> Add Student Record
-            </a>
-            <a href="{{ route('student.export') }}" class="btn btn-outline-success shadow-sm">
-                <i class="bi bi-download"></i> Export
-            </a>
-        </div>
-    </div>
-
-    <!-- Filter by Status -->
-    <div class="filter-row mb-3">
-        <span class="filter-label">Filter by Status:</span>
-        <a href="{{ route('student-records') }}" class="filter-badge {{ !request('status') ? 'active' : '' }}">All</a>
-        <a href="{{ route('student-records', ['status' => 'active']) }}" class="filter-badge {{ request('status') == 'active' ? 'active' : '' }}">Active</a>
-        <a href="{{ route('student-records', ['status' => 'inactive']) }}" class="filter-badge {{ request('status') == 'inactive' ? 'active' : '' }}">Inactive</a>
-        <a href="{{ route('student-records', ['status' => 'graduated']) }}" class="filter-badge {{ request('status') == 'graduated' ? 'active' : '' }}">Graduated</a>
-        <a href="{{ route('student-records', ['status' => 'left']) }}" class="filter-badge {{ request('status') == 'left' ? 'active' : '' }}">Left</a>
+        <a href="{{ route('student.create') }}" class="btn-add-student shadow-sm">
+            <i class="bi bi-person-plus"></i> Add Student Record
+        </a>
     </div>
 
     <!-- Data Table -->
@@ -102,7 +60,7 @@
                                     <img src="{{ asset('storage/' . $student->profile_picture) }}" 
                                          alt="{{ $student->student_name }}" 
                                          class="rounded-circle me-2" 
-                                         width="40" height="40">
+                                         width="35" height="35">
                                 @else
                                     <div class="avatar-circle me-2">
                                         {{ substr($student->student_name, 0, 2) }}
@@ -118,12 +76,12 @@
                             @if($student->room_number)
                                 <span class="badge bg-info">Room {{ $student->room_number }}</span>
                             @else
-                                <span class="text-muted">Not Assigned</span>
+                                <span class="text-muted">—</span>
                             @endif
                         </td>
                         <td>
-                            <span class="{{ $student->status_badge_class }}">
-                                {{ $student->status_label }}
+                            <span class="status-badge status-{{ $student->hostel_status }}">
+                                {{ ucfirst($student->hostel_status) }}
                             </span>
                         </td>
                         <td class="text-end">
@@ -185,46 +143,120 @@
 </div>
 
 <style>
-    /* Statistics Cards */
-    .stat-card {
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border-left: 4px solid;
-        position: relative;
-        overflow: hidden;
+    /* Page Header */
+    .page-header-section {
+        margin-bottom: 25px;
     }
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-    .stat-card .stat-icon {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 2.5rem;
-        opacity: 0.15;
-    }
-    .stat-card .stat-number {
-        font-size: 2rem;
+    .page-header-section h2 {
         font-weight: 700;
+        color: #2c3e50;
         margin-bottom: 5px;
     }
-    .stat-card .stat-label {
-        color: #6c757d;
-        font-size: 0.9rem;
-        font-weight: 500;
+    .page-header-section .text-muted {
+        font-size: 0.95rem;
     }
-    .stat-card.total-students { border-left-color: #667eea; }
-    .stat-card.active-students { border-left-color: #28a745; }
-    .stat-card.total-rooms { border-left-color: #17a2b8; }
 
+    /* Search & Action Row */
+    .action-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    .search-container {
+        flex: 1;
+        min-width: 300px;
+        display: flex;
+        align-items: center;
+        background: white;
+        border-radius: 10px;
+        padding: 5px 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        position: relative;
+    }
+    .search-container i {
+        color: #6c757d;
+        margin-right: 10px;
+        font-size: 1.1rem;
+    }
+    .search-container form {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        gap: 8px;
+    }
+    .custom-search {
+        border: none;
+        padding: 10px 0;
+        flex: 1;
+        outline: none;
+        background: transparent;
+        font-size: 0.95rem;
+    }
+    .custom-search::placeholder {
+        color: #adb5bd;
+    }
+
+    .btn-add-student {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn-add-student:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+
+    /* Data Table */
+    .data-table-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+    .student-table {
+        margin-bottom: 0;
+    }
+    .student-table thead {
+        background: #f8f9fa;
+    }
+    .student-table thead th {
+        border: none;
+        padding: 15px 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+        color: #495057;
+    }
+    .student-table tbody td {
+        padding: 12px 20px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f3f5;
+    }
+    .student-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+    .student-table tbody tr:hover {
+        background: #f8f9fa;
+    }
+
+    /* Avatar */
     .avatar-circle {
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         color: white;
@@ -232,46 +264,54 @@
         align-items: center;
         justify-content: center;
         font-weight: bold;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+        flex-shrink: 0;
     }
 
-    .filter-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        align-items: center;
-        padding: 10px 0;
-    }
-    .filter-label {
-        font-weight: 600;
-        color: #495057;
-        margin-right: 10px;
-        font-size: 0.9rem;
-    }
-    .filter-badge {
-        padding: 5px 15px;
+    /* Status Badges */
+    .status-badge {
+        padding: 5px 12px;
         border-radius: 20px;
-        background: #e9ecef;
-        color: #495057;
-        text-decoration: none;
-        font-size: 0.85rem;
-        font-weight: 500;
+        font-weight: 600;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    .status-active { background: #d4edda; color: #155724; }
+    .status-inactive { background: #fff3cd; color: #856404; }
+    .status-graduated { background: #d1ecf1; color: #0c5460; }
+    .status-left { background: #f8d7da; color: #721c24; }
+
+    /* Action Button */
+    .btn-action-dots {
+        background: none;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+    .btn-action-dots:hover {
+        background: #f1f3f5;
+        color: #2c3e50;
+    }
+    .dropdown-item {
+        padding: 8px 12px;
+        font-size: 0.9rem;
         transition: all 0.2s ease;
     }
-    .filter-badge:hover {
-        background: #dee2e6;
-        color: #212529;
-    }
-    .filter-badge.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
+    .dropdown-item:hover {
+        background: #f8f9fa;
     }
 
+    /* Pagination */
     .pagination-container {
         padding: 15px 20px;
         border-top: 1px solid #e9ecef;
     }
 
+    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 50px 20px;
@@ -287,6 +327,20 @@
     }
     .empty-state p {
         color: #adb5bd;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .action-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .search-container {
+            min-width: auto;
+        }
+        .btn-add-student {
+            justify-content: center;
+        }
     }
 </style>
 

@@ -40,7 +40,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('Pages.Admin.add_student');
+        return view('Component.Admin.add_student');
     }
 
     /**
