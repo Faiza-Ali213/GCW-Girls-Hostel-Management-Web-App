@@ -47,8 +47,9 @@ Route::get('/staff-records', [PageController::class, 'staff_records'])->name('st
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('visitors_records');
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
 
-// Notifications
+// Notifications ✅ YEH ROUTE ADD KAREN
 Route::get('/notification', [PageController::class, 'notification'])->name('notification');
+Route::get('/notification', [PageController::class, 'notification'])->name('Notification'); // Capital 'N' wala bhi
 
 /*
 |--------------------------------------------------------------------------
@@ -68,9 +69,9 @@ Route::get('/staff-search', [StaffController::class, 'search'])->name('staff.sea
 | Complaint Management Routes
 |--------------------------------------------------------------------------
 */
-// Complaint Request Routes ✅ YEH ADD KAREN
+// Complaint Request Routes
 Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
-Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('Complain_request'); // Capital 'C' wala bhi
+Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('Complain_request');
 
 Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
 Route::get('/complaint/create', [ComplaintController::class, 'create'])->name('complaint.create');
