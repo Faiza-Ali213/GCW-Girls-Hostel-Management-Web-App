@@ -3,6 +3,7 @@
 use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,10 +29,20 @@ Route::get('/booking', [PageController::class, 'booking'])->name('booking');
 // Dashboard
 Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 
-// Student Management
-Route::get('/student-records', [PageController::class, 'student_records'])->name('student_records');
-Route::get('/student-records/create', [PageController::class, 'student_records_create'])->name('student_records_create');
-Route::get('/student-records/{id}/edit', [PageController::class, 'student_records_edit'])->name('student_records_edit');
+// Student Management - MAIN ROUTES ✅
+Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
+Route::get('/student/create', [StudentController::class, 'create'])->name('student.create');
+Route::post('/student', [StudentController::class, 'store'])->name('student.store');
+Route::get('/student/{id}', [StudentController::class, 'show'])->name('student.show');
+Route::get('/student/{id}/edit', [StudentController::class, 'edit'])->name('student.edit');
+Route::put('/student/{id}', [StudentController::class, 'update'])->name('student.update');
+Route::delete('/student/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
+Route::get('/student/export', [StudentController::class, 'export'])->name('student.export');
+Route::get('/student/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('student.by-room');
+
+// OR Use Resource Route (Alternative - Uncomment if you want)
+// Route::resource('student', StudentController::class);
+// Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
 
 // Room Allocation
 Route::get('/room-allocation', [PageController::class, 'room_allocation'])->name('room_allocation');
@@ -68,9 +79,9 @@ Route::get('/staff-search', [StaffController::class, 'search'])->name('staff.sea
 | Complaint Management Routes
 |--------------------------------------------------------------------------
 */
-// Complaint Request Routes ✅ YEH ADD KAREN
+// Complaint Request Routes
 Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
-Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('Complain_request'); // Capital 'C' wala bhi
+Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('Complain_request');
 
 Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
 Route::get('/complaint/create', [ComplaintController::class, 'create'])->name('complaint.create');

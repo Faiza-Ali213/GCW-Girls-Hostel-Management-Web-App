@@ -165,7 +165,7 @@
                 </a>
             </li>
             <li class="nav-item {{ request()->routeIs('Room_allocation') ? 'active' : '' }}">
-                <a href="{{ route('student_records') }}" class="nav-link-custom">
+                <a href="{{ route('student-records') }}" class="nav-link-custom">
                     <i class="bi bi-door-open"></i> Student Records
                 </a>
             </li>
