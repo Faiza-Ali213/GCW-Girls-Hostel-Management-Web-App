@@ -58,14 +58,8 @@ Route::get('/staff-records', [PageController::class, 'staff_records'])->name('st
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('visitors_records');
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
 
-<<<<<<< HEAD
-// Notifications ✅ YEH ROUTE ADD KAREN
-Route::get('/notification', [PageController::class, 'notification'])->name('notification');
-Route::get('/notification', [PageController::class, 'notification'])->name('Notification'); // Capital 'N' wala bhi
-=======
 // Notifications
 Route::get('/Notification', [PageController::class, 'Notification'])->name('Notification');
->>>>>>> 5a4d0b7f7d3da95591d09f34658fea503ed00976
 
 /*
 |--------------------------------------------------------------------------
