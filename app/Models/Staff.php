@@ -12,7 +12,31 @@ class Staff extends Model
     protected $fillable = [
         'name',
         'role',
-        'phone',
-        'duty_shift'
+        'phone_number',
+        'duty_shift',
+        'email',
+        'address',
+        'joining_date',
+        'salary',
+        'status'
     ];
+
+    protected $casts = [
+        'joining_date' => 'date',
+        'salary' => 'decimal:2'
+    ];
+
+    // Scope for active staff
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    // Scope for search
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'LIKE', "%{$search}%")
+                     ->orWhere('role', 'LIKE', "%{$search}%")
+                     ->orWhere('phone_number', 'LIKE', "%{$search}%");
+    }
 }
