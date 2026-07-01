@@ -64,7 +64,7 @@
                     <h4 class="mb-0">
                         <i class="fas fa-user-plus me-2"></i> Add New Staff
                     </h4>
-                    <p class="mb-0 text-light opacity-75">Enter staff details below</p>
+                    <p class="mb-0 text-light opacity-75">Enter staff details </p>
                 </div>
                 <div class="card-body">
                     
