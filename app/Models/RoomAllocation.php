@@ -9,70 +9,41 @@ class RoomAllocation extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'student_id',
-        'room_id',
+        'student_name',
+        'room_number',
+        'block',
+        'status',          // active, inactive, pending
         'allocation_date',
         'deallocation_date',
-        'status',
-        'remarks'
-    ];
-
-    protected $casts = [
-        'allocation_date' => 'date',
-        'deallocation_date' => 'date'
+        'remarks',
     ];
 
     /**
-     * Get the student for this allocation
+     * The attributes that should be cast.
+     */
+    protected $casts = [
+        'allocation_date' => 'date',
+        'deallocation_date' => 'date',
+    ];
+
+    /**
+     * Relationship with Student (if Student model exists)
      */
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
     /**
-     * Get the room for this allocation
+     * Relationship with Room
      */
     public function room()
     {
-        return $this->belongsTo(Room::class);
-    }
-
-    /**
-     * Scope for active allocations
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    /**
-     * Scope for deallocated
-     */
-    public function scopeDeallocated($query)
-    {
-        return $query->where('status', 'deallocated');
-    }
-
-    /**
-     * Check if allocation is active
-     */
-    public function isActive()
-    {
-        return $this->status === 'active';
-    }
-
-    /**
-     * Deallocate this student
-     */
-    public function deallocate()
-    {
-        $this->status = 'deallocated';
-        $this->deallocation_date = now();
-        $this->save();
-        
-        // Update room status
-        $this->room->updateStatus();
+        return $this->belongsTo(Room::class, 'room_number', 'room_number');
     }
 }
