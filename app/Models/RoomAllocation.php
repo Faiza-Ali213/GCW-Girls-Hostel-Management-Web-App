@@ -9,37 +9,41 @@ class RoomAllocation extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     */
     protected $fillable = [
         'student_id',
-        'room_id',
+        'student_name',
+        'room_number',
+        'block',
+        'status',          // active, inactive, pending
         'allocation_date',
         'deallocation_date',
-        'status',
-        'remarks'
+        'remarks',
     ];
 
+    /**
+     * The attributes that should be cast.
+     */
     protected $casts = [
         'allocation_date' => 'date',
-        'deallocation_date' => 'date'
+        'deallocation_date' => 'date',
     ];
 
+    /**
+     * Relationship with Student (if Student model exists)
+     */
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id');
     }
 
+    /**
+     * Relationship with Room
+     */
     public function room()
     {
-        return $this->belongsTo(Room::class);
-    }
-
-    public function scopeActive($query)
-    {
-        return $query->where('status', 'active');
-    }
-
-    public function scopeDeallocated($query)
-    {
-        return $query->where('status', 'deallocated');
+        return $this->belongsTo(Room::class, 'room_number', 'room_number');
     }
 }
