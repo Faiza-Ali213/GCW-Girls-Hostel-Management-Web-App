@@ -30,9 +30,9 @@ class StaffController extends Controller
         // Statistics
         $totalStaff = Staff::count();
         $activeStaff = Staff::active()->count();
-        $inactiveStaff = $totalStaff - $activeStaff;
+        $inactiveStaff = Staff::inactive()->count();
 
-        return view('Component.Admin.staff_records', compact('staff', 'totalStaff', 'activeStaff', 'inactiveStaff'));
+        return view('Pages.Admin.staff_records', compact('staff', 'totalStaff', 'activeStaff', 'inactiveStaff'));
     }
 
     /**
@@ -54,9 +54,10 @@ class StaffController extends Controller
             'phone' => 'required|string|max:20',
             'duty_shift' => 'required|string|max:255',
             'email' => 'nullable|email|max:255|unique:staff',
-            'status' => 'nullable|in:active,inactive',
             'address' => 'nullable|string',
             'joining_date' => 'nullable|date',
+            'salary' => 'nullable|numeric',
+            'status' => 'nullable|in:active,inactive',
             'remarks' => 'nullable|string',
             'profile_picture' => 'nullable|image|max:2048'
         ]);
@@ -74,7 +75,6 @@ class StaffController extends Controller
 
         Staff::create($validated);
 
-        // ✅ FIXED: Redirect to staff_records instead of staff.index
         return redirect()->route('staff_records')
                          ->with('success', 'Staff member added successfully!');
     }
@@ -110,9 +110,10 @@ class StaffController extends Controller
             'phone' => 'sometimes|required|string|max:20',
             'duty_shift' => 'sometimes|required|string|max:255',
             'email' => 'nullable|email|max:255|unique:staff,email,' . $id,
-            'status' => 'nullable|in:active,inactive',
             'address' => 'nullable|string',
             'joining_date' => 'nullable|date',
+            'salary' => 'nullable|numeric',
+            'status' => 'nullable|in:active,inactive',
             'remarks' => 'nullable|string',
             'profile_picture' => 'nullable|image|max:2048'
         ]);
@@ -129,7 +130,6 @@ class StaffController extends Controller
 
         $staff->update($validated);
 
-        // ✅ FIXED: Redirect to staff_records instead of staff.index
         return redirect()->route('staff_records')
                          ->with('success', 'Staff member updated successfully!');
     }
@@ -148,7 +148,6 @@ class StaffController extends Controller
         
         $staff->delete();
 
-        // ✅ FIXED: Redirect to staff_records instead of staff.index
         return redirect()->route('staff_records')
                          ->with('success', 'Staff member deleted successfully!');
     }

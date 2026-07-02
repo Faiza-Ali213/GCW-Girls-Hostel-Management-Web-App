@@ -82,7 +82,8 @@
                                     <img src="{{ asset('storage/' . $member->profile_picture) }}" 
                                          alt="{{ $member->name }}" 
                                          class="rounded-circle me-2" 
-                                         width="35" height="35">
+                                         width="35" height="35"
+                                         style="object-fit: cover;">
                                 @else
                                     <div class="avatar-placeholder me-2">
                                         {{ substr($member->name, 0, 1) }}
@@ -140,6 +141,15 @@
         @if(isset($staff) && $staff->hasPages())
             <div class="pagination-container">
                 {{ $staff->appends(request()->query())->links() }}
+            </div>
+        @endif
+        
+        <!-- Showing info -->
+        @if(isset($staff) && $staff->count() > 0)
+            <div class="pagination-container" style="border-top: none; padding-top: 0;">
+                <small class="text-muted">
+                    Showing {{ $staff->firstItem() ?? 0 }} to {{ $staff->lastItem() ?? 0 }} of {{ $staff->total() ?? 0 }} staff members
+                </small>
             </div>
         @endif
     </div>
