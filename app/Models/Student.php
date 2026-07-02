@@ -91,4 +91,20 @@ class Student extends Model
     {
         return $query->where('room_number', $roomNumber);
     }
+
+    // ✅ Add this new scope
+    public function scopeUnallocated($query)
+    {
+        return $query->whereNull('room_number')
+                     ->orWhere('room_number', '')
+                     ->orWhere('room_number', 'N/A');
+    }
+
+    // ✅ Add scope for allocated students
+    public function scopeAllocated($query)
+    {
+        return $query->whereNotNull('room_number')
+                     ->where('room_number', '!=', '')
+                     ->where('room_number', '!=', 'N/A');
+    }
 }
