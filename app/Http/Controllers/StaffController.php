@@ -74,7 +74,8 @@ class StaffController extends Controller
 
         Staff::create($validated);
 
-        return redirect()->route('staff.index')
+        // ✅ FIXED: Redirect to staff_records instead of staff.index
+        return redirect()->route('staff_records')
                          ->with('success', 'Staff member added successfully!');
     }
 
@@ -84,7 +85,7 @@ class StaffController extends Controller
     public function show($id)
     {
         $staff = Staff::findOrFail($id);
-        return view('Component.Admin.show', compact('staff'));
+        return view('Component.Admin.view_staff', compact('staff'));
     }
 
     /**
@@ -93,7 +94,7 @@ class StaffController extends Controller
     public function edit($id)
     {
         $staff = Staff::findOrFail($id);
-        return view('Component.Admin.edit', compact('staff'));
+        return view('Component.Admin.edit_staff', compact('staff'));
     }
 
     /**
@@ -128,7 +129,8 @@ class StaffController extends Controller
 
         $staff->update($validated);
 
-        return redirect()->route('staff.index')
+        // ✅ FIXED: Redirect to staff_records instead of staff.index
+        return redirect()->route('staff_records')
                          ->with('success', 'Staff member updated successfully!');
     }
 
@@ -146,7 +148,8 @@ class StaffController extends Controller
         
         $staff->delete();
 
-        return redirect()->route('staff.index')
+        // ✅ FIXED: Redirect to staff_records instead of staff.index
+        return redirect()->route('staff_records')
                          ->with('success', 'Staff member deleted successfully!');
     }
 

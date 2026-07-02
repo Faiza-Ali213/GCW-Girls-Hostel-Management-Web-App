@@ -13,54 +13,31 @@ class Staff extends Model
     protected $fillable = [
         'name',
         'role',
-        'phone',
+        'phone_number',
         'duty_shift',
         'email',
-        'profile_picture',
-        'status',
         'address',
         'joining_date',
-        'remarks'
+        'salary',
+        'status'
     ];
 
     protected $casts = [
         'joining_date' => 'date',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'deleted_at' => 'datetime',
+        'salary' => 'decimal:2'
     ];
 
-    // Accessors
-    public function getStatusBadgeClassAttribute(): string
-    {
-        return match ($this->status) {
-            'active' => 'badge bg-success',
-            'inactive' => 'badge bg-danger',
-            default => 'badge bg-secondary',
-        };
-    }
-
-    public function getStatusLabelAttribute(): string
-    {
-        return ucfirst($this->status);
-    }
-
-    public function getFullNameAttribute(): string
-    {
-        return $this->name . ' (' . $this->role . ')';
-    }
-
-    // Scopes
+    // Scope for active staff
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
     }
 
+    // Scope for search
     public function scopeSearch($query, $search)
     {
         return $query->where('name', 'LIKE', "%{$search}%")
                      ->orWhere('role', 'LIKE', "%{$search}%")
-                     ->orWhere('phone', 'LIKE', "%{$search}%")
-                     ->orWhere('email', 'LIKE', "%{$search}%");
+                     ->orWhere('phone_number', 'LIKE', "%{$search}%");
     }
 }
