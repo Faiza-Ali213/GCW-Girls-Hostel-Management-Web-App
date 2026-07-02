@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('joining_date')->nullable();
             $table->decimal('salary', 10, 2)->nullable();
             
-            // Address & Contact
+            // Address
             $table->text('address')->nullable();
             
             // Status & Profile

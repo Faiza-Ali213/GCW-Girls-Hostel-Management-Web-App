@@ -13,31 +13,66 @@ class Staff extends Model
     protected $fillable = [
         'name',
         'role',
-        'phone_number',
+        'phone',
         'duty_shift',
         'email',
         'address',
         'joining_date',
         'salary',
-        'status'
+        'status',
+        'profile_picture',
+        'remarks'
     ];
 
     protected $casts = [
         'joining_date' => 'date',
-        'salary' => 'decimal:2'
+        'salary' => 'decimal:2',
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime',
     ];
 
-    // Scope for active staff
+    // Accessors
+    public function getStatusBadgeClassAttribute(): string
+    {
+        return match ($this->status) {
+            'active' => 'badge bg-success',
+            'inactive' => 'badge bg-danger',
+            default => 'badge bg-secondary',
+        };
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return ucfirst($this->status);
+    }
+
+    public function getFullNameAttribute(): string
+    {
+        return $this->name . ' (' . $this->role . ')';
+    }
+
+    // Scopes
     public function scopeActive($query)
     {
         return $query->where('status', 'active');
     }
 
-    // Scope for search
+    public function scopeInactive($query)
+    {
+        return $query->where('status', 'inactive');
+    }
+
     public function scopeSearch($query, $search)
     {
         return $query->where('name', 'LIKE', "%{$search}%")
                      ->orWhere('role', 'LIKE', "%{$search}%")
-                     ->orWhere('phone_number', 'LIKE', "%{$search}%");
+                     ->orWhere('phone', 'LIKE', "%{$search}%")
+                     ->orWhere('email', 'LIKE', "%{$search}%");
+    }
+
+    public function scopeByRole($query, $role)
+    {
+        return $query->where('role', $role);
     }
 }
