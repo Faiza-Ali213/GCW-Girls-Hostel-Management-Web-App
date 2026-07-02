@@ -4,6 +4,9 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\RoomAllocationController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\VisitorController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,23 +43,13 @@ Route::delete('/student/{id}', [StudentController::class, 'destroy'])->name('stu
 Route::get('/student/export', [StudentController::class, 'export'])->name('student.export');
 Route::get('/student/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('student.by-room');
 
-// OR Use Resource Route (Alternative - Uncomment if you want)
-// Route::resource('student', StudentController::class);
-// Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
-
-// Room Allocation
-Route::get('/room-allocation', [PageController::class, 'room_allocation'])->name('room_allocation');
-Route::get('/room-allocation', [PageController::class, 'room_allocation'])->name('Room_allocation');
-
-// Fee Record
-Route::get('/fee-record', [PageController::class, 'fee_record'])->name('fee_record');
-
 // Staff Records (Main Page)
 Route::get('/staff-records', [PageController::class, 'staff_records'])->name('staff_records');
 
-// Visitors Records
+// Visitors Records - FIXED: Added both spellings to handle blade error
 Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('visitors_records');
-Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
+// ✅ Added alternative spelling to fix blade error
+Route::get('/vistors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
 
 // Notifications
 Route::get('/Notification', [PageController::class, 'Notification'])->name('Notification');
@@ -76,12 +69,13 @@ Route::get('/staff-search', [StaffController::class, 'search'])->name('staff.sea
 
 /*
 |--------------------------------------------------------------------------
-| Complaint Management Routes
+| Complaint Management Routes ✅ (FIXED - Added both spellings)
 |--------------------------------------------------------------------------
 */
-// Complaint Request Routes
+// Complaint Routes - Fixed with both spellings
 Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
-Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('Complain_request');
+// ✅ Added alternative spelling to fix blade error (Capital C)
+Route::get('/Complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
 
 Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
 Route::get('/complaint/create', [ComplaintController::class, 'create'])->name('complaint.create');
@@ -90,12 +84,90 @@ Route::get('/complaint/{id}/edit', [ComplaintController::class, 'edit'])->name('
 Route::put('/complaint/{id}', [ComplaintController::class, 'update'])->name('complaint.update');
 Route::delete('/complaint/{id}', [ComplaintController::class, 'destroy'])->name('complaint.destroy');
 
-// Resource Route for Complaints (Alternative)
+// Resource Route for Complaints
 Route::resource('complaints', ComplaintController::class);
+
+/*
+|--------------------------------------------------------------------------
+| Visitor Management Routes (CRUD) ✅ ADDED
+|--------------------------------------------------------------------------
+*/
+// Visitor Records Main Page
+Route::get('/visitors-records', [VisitorController::class, 'index'])->name('visitors_records');
+// ✅ Added alternative spelling to fix blade error
+Route::get('/vistors-records', [VisitorController::class, 'index'])->name('vistors_records');
+
+// Visitor CRUD Routes
+Route::get('/visitor/create', [VisitorController::class, 'create'])->name('visitor.create');
+Route::post('/visitor', [VisitorController::class, 'store'])->name('visitor.store');
+Route::get('/visitor/{id}', [VisitorController::class, 'show'])->name('visitor.show');
+Route::get('/visitor/{id}/edit', [VisitorController::class, 'edit'])->name('visitor.edit');
+Route::put('/visitor/{id}', [VisitorController::class, 'update'])->name('visitor.update');
+Route::delete('/visitor/{id}', [VisitorController::class, 'destroy'])->name('visitor.destroy');
+Route::get('/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
+Route::get('/visitor/export', [VisitorController::class, 'export'])->name('visitor.export');
+
+/*
+|--------------------------------------------------------------------------
+| Room Allocation Routes ✅ (FIXED)
+|--------------------------------------------------------------------------
+*/
+// Room Allocation Main Page
+Route::get('/room-allocation', [RoomAllocationController::class, 'index'])->name('Room_allocation');
+
+// ✅ FIXED: Added dot (.) after name
+Route::prefix('room-allocations')->name('room-allocations.')->group(function () {
+    // Main index page
+    Route::get('/', [RoomAllocationController::class, 'index'])->name('index');
+    
+    // Search functionality (AJAX)
+    Route::get('/search', [RoomAllocationController::class, 'search'])->name('search');
+    
+    // Get room data for dashboard/stats
+    Route::get('/data', [RoomAllocationController::class, 'getRoomData'])->name('data');
+    
+    // Get available students for dropdown
+    Route::get('/available-students', [RoomAllocationController::class, 'getAvailableStudents'])->name('available-students');
+    
+    // Store new allocation
+    Route::post('/', [RoomAllocationController::class, 'store'])->name('store');
+    
+    // Deallocate student from room
+    Route::patch('/{id}/deallocate', [RoomAllocationController::class, 'deallocate'])->name('deallocate');
+    
+    // Update allocation
+    Route::put('/{id}', [RoomAllocationController::class, 'update'])->name('update');
+    
+    // Delete allocation
+    Route::delete('/{id}', [RoomAllocationController::class, 'destroy'])->name('destroy');
+});
+
+// Room Allocation Details (if needed separately)
+Route::get('/room-allocation-details', [RoomAllocationController::class, 'index'])->name('room_allocation_details');
+
+/*
+|--------------------------------------------------------------------------
+| Room Management Routes (Admin Panel - Fixed)
+|--------------------------------------------------------------------------
+*/
+// ✅ FIXED: Changed to RoomController and added dot (.) after name
+Route::prefix('admin/rooms')->name('admin.rooms.')->group(function () {
+    Route::get('/', [RoomController::class, 'index'])->name('index');
+    Route::post('/', [RoomController::class, 'store'])->name('store');
+    Route::put('/{id}', [RoomController::class, 'update'])->name('update');
+    Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Fee Record Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/fee-record', [PageController::class, 'fee_record'])->name('fee_record');
 
 /*
 |--------------------------------------------------------------------------
 | Additional Routes (If any)
 |--------------------------------------------------------------------------
 */
-Route::get('/room-allocation-details', [PageController::class, 'room_allocation_details'])->name('room_allocation_details');
+// Add any additional routes here

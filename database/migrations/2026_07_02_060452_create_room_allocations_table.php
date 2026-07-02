@@ -1,4 +1,4 @@
-]<?php
+<?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -6,24 +6,33 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('room_allocations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
-            $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
-            $table->date('allocation_date');
+            $table->string('student_id');
+            $table->string('student_name');
+            $table->string('room_number');
+            $table->string('block')->nullable();
+            $table->string('status')->default('active'); // active, inactive, pending
+            $table->date('allocation_date')->nullable();
             $table->date('deallocation_date')->nullable();
-            $table->enum('status', ['active', 'deallocated'])->default('active');
             $table->text('remarks')->nullable();
             $table->timestamps();
             
             // Indexes for better performance
-            $table->index(['student_id', 'status']);
-            $table->index(['room_id', 'status']);
+            $table->index('student_id');
+            $table->index('room_number');
+            $table->index('status');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('room_allocations');
