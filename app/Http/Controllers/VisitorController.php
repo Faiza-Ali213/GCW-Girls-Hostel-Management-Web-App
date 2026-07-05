@@ -109,16 +109,17 @@ class VisitorController extends Controller
     /**
      * Display the specified visitor.
      */
-    public function show($id)
-    {
-        try {
-            $visitor = Visitor::findOrFail($id);
-            return view('Pages.Admin.view_visitors', compact('visitor'));
-        } catch (\Exception $e) {
-            return redirect()->route('visitors_records')
-                ->with('error', 'Visitor record not found');
-        }
+   public function show($id)
+{
+    try {
+        $visitor = Visitor::findOrFail($id);
+        return view('Pages.Admin.visitor_show', compact('visitor'));
+    } catch (\Exception $e) {
+        return redirect()->route('visitors_records')
+            ->with('error', 'Visitor record not found');
     }
+}
+
 
     /**
      * Show the form for editing the specified visitor.
