@@ -121,13 +121,13 @@ class FeeRecordController extends Controller
      */
     public function show($id)
     {
-        try {
-            $feeRecord = FeeRecord::findOrFail($id);
-            return view('Pages.Admin.fee_record_show', compact('feeRecord'));
-        } catch (\Exception $e) {
-            return redirect()->route('fee_record')
-                ->with('error', 'Fee record not found');
-        }
+          try {
+        $feeRecord = FeeRecord::findOrFail($id);
+        return view('Component.Admin.view_fee', compact('feeRecord'));
+    } catch (\Exception $e) {
+        return redirect()->route('fee_record')
+            ->with('error', 'Fee record not found');
+    }
     }
 
     /**
@@ -135,13 +135,8 @@ class FeeRecordController extends Controller
      */
     public function edit($id)
     {
-        try {
-            $feeRecord = FeeRecord::findOrFail($id);
-            return view('Pages.Admin.fee_record_edit', compact('feeRecord'));
-        } catch (\Exception $e) {
-            return redirect()->route('fee_record')
-                ->with('error', 'Fee record not found');
-        }
+         $feeRecord = FeeRecord::findOrFail($id);
+    return view('Component.Admin.edit_fee', compact('feeRecord'));
     }
 
     /**
