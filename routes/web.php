@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\RoomAllocationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\FeeRecordController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -162,11 +163,26 @@ Route::prefix('admin/rooms')->name('admin.rooms.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| Fee Record Routes ✅ ADDED
+|--------------------------------------------------------------------------
+/*
+|--------------------------------------------------------------------------
 | Fee Record Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/fee-record', [PageController::class, 'fee_record'])->name('fee_record');
+// Main page and CRUD pages
+Route::get('/fee-record', [FeeRecordController::class, 'index'])->name('fee_record');
+Route::get('/fee-record/create', [FeeRecordController::class, 'create'])->name('fee-record.create');
+Route::get('/fee-record/{id}', [FeeRecordController::class, 'show'])->name('fee-record.show');
+Route::get('/fee-record/{id}/edit', [FeeRecordController::class, 'edit'])->name('fee-record.edit');
 
+// API/CRUD Routes (AJAX)
+Route::get('/fee-records', [FeeRecordController::class, 'index'])->name('fee-records.index');
+Route::get('/fee-records/summary', [FeeRecordController::class, 'getSummary'])->name('fee-records.summary');
+Route::post('/fee-records', [FeeRecordController::class, 'store'])->name('fee-records.store');
+Route::put('/fee-records/{id}', [FeeRecordController::class, 'update'])->name('fee-records.update');
+Route::delete('/fee-records/{id}', [FeeRecordController::class, 'destroy'])->name('fee-records.destroy');
+Route::patch('/fee-records/{id}/status', [FeeRecordController::class, 'updateStatus'])->name('fee-records.update-status');
 /*
 |--------------------------------------------------------------------------
 | Additional Routes (If any)
