@@ -57,7 +57,7 @@ class RoomAllocationController extends Controller
                      ->orderBy('room_number', 'asc')
                      ->get();
         
-        return view('Pages.Admin.add_room_allocation', compact('students', 'rooms'));
+        return view('Component.Admin.add_room', compact('students', 'rooms'));
     }
 
     /**

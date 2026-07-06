@@ -112,38 +112,30 @@ Route::get('/visitor/export', [VisitorController::class, 'export'])->name('visit
 
 /*
 |--------------------------------------------------------------------------
-| Room Allocation Routes ✅ (FIXED)
+| Room Allocation Routes ✅ (FIXED - All route names properly defined)
 |--------------------------------------------------------------------------
 */
-// Room Allocation Main Page
+// Main Room Allocation routes (for sidebar navigation)
 Route::get('/room-allocation', [RoomAllocationController::class, 'index'])->name('Room_allocation');
+Route::get('/room_allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
 
-// ✅ FIXED: Added dot (.) after name
-Route::prefix('room-allocations')->name('room-allocations.')->group(function () {
-    // Main index page
-    Route::get('/', [RoomAllocationController::class, 'index'])->name('index');
-    
-    // Search functionality (AJAX)
-    Route::get('/search', [RoomAllocationController::class, 'search'])->name('search');
-    
-    // Get room data for dashboard/stats
-    Route::get('/data', [RoomAllocationController::class, 'getRoomData'])->name('data');
-    
-    // Get available students for dropdown
-    Route::get('/available-students', [RoomAllocationController::class, 'getAvailableStudents'])->name('available-students');
-    
-    // Store new allocation
-    Route::post('/', [RoomAllocationController::class, 'store'])->name('store');
-    
-    // Deallocate student from room
-    Route::patch('/{id}/deallocate', [RoomAllocationController::class, 'deallocate'])->name('deallocate');
-    
-    // Update allocation
-    Route::put('/{id}', [RoomAllocationController::class, 'update'])->name('update');
-    
-    // Delete allocation
-    Route::delete('/{id}', [RoomAllocationController::class, 'destroy'])->name('destroy');
-});
+// Resource route for all CRUD operations
+Route::resource('room-allocation', RoomAllocationController::class);
+
+// CRUD routes with underscore naming (for blade compatibility)
+Route::get('/room_allocation/create', [RoomAllocationController::class, 'create'])->name('room_allocation.create');
+Route::post('/room_allocation', [RoomAllocationController::class, 'store'])->name('room_allocation.store');
+Route::get('/room_allocation/{id}/edit', [RoomAllocationController::class, 'edit'])->name('room_allocation.edit');
+Route::put('/room_allocation/{id}', [RoomAllocationController::class, 'update'])->name('room_allocation.update');
+Route::delete('/room_allocation/{id}', [RoomAllocationController::class, 'destroy'])->name('room_allocation.destroy');
+
+// Custom route for deallocation
+Route::delete('/room_allocation/{id}/deallocate', [RoomAllocationController::class, 'deallocate'])->name('room_allocation.deallocate');
+
+// Additional custom routes
+Route::get('/room_allocation/search', [RoomAllocationController::class, 'search'])->name('room_allocation.search');
+Route::get('/room_allocation/available-students', [RoomAllocationController::class, 'getAvailableStudents'])->name('room_allocation.available-students');
+Route::get('/room_allocation/room-data', [RoomAllocationController::class, 'getRoomData'])->name('room_allocation.room-data');
 
 // Room Allocation Details (if needed separately)
 Route::get('/room-allocation-details', [RoomAllocationController::class, 'index'])->name('room_allocation_details');
@@ -165,10 +157,6 @@ Route::prefix('admin/rooms')->name('admin.rooms.')->group(function () {
 |--------------------------------------------------------------------------
 | Fee Record Routes ✅ ADDED
 |--------------------------------------------------------------------------
-/*
-|--------------------------------------------------------------------------
-| Fee Record Routes
-|--------------------------------------------------------------------------
 */
 // Main page and CRUD pages
 Route::get('/fee-record', [FeeRecordController::class, 'index'])->name('fee_record');
@@ -183,6 +171,7 @@ Route::post('/fee-records', [FeeRecordController::class, 'store'])->name('fee-re
 Route::put('/fee-records/{id}', [FeeRecordController::class, 'update'])->name('fee-records.update');
 Route::delete('/fee-records/{id}', [FeeRecordController::class, 'destroy'])->name('fee-records.destroy');
 Route::patch('/fee-records/{id}/status', [FeeRecordController::class, 'updateStatus'])->name('fee-records.update-status');
+
 /*
 |--------------------------------------------------------------------------
 | Additional Routes (If any)
