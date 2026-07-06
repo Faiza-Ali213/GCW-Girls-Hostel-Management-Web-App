@@ -171,11 +171,11 @@
             </li>
 
             <li class="nav-item {{ request()->routeIs('Room_allocation') ? 'active' : '' }}">
-                <a href="{{ route('Room_allocation') }}" class="nav-link-custom">
-                    <i class="bi bi-door-open"></i> Room allocation
-                </a>
-            </li>
-
+            <li class="nav-item {{ request()->routeIs('room_allocation') ? 'active' : '' }}">
+    <a href="{{ route('room_allocation') }}" class="nav-link-custom">
+        <i class="bi bi-door-open"></i> Room Allocation
+    </a>
+</li>
             <li class="nav-item {{ request()->routeIs('fee_record') ? 'active' : '' }}">
                 <a href="{{ route('fee_record') }}" class="nav-link-custom">
                     <i class="bi bi-cash-stack"></i> Fee Record

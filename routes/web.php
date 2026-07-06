@@ -115,8 +115,8 @@ Route::get('/visitor/export', [VisitorController::class, 'export'])->name('visit
 | Room Allocation Routes ✅ (FIXED - All route names properly defined)
 |--------------------------------------------------------------------------
 */
-// Main Room Allocation routes (for sidebar navigation)
-Route::get('/room-allocation', [RoomAllocationController::class, 'index'])->name('Room_allocation');
+// ✅ FIXED: Changed to lowercase 'room_allocation' to match blade usage
+Route::get('/room-allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
 Route::get('/room_allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
 
 // Resource route for all CRUD operations
