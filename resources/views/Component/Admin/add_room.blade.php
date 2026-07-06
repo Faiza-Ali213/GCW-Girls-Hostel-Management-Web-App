@@ -10,41 +10,53 @@
                     <h3 class="card-title mb-0">
                         <i class="bi bi-door-open-fill text-primary me-2"></i>Add Room Allocation
                     </h3>
-                    <div class="card-tools">
+                    <div>
+                        <a href="{{ route('room-allocation.index') }}" class="btn btn-info btn-sm">
+                            <i class="bi bi-eye me-1"></i> View All
+                        </a>
                         <a href="{{ route('room-allocation.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="bi bi-arrow-left"></i> Back
+                            <i class="bi bi-arrow-left me-1"></i> Back
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <!-- Display validation errors -->
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
+
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            <strong>Please fix the following errors:</strong>
-                            <ul class="mb-0 mt-2">
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
                             </ul>
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
 
-                    <form action="{{ route('room-allocation.store') }}" method="POST" id="allocationForm">
+                    <form action="{{ route('room-allocation.store') }}" method="POST">
                         @csrf
 
+                        <!-- Row 1: Student and Room Selection -->
                         <div class="row">
-                            <!-- Student Selection -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="student_id" class="form-label fw-bold">
-                                        Select Student <span class="text-danger">*</span>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-person-fill text-primary me-1"></i> Select Student <span class="text-danger">*</span>
                                     </label>
-                                    <select name="student_id" id="student_id" 
-                                            class="form-select @error('student_id') is-invalid @enderror" 
-                                            required>
+                                    <select name="student_id" id="student_id" class="form-select" required>
                                         <option value="">-- Select Student --</option>
-                                        @forelse($students as $student)
+                                        @forelse($students ?? [] as $student)
                                             <option value="{{ $student->id }}" 
                                                     {{ old('student_id') == $student->id ? 'selected' : '' }}
                                                     data-phone="{{ $student->phone_number ?? 'N/A' }}"
@@ -52,126 +64,96 @@
                                                 {{ $student->student_name }} 
                                                 @if($student->phone_number) 
                                                     ({{ $student->phone_number }})
-                                                @else
-                                                    (No Phone)
                                                 @endif
                                             </option>
                                         @empty
-                                            <option value="" disabled>No unallocated students available</option>
+                                            <option value="">No students available</option>
                                         @endforelse
                                     </select>
-                                    @error('student_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    @if($students->isEmpty())
-                                        <small class="text-warning">
-                                            <i class="bi bi-exclamation-triangle-fill"></i> 
-                                            No unallocated students available. All students already have rooms.
-                                        </small>
-                                    @endif
                                 </div>
                             </div>
 
-                            <!-- Room Selection -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="room_id" class="form-label fw-bold">
-                                        Select Room <span class="text-danger">*</span>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-door-open-fill text-success me-1"></i> Select Room <span class="text-danger">*</span>
                                     </label>
-                                    <select name="room_id" id="room_id" 
-                                            class="form-select @error('room_id') is-invalid @enderror" 
-                                            required>
+                                    <select name="room_id" id="room_id" class="form-select" required>
                                         <option value="">-- Select Room --</option>
-                                        @forelse($rooms as $room)
+                                        @forelse($rooms ?? [] as $room)
                                             <option value="{{ $room->id }}" 
                                                     {{ old('room_id') == $room->id ? 'selected' : '' }}
                                                     data-available="{{ $room->available_beds ?? 0 }}"
-                                                    data-total="{{ $room->total_beds ?? 0 }}">
+                                                    data-type="{{ $room->room_type ?? 'Standard' }}">
                                                 Room {{ $room->room_number }} 
                                                 @if(isset($room->available_beds))
                                                     ({{ $room->available_beds }} beds available)
-                                                @else
-                                                    (Available)
                                                 @endif
                                             </option>
                                         @empty
-                                            <option value="" disabled>No rooms available</option>
+                                            <option value="">No rooms available</option>
                                         @endforelse
                                     </select>
-                                    @error('room_id')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                    @if($rooms->isEmpty())
-                                        <small class="text-warning">
-                                            <i class="bi bi-exclamation-triangle-fill"></i> 
-                                            No available rooms with beds.
-                                        </small>
-                                    @endif
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Row 2: Date -->
                         <div class="row mt-3">
-                            <!-- Allocation Date -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="allocation_date" class="form-label fw-bold">
-                                        Allocation Date <span class="text-danger">*</span>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-calendar-date-fill text-info me-1"></i> Allocation Date <span class="text-danger">*</span>
                                     </label>
-                                    <input type="date" name="allocation_date" id="allocation_date" 
-                                           class="form-control @error('allocation_date') is-invalid @enderror" 
-                                           value="{{ old('allocation_date', date('Y-m-d')) }}"
-                                           required>
-                                    @error('allocation_date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- Student Details Preview -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">Student Details</label>
-                                    <div id="studentDetails" class="border rounded p-3 bg-light">
-                                        <p class="text-muted mb-0">
-                                            <i class="bi bi-info-circle"></i> Select a student to view details
-                                        </p>
-                                    </div>
+                                    <input type="date" name="allocation_date" class="form-control" 
+                                           value="{{ old('allocation_date', date('Y-m-d')) }}" required>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Row 3: Preview Sections -->
                         <div class="row mt-3">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">Room Details</label>
-                                    <div id="roomDetails" class="border rounded p-3 bg-light">
-                                        <p class="text-muted mb-0">
-                                            <i class="bi bi-info-circle"></i> Select a room to view details
-                                        </p>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-person-vcard-fill text-primary me-1"></i> Student Details
+                                    </label>
+                                    <div id="studentDetails" class="border rounded p-3 bg-light">
+                                        <p class="text-muted mb-0">Select a student to view details</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Allocation Summary -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">Allocation Summary</label>
-                                    <div id="allocationSummary" class="border rounded p-3 bg-success bg-opacity-10">
-                                        <p class="text-muted mb-0">
-                                            <i class="bi bi-check-circle"></i> Ready to allocate
-                                        </p>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-building-fill text-success me-1"></i> Room Details
+                                    </label>
+                                    <div id="roomDetails" class="border rounded p-3 bg-light">
+                                        <p class="text-muted mb-0">Select a room to view details</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Submit Buttons -->
+                        <!-- Row 4: Summary -->
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-clipboard-check-fill text-warning me-1"></i> Allocation Summary
+                                    </label>
+                                    <div id="allocationSummary" class="border rounded p-3 bg-success bg-opacity-10">
+                                        <p class="text-muted mb-0">Select both student and room to continue</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Row 5: Buttons -->
                         <div class="row mt-4">
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary px-4" 
-                                        id="submitBtn" 
-                                        {{ $students->isEmpty() || $rooms->isEmpty() ? 'disabled' : '' }}>
+                                <button type="submit" class="btn btn-primary px-4" id="submitBtn">
                                     <i class="bi bi-check-circle me-2"></i> Allocate Room
                                 </button>
                                 <button type="reset" class="btn btn-secondary px-4">
@@ -192,7 +174,6 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Student selection change
         const studentSelect = document.getElementById('student_id');
         const roomSelect = document.getElementById('room_id');
         const studentDetails = document.getElementById('studentDetails');
@@ -200,134 +181,104 @@
         const allocationSummary = document.getElementById('allocationSummary');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Update student details
-        studentSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            
-            if (this.value) {
-                const studentName = selectedOption.text.split(' (')[0];
-                const phone = selectedOption.dataset.phone || 'N/A';
-                const email = selectedOption.dataset.email || 'N/A';
-                
+        function updateStudentDetails() {
+            const opt = studentSelect.options[studentSelect.selectedIndex];
+            if (studentSelect.value) {
+                const name = opt.text.split(' (')[0];
+                const phone = opt.dataset.phone || 'N/A';
+                const email = opt.dataset.email || 'N/A';
                 studentDetails.innerHTML = `
                     <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="bi bi-person-circle fs-2 text-primary"></i>
-                        </div>
+                        <div class="me-3"><i class="bi bi-person-circle fs-2 text-primary"></i></div>
                         <div>
-                            <strong class="d-block">${studentName}</strong>
-                            <small class="text-muted">
-                                <i class="bi bi-telephone me-1"></i> ${phone}
-                            </small>
-                            ${email !== 'N/A' ? `<br><small class="text-muted"><i class="bi bi-envelope me-1"></i> ${email}</small>` : ''}
+                            <strong>${name}</strong><br>
+                            <small><i class="bi bi-telephone me-1"></i> ${phone}</small>
+                            ${email !== 'N/A' ? `<br><small><i class="bi bi-envelope me-1"></i> ${email}</small>` : ''}
+                            <br><span class="badge bg-success mt-1">Selected</span>
                         </div>
                     </div>
                 `;
             } else {
-                studentDetails.innerHTML = `
-                    <p class="text-muted mb-0">
-                        <i class="bi bi-info-circle"></i> Select a student to view details
-                    </p>
-                `;
+                studentDetails.innerHTML = `<p class="text-muted mb-0">Select a student to view details</p>`;
             }
             updateSummary();
-        });
+        }
 
-        // Update room details
-        roomSelect.addEventListener('change', function() {
-            const selectedOption = this.options[this.selectedIndex];
-            
-            if (this.value) {
-                const roomNumber = selectedOption.text.split(' (')[0].replace('Room ', '');
-                const availableBeds = selectedOption.dataset.available || 'N/A';
-                const totalBeds = selectedOption.dataset.total || 'N/A';
-                
-                let statusBadge = '';
-                if (availableBeds > 0) {
-                    statusBadge = `<span class="badge bg-success">Available</span>`;
-                } else if (availableBeds == 0) {
-                    statusBadge = `<span class="badge bg-danger">Full</span>`;
-                } else {
-                    statusBadge = `<span class="badge bg-warning">Unknown</span>`;
-                }
-                
+        function updateRoomDetails() {
+            const opt = roomSelect.options[roomSelect.selectedIndex];
+            if (roomSelect.value) {
+                const roomNum = opt.text.split(' (')[0].replace('Room ', '');
+                const avail = opt.dataset.available || '0';
+                const type = opt.dataset.type || 'Standard';
+                const status = avail > 0 ? '<span class="badge bg-success">Available</span>' : '<span class="badge bg-danger">Full</span>';
                 roomDetails.innerHTML = `
                     <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="bi bi-door-open fs-2 text-primary"></i>
-                        </div>
+                        <div class="me-3"><i class="bi bi-building fs-2 text-success"></i></div>
                         <div>
-                            <strong class="d-block">Room ${roomNumber}</strong>
-                            <small class="text-muted">
-                                Available: ${availableBeds} beds 
-                                ${totalBeds !== 'N/A' ? `/ Total: ${totalBeds} beds` : ''}
-                            </small>
-                            <br>${statusBadge}
+                            <strong>Room ${roomNum}</strong><br>
+                            <small><i class="bi bi-tag me-1"></i> Type: ${type}</small><br>
+                            <small><i class="bi bi-bed me-1"></i> Available: ${avail} beds</small>
+                            <br>${status}
                         </div>
                     </div>
                 `;
             } else {
-                roomDetails.innerHTML = `
-                    <p class="text-muted mb-0">
-                        <i class="bi bi-info-circle"></i> Select a room to view details
-                    </p>
-                `;
+                roomDetails.innerHTML = `<p class="text-muted mb-0">Select a room to view details</p>`;
             }
             updateSummary();
-        });
+        }
 
-        // Update allocation summary
         function updateSummary() {
-            const studentId = studentSelect.value;
-            const roomId = roomSelect.value;
+            const sid = studentSelect.value;
+            const rid = roomSelect.value;
             
-            if (studentId && roomId) {
-                const studentName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
-                const roomNumber = roomSelect.options[roomSelect.selectedIndex].text.split(' (')[0].replace('Room ', '');
-                
+            if (sid && rid) {
+                const sName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
+                const rNum = roomSelect.options[roomSelect.selectedIndex].text.split(' (')[0].replace('Room ', '');
                 allocationSummary.innerHTML = `
                     <div class="d-flex align-items-center">
-                        <div class="me-3">
-                            <i class="bi bi-check-circle-fill fs-2 text-success"></i>
-                        </div>
+                        <div class="me-3"><i class="bi bi-check-circle-fill fs-2 text-success"></i></div>
                         <div>
-                            <strong class="d-block text-success">Ready to Allocate</strong>
-                            <small>
-                                <strong>${studentName}</strong> → Room <strong>${roomNumber}</strong>
-                            </small>
+                            <strong class="text-success">Ready to Allocate</strong><br>
+                            <small><strong>${sName}</strong> → Room <strong>${rNum}</strong></small>
+                            <br><span class="badge bg-primary mt-1">Ready</span>
                         </div>
                     </div>
                 `;
                 submitBtn.disabled = false;
             } else {
-                allocationSummary.innerHTML = `
-                    <p class="text-muted mb-0">
-                        <i class="bi bi-check-circle"></i> Select both student and room to continue
-                    </p>
-                `;
+                let msg = 'Select both student and room to continue';
+                if (sid && !rid) msg = 'Please select a room';
+                else if (!sid && rid) msg = 'Please select a student';
+                allocationSummary.innerHTML = `<p class="text-muted mb-0"><i class="bi bi-info-circle"></i> ${msg}</p>`;
                 submitBtn.disabled = true;
             }
         }
 
-        // Form validation
-        document.getElementById('allocationForm').addEventListener('submit', function(e) {
-            const studentId = studentSelect.value;
-            const roomId = roomSelect.value;
-            
-            if (!studentId || !roomId) {
-                e.preventDefault();
-                alert('⚠️ Please select both a student and a room before submitting.');
-                return false;
-            }
-            
-            // Confirm allocation
-            const studentName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
-            const roomNumber = roomSelect.options[roomSelect.selectedIndex].text.split(' (')[0].replace('Room ', '');
-            
-            return confirm(`Are you sure you want to allocate ${studentName} to Room ${roomNumber}?`);
+        studentSelect.addEventListener('change', function() {
+            updateStudentDetails();
+            updateSummary();
         });
 
-        // Trigger initial summary update
+        roomSelect.addEventListener('change', function() {
+            updateRoomDetails();
+            updateSummary();
+        });
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!studentSelect.value || !roomSelect.value) {
+                e.preventDefault();
+                alert('Please select both a student and a room.');
+                return false;
+            }
+            const sName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
+            const rNum = roomSelect.options[roomSelect.selectedIndex].text.split(' (')[0].replace('Room ', '');
+            return confirm(`Allocate ${sName} to Room ${rNum}?`);
+        });
+
+        // Initial load
+        updateStudentDetails();
+        updateRoomDetails();
         updateSummary();
     });
 </script>
@@ -335,33 +286,16 @@
 
 @push('styles')
 <style>
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    .card-header {
-        background: #f8f9fa;
-        border-bottom: 1px solid #e9ecef;
-    }
-    .bg-light {
-        background-color: #f8f9fa !important;
-    }
+    .form-group { margin-bottom: 1.5rem; }
     #studentDetails, #roomDetails, #allocationSummary {
         min-height: 70px;
         border-radius: 8px;
+        transition: all 0.3s ease;
     }
-    .text-warning {
-        color: #856404 !important;
-    }
-    .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-    .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-    }
-    .alert ul {
-        padding-left: 20px;
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+    @media (max-width: 768px) {
+        .card-header { flex-direction: column; gap: 10px; }
+        .card-header .btn { width: 100%; }
     }
 </style>
 @endpush

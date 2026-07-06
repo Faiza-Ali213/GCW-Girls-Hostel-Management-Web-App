@@ -32,13 +32,6 @@
                         </div>
                     @endif
 
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <i class="bi bi-check-circle-fill me-2"></i> {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    @endif
-
                     <form action="{{ route('room-allocation.update', $allocation->id) }}" method="POST" id="editForm">
                         @csrf
                         @method('PUT')
@@ -48,7 +41,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="student_id" class="form-label fw-bold">
-                                        Select Student <span class="text-danger">*</span>
+                                        <i class="bi bi-person-fill text-primary me-1"></i> Select Student <span class="text-danger">*</span>
                                     </label>
                                     <select name="student_id" id="student_id" 
                                             class="form-select @error('student_id') is-invalid @enderror" 
@@ -79,7 +72,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="room_id" class="form-label fw-bold">
-                                        Select Room <span class="text-danger">*</span>
+                                        <i class="bi bi-door-open-fill text-success me-1"></i> Select Room <span class="text-danger">*</span>
                                     </label>
                                     <select name="room_id" id="room_id" 
                                             class="form-select @error('room_id') is-invalid @enderror" 
@@ -112,7 +105,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="allocation_date" class="form-label fw-bold">
-                                        Allocation Date <span class="text-danger">*</span>
+                                        <i class="bi bi-calendar-date-fill text-info me-1"></i> Allocation Date <span class="text-danger">*</span>
                                     </label>
                                     <input type="date" name="allocation_date" id="allocation_date" 
                                            class="form-control @error('allocation_date') is-invalid @enderror" 
@@ -127,7 +120,9 @@
                             <!-- Current Allocation Info -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">Current Allocation Info</label>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-info-circle-fill text-info me-1"></i> Current Allocation Info
+                                    </label>
                                     <div class="border rounded p-3 bg-info bg-opacity-10">
                                         <div class="d-flex align-items-center">
                                             <div class="me-3">
@@ -136,9 +131,9 @@
                                             <div>
                                                 <strong class="d-block">Current Details</strong>
                                                 <small>
-                                                    <strong>Student:</strong> {{ $allocation->student_name }}<br>
-                                                    <strong>Room:</strong> {{ $allocation->room_no }}<br>
-                                                    <strong>Allocated:</strong> {{ \Carbon\Carbon::parse($allocation->allocation_date)->format('d M Y') }}
+                                                    <i class="bi bi-person me-1"></i> <strong>Student:</strong> {{ $allocation->student_name }}<br>
+                                                    <i class="bi bi-door-open me-1"></i> <strong>Room:</strong> {{ $allocation->room_no }}<br>
+                                                    <i class="bi bi-calendar me-1"></i> <strong>Allocated:</strong> {{ \Carbon\Carbon::parse($allocation->allocation_date)->format('d M Y') }}
                                                 </small>
                                             </div>
                                         </div>
@@ -148,9 +143,12 @@
                         </div>
 
                         <div class="row mt-3">
+                            <!-- Student Details -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">Student Details</label>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-person-vcard-fill text-primary me-1"></i> Student Details
+                                    </label>
                                     <div id="studentDetails" class="border rounded p-3 bg-light">
                                         <div class="d-flex align-items-center">
                                             <div class="me-3">
@@ -169,21 +167,24 @@
                                 </div>
                             </div>
 
+                            <!-- Room Details -->
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">Room Details</label>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-building-fill text-success me-1"></i> Room Details
+                                    </label>
                                     <div id="roomDetails" class="border rounded p-3 bg-light">
                                         <div class="d-flex align-items-center">
                                             <div class="me-3">
-                                                <i class="bi bi-door-open fs-2 text-primary"></i>
+                                                <i class="bi bi-building fs-2 text-success"></i>
                                             </div>
                                             <div>
                                                 <strong class="d-block">Room {{ $allocation->room_no }}</strong>
                                                 <small class="text-muted">
                                                     @if(isset($allocation->room->available_beds))
-                                                        Available: {{ $allocation->room->available_beds }} beds
+                                                        <i class="bi bi-bed me-1"></i> Available: {{ $allocation->room->available_beds }} beds
                                                     @else
-                                                        Status: Available
+                                                        <i class="bi bi-check-circle me-1"></i> Status: Available
                                                     @endif
                                                 </small>
                                                 <br>
@@ -198,7 +199,9 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label class="form-label fw-bold">Allocation Summary</label>
+                                    <label class="form-label fw-bold">
+                                        <i class="bi bi-clipboard-check-fill text-warning me-1"></i> Allocation Summary
+                                    </label>
                                     <div id="allocationSummary" class="border rounded p-3 bg-warning bg-opacity-10">
                                         <div class="d-flex align-items-center">
                                             <div class="me-3">
@@ -207,7 +210,9 @@
                                             <div>
                                                 <strong class="d-block text-warning">Editing Allocation</strong>
                                                 <small>
-                                                    <strong>{{ $allocation->student_name }}</strong> → Room <strong>{{ $allocation->room_no }}</strong>
+                                                    <i class="bi bi-person me-1"></i> <strong>{{ $allocation->student_name }}</strong>
+                                                    <i class="bi bi-arrow-right mx-2"></i>
+                                                    <i class="bi bi-door-open me-1"></i> Room <strong>{{ $allocation->room_no }}</strong>
                                                 </small>
                                                 <br>
                                                 <span class="badge bg-warning">Update Mode</span>
@@ -218,6 +223,7 @@
                             </div>
                         </div>
 
+                        <!-- Submit Buttons -->
                         <div class="row mt-4">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-warning px-4">
@@ -250,7 +256,7 @@
         const roomDetails = document.getElementById('roomDetails');
         const allocationSummary = document.getElementById('allocationSummary');
 
-        // Update student details on change
+        // Student Selection Handler
         studentSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             if (this.value) {
@@ -273,6 +279,7 @@
                             <br><small class="text-muted">
                                 <i class="bi bi-door-open me-1"></i> Current Room: ${currentRoom}
                             </small>
+                            <br><span class="badge bg-success">Selected</span>
                         </div>
                     </div>
                 `;
@@ -286,7 +293,7 @@
             updateSummary();
         });
 
-        // Update room details on change
+        // Room Selection Handler
         roomSelect.addEventListener('change', function() {
             const selectedOption = this.options[this.selectedIndex];
             if (this.value) {
@@ -307,12 +314,16 @@
                 roomDetails.innerHTML = `
                     <div class="d-flex align-items-center">
                         <div class="me-3">
-                            <i class="bi bi-door-open fs-2 text-primary"></i>
+                            <i class="bi bi-building fs-2 text-success"></i>
                         </div>
                         <div>
                             <strong class="d-block">Room ${roomNumber}</strong>
                             <small class="text-muted">
-                                Type: ${roomType} | Available: ${availableBeds} beds 
+                                <i class="bi bi-tag me-1"></i> Type: ${roomType}
+                            </small>
+                            <br>
+                            <small class="text-muted">
+                                <i class="bi bi-bed me-1"></i> Available: ${availableBeds} beds 
                                 ${totalBeds !== 'N/A' ? `/ Total: ${totalBeds} beds` : ''}
                             </small>
                             <br>${statusBadge}
@@ -329,7 +340,7 @@
             updateSummary();
         });
 
-        // Update allocation summary
+        // Update Summary
         function updateSummary() {
             const studentId = studentSelect.value;
             const roomId = roomSelect.value;
@@ -346,22 +357,30 @@
                         <div>
                             <strong class="d-block text-warning">Ready to Update</strong>
                             <small>
-                                <strong>${studentName}</strong> → Room <strong>${roomNumber}</strong>
+                                <i class="bi bi-person me-1"></i> <strong>${studentName}</strong>
+                                <i class="bi bi-arrow-right mx-2"></i>
+                                <i class="bi bi-door-open me-1"></i> Room <strong>${roomNumber}</strong>
                             </small>
                             <br><span class="badge bg-warning">Update Mode</span>
                         </div>
                     </div>
                 `;
             } else {
+                let message = 'Select both student and room to update';
+                if (studentId && !roomId) {
+                    message = 'Please select a room';
+                } else if (!studentId && roomId) {
+                    message = 'Please select a student';
+                }
                 allocationSummary.innerHTML = `
                     <p class="text-muted mb-0">
-                        <i class="bi bi-pencil-square"></i> Select both student and room to update
+                        <i class="bi bi-pencil-square"></i> ${message}
                     </p>
                 `;
             }
         }
 
-        // Form validation
+        // Form Submit Handler
         document.getElementById('editForm').addEventListener('submit', function(e) {
             const studentId = studentSelect.value;
             const roomId = roomSelect.value;
