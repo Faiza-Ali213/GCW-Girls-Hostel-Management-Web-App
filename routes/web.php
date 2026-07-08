@@ -8,6 +8,7 @@ use App\Http\Controllers\RoomAllocationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\FeeRecordController;
+use App\Http\Controllers\NotificationController; // ✅ Added Notification Controller
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,8 +53,8 @@ Route::get('/visitors-records', [PageController::class, 'visitors_records'])->na
 // ✅ Added alternative spelling to fix blade error
 Route::get('/vistors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
 
-// Notifications
-Route::get('/Notification', [PageController::class, 'Notification'])->name('Notification');
+// Notifications - Page View (Will show notification list)
+Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
 
 /*
 |--------------------------------------------------------------------------
@@ -109,6 +110,42 @@ Route::put('/visitor/{id}', [VisitorController::class, 'update'])->name('visitor
 Route::delete('/visitor/{id}', [VisitorController::class, 'destroy'])->name('visitor.destroy');
 Route::get('/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
 Route::get('/visitor/export', [VisitorController::class, 'export'])->name('visitor.export');
+
+// ✅ Visitor Check-in/Check-out Routes
+Route::post('/visitor/{id}/check-in', [VisitorController::class, 'checkIn'])->name('visitor.check-in');
+Route::post('/visitor/{id}/check-out', [VisitorController::class, 'checkOut'])->name('visitor.check-out');
+
+/*
+|--------------------------------------------------------------------------
+| Notification Management Routes ✅ ADDED
+|--------------------------------------------------------------------------
+*/
+// ✅ Notification Routes with proper naming
+Route::prefix('notifications')->name('notifications.')->group(function () {
+    // Main notification list page
+    Route::get('/', [NotificationController::class, 'index'])->name('index');
+    
+    // Create notification
+    Route::get('/create', [NotificationController::class, 'create'])->name('create');
+    Route::post('/', [NotificationController::class, 'store'])->name('store');
+    
+    // Show, Edit, Update, Delete
+    Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
+    Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
+    Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
+    Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+    
+    // AJAX / API Routes for real-time updates
+    Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
+    Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
+    Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
+    Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
+    Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
+    Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
+});
+
+// ✅ Alternative route name for Notification (for blade compatibility)
+Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
 
 /*
 |--------------------------------------------------------------------------
