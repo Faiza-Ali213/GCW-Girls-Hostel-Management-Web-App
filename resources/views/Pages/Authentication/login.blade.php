@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Hostel Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
@@ -12,6 +12,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .card {
             border-radius: 20px;
@@ -19,12 +20,18 @@
             padding: 30px;
             max-width: 450px;
             width: 100%;
+            background: white;
+            border: none;
         }
         .auth-title {
             text-align: center;
             font-weight: 700;
             color: #333;
             margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .auth-title span {
+            color: #667eea;
         }
         .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -32,6 +39,8 @@
             padding: 12px;
             font-weight: 600;
             width: 100%;
+            border-radius: 50px;
+            transition: all 0.3s;
         }
         .btn-primary:hover {
             transform: translateY(-2px);
@@ -49,12 +58,28 @@
         .auth-link a:hover {
             text-decoration: underline;
         }
+        .form-control {
+            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .alert {
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="card">
         <div class="card-body">
-            <h2 class="auth-title">🔐 Welcome Back</h2>
+            <h2 class="auth-title">🔐 <span>Welcome Back</span></h2>
             
             @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -73,18 +98,25 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}">
+            <form method="POST" action="{{ route('login.submit') }}">
                 @csrf
                 <div class="mb-3">
-                    <label for="email" class="form-label fw-semibold">Email Address</label>
-                    <input type="email" class="form-control" id="email" name="email" 
-                           value="{{ old('email') }}" placeholder="Enter your email" required>
+                    <label for="email" class="form-label">📧 Email Address</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                           id="email" name="email" value="{{ old('email') }}" 
+                           placeholder="Enter your email" required>
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label for="password" class="form-label fw-semibold">Password</label>
-                    <input type="password" class="form-control" id="password" 
-                           name="password" placeholder="Enter your password" required>
+                    <label for="password" class="form-label">🔑 Password</label>
+                    <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                           id="password" name="password" placeholder="Enter your password" required>
+                    @error('password')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <button type="submit" class="btn btn-primary">Login</button>

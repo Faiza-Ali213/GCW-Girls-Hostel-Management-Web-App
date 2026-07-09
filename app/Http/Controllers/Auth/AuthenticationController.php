@@ -10,13 +10,17 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
-    // Show login form
+    /**
+     * Show the login form
+     */
     public function showLoginForm()
     {
         return view('Pages.Auth.login');
     }
 
-    // Handle login
+    /**
+     * Handle login request
+     */
     public function login(Request $request)
     {
         // Validate input
@@ -30,7 +34,7 @@ class AuthenticationController extends Controller
         
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard')->with('success', 'Login successful!');
+            return redirect()->intended('/dashboard')->with('success', 'Welcome back! Login successful.');
         }
 
         return back()->withErrors([
@@ -38,13 +42,17 @@ class AuthenticationController extends Controller
         ])->onlyInput('email');
     }
 
-    // Show signup form
+    /**
+     * Show the signup form
+     */
     public function showSignupForm()
     {
         return view('Pages.Auth.signup');
     }
 
-    // Handle signup
+    /**
+     * Handle signup request
+     */
     public function signup(Request $request)
     {
         // Validate input
@@ -67,7 +75,9 @@ class AuthenticationController extends Controller
         return redirect('/dashboard')->with('success', 'Account created successfully!');
     }
 
-    // Handle logout
+    /**
+     * Handle logout request
+     */
     public function logout(Request $request)
     {
         Auth::logout();
