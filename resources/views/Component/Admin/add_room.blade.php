@@ -1,5 +1,5 @@
 <!-- resources/views/Component/Admin/add_room.blade.php -->
-@extends('layouts.app') <!-- Adjust this based on your layout -->
+@extends('Layout.admin') <!-- Adjust this based on your layout -->
 
 @section('content')
 <div class="container-fluid">
