@@ -8,12 +8,36 @@ use App\Http\Controllers\RoomAllocationController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\FeeRecordController;
-use App\Http\Controllers\NotificationController; // ✅ Added Notification Controller
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Auth\AuthenticationController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Main Website Routes
+| Authentication Routes (Login, Signup, Logout)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('guest')->group(function () {
+    // Show login page
+    Route::get('/login', [AuthenticationController::class, 'showLoginForm'])->name('login');
+    // Handle login form submission
+    Route::post('/login', [AuthenticationController::class, 'login'])->name('login.submit');
+    
+    // Show signup page
+    Route::get('/signup', [AuthenticationController::class, 'showSignupForm'])->name('signup');
+    // Handle signup form submission
+    Route::post('/signup', [AuthenticationController::class, 'signup'])->name('signup.submit');
+});
+
+// Authenticated routes (require login)
+Route::middleware('auth')->group(function () {
+    // Logout
+    Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Main Website Routes (Public)
 |--------------------------------------------------------------------------
 */
 Route::get('/', [PageController::class, 'home'])->name('home');
@@ -28,190 +52,160 @@ Route::get('/booking', [PageController::class, 'booking'])->name('booking');
 
 /*
 |--------------------------------------------------------------------------
-| Admin Routes (Dashboard Pages)
+| Admin Routes (Protected by Authentication)
 |--------------------------------------------------------------------------
 */
-// Dashboard
-Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
+Route::middleware('auth')->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [PageController::class, 'dashboard'])->name('dashboard');
 
-// Student Management - MAIN ROUTES ✅
-Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
-Route::get('/student/create', [StudentController::class, 'create'])->name('student.create');
-Route::post('/student', [StudentController::class, 'store'])->name('student.store');
-Route::get('/student/{id}', [StudentController::class, 'show'])->name('student.show');
-Route::get('/student/{id}/edit', [StudentController::class, 'edit'])->name('student.edit');
-Route::put('/student/{id}', [StudentController::class, 'update'])->name('student.update');
-Route::delete('/student/{id}', [StudentController::class, 'destroy'])->name('student.destroy');
-Route::get('/student/export', [StudentController::class, 'export'])->name('student.export');
-Route::get('/student/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('student.by-room');
+    // ============================================
+    // Student Management
+    // ============================================
+    Route::prefix('student')->name('student.')->group(function () {
+        Route::get('/records', [StudentController::class, 'index'])->name('records');
+        Route::get('/create', [StudentController::class, 'create'])->name('create');
+        Route::post('/', [StudentController::class, 'store'])->name('store');
+        Route::get('/{id}', [StudentController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [StudentController::class, 'update'])->name('update');
+        Route::delete('/{id}', [StudentController::class, 'destroy'])->name('destroy');
+        Route::get('/export', [StudentController::class, 'export'])->name('export');
+        Route::get('/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('by-room');
+    });
 
-// Staff Records (Main Page)
-Route::get('/staff-records', [PageController::class, 'staff_records'])->name('staff_records');
+    // ============================================
+    // Staff Management
+    // ============================================
+    Route::prefix('staff')->name('staff.')->group(function () {
+        Route::get('/records', [StaffController::class, 'index'])->name('records');
+        Route::get('/', [StaffController::class, 'index'])->name('index');
+        Route::get('/create', [StaffController::class, 'create'])->name('create');
+        Route::post('/', [StaffController::class, 'store'])->name('store');
+        Route::get('/{id}', [StaffController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [StaffController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [StaffController::class, 'update'])->name('update');
+        Route::delete('/{id}', [StaffController::class, 'destroy'])->name('destroy');
+        Route::get('/search', [StaffController::class, 'search'])->name('search');
+    });
 
-// Visitors Records - FIXED: Added both spellings to handle blade error
-Route::get('/visitors-records', [PageController::class, 'visitors_records'])->name('visitors_records');
-// ✅ Added alternative spelling to fix blade error
-Route::get('/vistors-records', [PageController::class, 'visitors_records'])->name('vistors_records');
+    // ============================================
+    // Visitor Management
+    // ============================================
+    Route::prefix('visitor')->name('visitor.')->group(function () {
+        Route::get('/records', [VisitorController::class, 'index'])->name('records');
+        Route::get('/create', [VisitorController::class, 'create'])->name('create');
+        Route::post('/', [VisitorController::class, 'store'])->name('store');
+        Route::get('/{id}', [VisitorController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [VisitorController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [VisitorController::class, 'update'])->name('update');
+        Route::delete('/{id}', [VisitorController::class, 'destroy'])->name('destroy');
+        Route::get('/search', [VisitorController::class, 'search'])->name('search');
+        Route::get('/export', [VisitorController::class, 'export'])->name('export');
+        Route::post('/{id}/check-in', [VisitorController::class, 'checkIn'])->name('check-in');
+        Route::post('/{id}/check-out', [VisitorController::class, 'checkOut'])->name('check-out');
+    });
 
-// Notifications - Page View (Will show notification list)
-Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
+    // Alternative spelling for compatibility
+    Route::get('/visitors-records', [VisitorController::class, 'index'])->name('visitors_records');
+    Route::get('/vistors-records', [VisitorController::class, 'index'])->name('vistors_records');
 
-/*
-|--------------------------------------------------------------------------
-| Staff Management Routes (CRUD)
-|--------------------------------------------------------------------------
-*/
-Route::get('/staff-records', [StaffController::class, 'index'])->name('staff_records');
-Route::get('/staff', [StaffController::class, 'index'])->name('staff.index');
-Route::get('/staff/create', [StaffController::class, 'create'])->name('staff.create');
-Route::post('/staff', [StaffController::class, 'store'])->name('staff.store');
-Route::get('/staff/{id}', [StaffController::class, 'show'])->name('staff.show');
-Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
-Route::put('/staff/{id}', [StaffController::class, 'update'])->name('staff.update');
-Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.destroy');
-Route::get('/staff-search', [StaffController::class, 'search'])->name('staff.search');
+    // ============================================
+    // Complaint Management
+    // ============================================
+    Route::prefix('complaint')->name('complaint.')->group(function () {
+        Route::get('/management', [ComplaintController::class, 'index'])->name('management');
+        Route::get('/request', [ComplaintController::class, 'index'])->name('request');
+        Route::get('/create', [ComplaintController::class, 'create'])->name('create');
+        Route::post('/', [ComplaintController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [ComplaintController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [ComplaintController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ComplaintController::class, 'destroy'])->name('destroy');
+    });
 
-/*
-|--------------------------------------------------------------------------
-| Complaint Management Routes ✅ (FIXED - Added both spellings)
-|--------------------------------------------------------------------------
-*/
-// Complaint Routes - Fixed with both spellings
-Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
-// ✅ Added alternative spelling to fix blade error (Capital C)
-Route::get('/Complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
+    // Alternative spellings for compatibility
+    Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
+    Route::get('/Complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
+    Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
+    Route::resource('complaints', ComplaintController::class);
 
-Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
-Route::get('/complaint/create', [ComplaintController::class, 'create'])->name('complaint.create');
-Route::post('/complaint', [ComplaintController::class, 'store'])->name('complaint.store');
-Route::get('/complaint/{id}/edit', [ComplaintController::class, 'edit'])->name('complaint.edit');
-Route::put('/complaint/{id}', [ComplaintController::class, 'update'])->name('complaint.update');
-Route::delete('/complaint/{id}', [ComplaintController::class, 'destroy'])->name('complaint.destroy');
+    // ============================================
+    // Room Allocation
+    // ============================================
+    Route::prefix('room-allocation')->name('room_allocation.')->group(function () {
+        Route::get('/', [RoomAllocationController::class, 'index'])->name('index');
+        Route::get('/create', [RoomAllocationController::class, 'create'])->name('create');
+        Route::post('/', [RoomAllocationController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [RoomAllocationController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [RoomAllocationController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoomAllocationController::class, 'destroy'])->name('destroy');
+        Route::delete('/{id}/deallocate', [RoomAllocationController::class, 'deallocate'])->name('deallocate');
+        Route::get('/search', [RoomAllocationController::class, 'search'])->name('search');
+        Route::get('/available-students', [RoomAllocationController::class, 'getAvailableStudents'])->name('available-students');
+        Route::get('/room-data', [RoomAllocationController::class, 'getRoomData'])->name('room-data');
+    });
 
-// Resource Route for Complaints
-Route::resource('complaints', ComplaintController::class);
+    Route::get('/room_allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
+    Route::resource('room-allocation', RoomAllocationController::class);
+    Route::get('/room-allocation-details', [RoomAllocationController::class, 'index'])->name('room_allocation_details');
 
-/*
-|--------------------------------------------------------------------------
-| Visitor Management Routes (CRUD) ✅ ADDED
-|--------------------------------------------------------------------------
-*/
-// Visitor Records Main Page
-Route::get('/visitors-records', [VisitorController::class, 'index'])->name('visitors_records');
-// ✅ Added alternative spelling to fix blade error
-Route::get('/vistors-records', [VisitorController::class, 'index'])->name('vistors_records');
+    // ============================================
+    // Room Management
+    // ============================================
+    Route::prefix('admin/rooms')->name('admin.rooms.')->group(function () {
+        Route::get('/', [RoomController::class, 'index'])->name('index');
+        Route::post('/', [RoomController::class, 'store'])->name('store');
+        Route::put('/{id}', [RoomController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
+    });
 
-// Visitor CRUD Routes
-Route::get('/visitor/create', [VisitorController::class, 'create'])->name('visitor.create');
-Route::post('/visitor', [VisitorController::class, 'store'])->name('visitor.store');
-Route::get('/visitor/{id}', [VisitorController::class, 'show'])->name('visitor.show');
-Route::get('/visitor/{id}/edit', [VisitorController::class, 'edit'])->name('visitor.edit');
-Route::put('/visitor/{id}', [VisitorController::class, 'update'])->name('visitor.update');
-Route::delete('/visitor/{id}', [VisitorController::class, 'destroy'])->name('visitor.destroy');
-Route::get('/visitor/search', [VisitorController::class, 'search'])->name('visitor.search');
-Route::get('/visitor/export', [VisitorController::class, 'export'])->name('visitor.export');
+    // ============================================
+    // Fee Record Management
+    // ============================================
+    Route::prefix('fee-record')->name('fee-record.')->group(function () {
+        Route::get('/', [FeeRecordController::class, 'index'])->name('index');
+        Route::get('/create', [FeeRecordController::class, 'create'])->name('create');
+        Route::get('/{id}', [FeeRecordController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [FeeRecordController::class, 'edit'])->name('edit');
+        Route::post('/', [FeeRecordController::class, 'store'])->name('store');
+        Route::put('/{id}', [FeeRecordController::class, 'update'])->name('update');
+        Route::delete('/{id}', [FeeRecordController::class, 'destroy'])->name('destroy');
+        Route::patch('/{id}/status', [FeeRecordController::class, 'updateStatus'])->name('update-status');
+        Route::get('/summary', [FeeRecordController::class, 'getSummary'])->name('summary');
+    });
 
-// ✅ Visitor Check-in/Check-out Routes
-Route::post('/visitor/{id}/check-in', [VisitorController::class, 'checkIn'])->name('visitor.check-in');
-Route::post('/visitor/{id}/check-out', [VisitorController::class, 'checkOut'])->name('visitor.check-out');
+    Route::get('/fee_record', [FeeRecordController::class, 'index'])->name('fee_record');
+    Route::get('/fee-records', [FeeRecordController::class, 'index'])->name('fee-records.index');
 
-/*
-|--------------------------------------------------------------------------
-| Notification Management Routes ✅ ADDED
-|--------------------------------------------------------------------------
-*/
-// ✅ Notification Routes with proper naming
-Route::prefix('notifications')->name('notifications.')->group(function () {
-    // Main notification list page
-    Route::get('/', [NotificationController::class, 'index'])->name('index');
-    
-    // Create notification
-    Route::get('/create', [NotificationController::class, 'create'])->name('create');
-    Route::post('/', [NotificationController::class, 'store'])->name('store');
-    
-    // Show, Edit, Update, Delete
-    Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
-    Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
-    Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
-    Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
-    
-    // AJAX / API Routes for real-time updates
-    Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
-    Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
-    Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
-    Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
-    Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
-    Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
-});
+    // ============================================
+    // Notification Management
+    // ============================================
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/', [NotificationController::class, 'index'])->name('index');
+        Route::get('/create', [NotificationController::class, 'create'])->name('create');
+        Route::post('/', [NotificationController::class, 'store'])->name('store');
+        Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
+        Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
+        Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
+        Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+        Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
+        Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
+        Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
+        Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
+        Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
+        Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
+    });
 
-// ✅ Alternative route name for Notification (for blade compatibility)
-Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
-
-/*
-|--------------------------------------------------------------------------
-| Room Allocation Routes ✅ (FIXED - All route names properly defined)
-|--------------------------------------------------------------------------
-*/
-// ✅ FIXED: Changed to lowercase 'room_allocation' to match blade usage
-Route::get('/room-allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
-Route::get('/room_allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
-
-// Resource route for all CRUD operations
-Route::resource('room-allocation', RoomAllocationController::class);
-
-// CRUD routes with underscore naming (for blade compatibility)
-Route::get('/room_allocation/create', [RoomAllocationController::class, 'create'])->name('room_allocation.create');
-Route::post('/room_allocation', [RoomAllocationController::class, 'store'])->name('room_allocation.store');
-Route::get('/room_allocation/{id}/edit', [RoomAllocationController::class, 'edit'])->name('room_allocation.edit');
-Route::put('/room_allocation/{id}', [RoomAllocationController::class, 'update'])->name('room_allocation.update');
-Route::delete('/room_allocation/{id}', [RoomAllocationController::class, 'destroy'])->name('room_allocation.destroy');
-
-// Custom route for deallocation
-Route::delete('/room_allocation/{id}/deallocate', [RoomAllocationController::class, 'deallocate'])->name('room_allocation.deallocate');
-
-// Additional custom routes
-Route::get('/room_allocation/search', [RoomAllocationController::class, 'search'])->name('room_allocation.search');
-Route::get('/room_allocation/available-students', [RoomAllocationController::class, 'getAvailableStudents'])->name('room_allocation.available-students');
-Route::get('/room_allocation/room-data', [RoomAllocationController::class, 'getRoomData'])->name('room_allocation.room-data');
-
-// Room Allocation Details (if needed separately)
-Route::get('/room-allocation-details', [RoomAllocationController::class, 'index'])->name('room_allocation_details');
-
-/*
-|--------------------------------------------------------------------------
-| Room Management Routes (Admin Panel - Fixed)
-|--------------------------------------------------------------------------
-*/
-// ✅ FIXED: Changed to RoomController and added dot (.) after name
-Route::prefix('admin/rooms')->name('admin.rooms.')->group(function () {
-    Route::get('/', [RoomController::class, 'index'])->name('index');
-    Route::post('/', [RoomController::class, 'store'])->name('store');
-    Route::put('/{id}', [RoomController::class, 'update'])->name('update');
-    Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
+    // Alternative spelling
+    Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
+    Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Fee Record Routes ✅ ADDED
+| Fallback Route (Optional)
 |--------------------------------------------------------------------------
 */
-// Main page and CRUD pages
-Route::get('/fee-record', [FeeRecordController::class, 'index'])->name('fee_record');
-Route::get('/fee-record/create', [FeeRecordController::class, 'create'])->name('fee-record.create');
-Route::get('/fee-record/{id}', [FeeRecordController::class, 'show'])->name('fee-record.show');
-Route::get('/fee-record/{id}/edit', [FeeRecordController::class, 'edit'])->name('fee-record.edit');
-
-// API/CRUD Routes (AJAX)
-Route::get('/fee-records', [FeeRecordController::class, 'index'])->name('fee-records.index');
-Route::get('/fee-records/summary', [FeeRecordController::class, 'getSummary'])->name('fee-records.summary');
-Route::post('/fee-records', [FeeRecordController::class, 'store'])->name('fee-records.store');
-Route::put('/fee-records/{id}', [FeeRecordController::class, 'update'])->name('fee-records.update');
-Route::delete('/fee-records/{id}', [FeeRecordController::class, 'destroy'])->name('fee-records.destroy');
-Route::patch('/fee-records/{id}/status', [FeeRecordController::class, 'updateStatus'])->name('fee-records.update-status');
-
-/*
-|--------------------------------------------------------------------------
-| Additional Routes (If any)
-|--------------------------------------------------------------------------
-*/
-// Add any additional routes here
+// Route::fallback(function () {
+//     return redirect('/');
+// });
