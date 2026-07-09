@@ -15,7 +15,7 @@ class AuthenticationController extends Controller
      */
     public function showLoginForm()
     {
-        return view('Pages.Auth.login');
+        return view('Pages.Authentication.login');
     }
 
     /**
@@ -47,7 +47,7 @@ class AuthenticationController extends Controller
      */
     public function showSignupForm()
     {
-        return view('Pages.Auth.signup');
+        return view('Pages.Authentication.signup');
     }
 
     /**
