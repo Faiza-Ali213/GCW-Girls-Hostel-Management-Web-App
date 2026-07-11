@@ -14,7 +14,7 @@
         }
 
         body {
-            background: #ffffff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -29,11 +29,12 @@
         }
 
         .auth-card {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             border-radius: 30px;
             padding: 45px 40px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e8ecf1;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease;
         }
 
@@ -57,7 +58,7 @@
             margin: 0 auto 20px;
             font-size: 35px;
             color: white;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
         }
 
         .auth-title {
@@ -113,7 +114,7 @@
 
         .input-group-custom .form-control:focus {
             border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
             background: white;
         }
 
