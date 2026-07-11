@@ -34,7 +34,6 @@
         </div>
     </div>
 </section>
-@include('component.faq')
 @include('component.contact_detail')
 @include('component.form')
 
