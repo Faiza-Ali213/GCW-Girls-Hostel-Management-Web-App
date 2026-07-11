@@ -74,7 +74,7 @@ class AuthenticationController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Always set as regular user
+            'role' => 'user',
         ]);
 
         // Login the user

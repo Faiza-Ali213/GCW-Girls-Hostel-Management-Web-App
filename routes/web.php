@@ -74,8 +74,14 @@ Route::middleware('auth')->group(function () {
         Route::get('/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('by-room');
     });
 
-    // ADDED: Alias route for student-records (fixes the error)
+    // Direct routes for student-record
     Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
+    Route::get('/student-records/create', [StudentController::class, 'create'])->name('student-records.create');
+    Route::post('/student-records', [StudentController::class, 'store'])->name('student-records.store');
+    Route::get('/student-records/{id}', [StudentController::class, 'show'])->name('student-records.show');
+    Route::get('/student-records/{id}/edit', [StudentController::class, 'edit'])->name('student-records.edit');
+    Route::put('/student-records/{id}', [StudentController::class, 'update'])->name('student-records.update');
+    Route::delete('/student-records/{id}', [StudentController::class, 'destroy'])->name('student-records.destroy');
 
     // ============================================
     // Staff Management
@@ -92,8 +98,23 @@ Route::middleware('auth')->group(function () {
         Route::get('/search', [StaffController::class, 'search'])->name('search');
     });
 
-    // ADDED: Alias route for staff_records (fixes the error)
-    Route::get('/staff-records', [StaffController::class, 'index'])->name('staff_records');
+    // Direct routes for staff-record (with hyphen)
+    Route::get('/staff-record', [StaffController::class, 'index'])->name('staff-record');
+    Route::get('/staff-record/create', [StaffController::class, 'create'])->name('staff-record.create');
+    Route::post('/staff-record', [StaffController::class, 'store'])->name('staff-record.store');
+    Route::get('/staff-record/{id}', [StaffController::class, 'show'])->name('staff-record.show');
+    Route::get('/staff-record/{id}/edit', [StaffController::class, 'edit'])->name('staff-record.edit');
+    Route::put('/staff-record/{id}', [StaffController::class, 'update'])->name('staff-record.update');
+    Route::delete('/staff-record/{id}', [StaffController::class, 'destroy'])->name('staff-record.destroy');
+
+    // Direct routes for staff_records (with underscore) - for compatibility
+    Route::get('/staff_records', [StaffController::class, 'index'])->name('staff_records');
+    Route::get('/staff_records/create', [StaffController::class, 'create'])->name('staff_records.create');
+    Route::post('/staff_records', [StaffController::class, 'store'])->name('staff_records.store');
+    Route::get('/staff_records/{id}', [StaffController::class, 'show'])->name('staff_records.show');
+    Route::get('/staff_records/{id}/edit', [StaffController::class, 'edit'])->name('staff_records.edit');
+    Route::put('/staff_records/{id}', [StaffController::class, 'update'])->name('staff_records.update');
+    Route::delete('/staff_records/{id}', [StaffController::class, 'destroy'])->name('staff_records.destroy');
 
     // ============================================
     // Visitor Management
@@ -112,9 +133,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/{id}/check-out', [VisitorController::class, 'checkOut'])->name('check-out');
     });
 
-    // Alternative spelling for compatibility
+    // Alternative spelling for compatibility (both point to index)
     Route::get('/visitors-records', [VisitorController::class, 'index'])->name('visitors_records');
     Route::get('/vistors-records', [VisitorController::class, 'index'])->name('vistors_records');
+    Route::get('/visitor-record', [VisitorController::class, 'index'])->name('visitor-record');
 
     // ============================================
     // Complaint Management
@@ -134,11 +156,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/Complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
     Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
     Route::resource('complaints', ComplaintController::class);
+    Route::get('/complaint-record', [ComplaintController::class, 'index'])->name('complaint-record');
 
     // ============================================
     // Room Allocation
     // ============================================
-    Route::prefix('room-allocation')->name('room_allocation.')->group(function () {
+    Route::prefix('room_allocation')->name('room_allocation.')->group(function () {
         Route::get('/', [RoomAllocationController::class, 'index'])->name('index');
         Route::get('/create', [RoomAllocationController::class, 'create'])->name('create');
         Route::post('/', [RoomAllocationController::class, 'store'])->name('store');
@@ -154,6 +177,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/room_allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
     Route::resource('room-allocation', RoomAllocationController::class);
     Route::get('/room-allocation-details', [RoomAllocationController::class, 'index'])->name('room_allocation_details');
+    Route::get('/room-allocation-record', [RoomAllocationController::class, 'index'])->name('room-allocation-record');
 
     // ============================================
     // Room Management
@@ -164,6 +188,8 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [RoomController::class, 'update'])->name('update');
         Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
     });
+
+    Route::get('/room-record', [RoomController::class, 'index'])->name('room-record');
 
     // ============================================
     // Fee Record Management
@@ -180,8 +206,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/summary', [FeeRecordController::class, 'getSummary'])->name('summary');
     });
 
+    // Alternative routes for backward compatibility
     Route::get('/fee_record', [FeeRecordController::class, 'index'])->name('fee_record');
     Route::get('/fee-records', [FeeRecordController::class, 'index'])->name('fee-records.index');
+    Route::get('/fee-record-list', [FeeRecordController::class, 'index'])->name('fee-record-list');
+    Route::post('/fee-records', [FeeRecordController::class, 'store'])->name('fee-records.store');
 
     // ============================================
     // Notification Management
@@ -205,6 +234,7 @@ Route::middleware('auth')->group(function () {
     // Alternative spelling
     Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
     Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
+    Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');
 });
 
 /*

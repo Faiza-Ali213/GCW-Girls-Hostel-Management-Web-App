@@ -8,27 +8,63 @@
         <p class="text-muted">Database of all residents currently staying in GCW Hostel.</p>
     </div>
 
+    <!-- Display Success/Error Messages -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="border-radius: 10px;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px; vertical-align: middle;">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="border-radius: 10px;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" style="margin-right: 10px; vertical-align: middle;">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     <!-- Simple Search Bar Only -->
     <div class="action-row">
         <div class="search-container">
-            <i class="bi bi-search"></i>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#adb5bd" style="margin-right:10px;">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
             <form action="{{ route('student-records') }}" method="GET" class="search-form">
                 <input type="text" name="search" class="custom-search" 
                        placeholder="Search by name, father name, or CNIC..." 
                        value="{{ request('search') }}">
                 <button type="submit" class="btn-search">
-                    <i class="bi bi-search"></i> Search
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right:4px;">
+                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                    </svg>
+                    Search
                 </button>
                 @if(request('search'))
-                    <a href="{{ route('student_records') }}" class="btn-clear">
-                        <i class="bi bi-x-circle"></i> Clear
+                    <a href="{{ route('student-records') }}" class="btn-clear">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right:4px;">
+                            <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+                        </svg>
+                        Clear
                     </a>
                 @endif
             </form>
         </div>
         
         <a href="{{ route('student.create') }}" class="btn-add-student">
-            <i class="bi bi-person-plus"></i> Add Student Record
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="margin-right:6px;">
+                <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+            Add Student Record
         </a>
     </div>
 
@@ -85,17 +121,23 @@
                         <td class="text-center">
                             <div class="action-buttons">
                                 <a href="{{ route('student.show', $student->id) }}" class="action-btn view-btn" title="View Details">
-                                    <i class="bi bi-eye"></i>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                    </svg>
                                 </a>
                                 <a href="{{ route('student.edit', $student->id) }}" class="action-btn edit-btn" title="Edit">
-                                    <i class="bi bi-pencil"></i>
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                                    </svg>
                                 </a>
-                                <form action="{{ route('student.destroy', $student->id) }}" method="POST" style="display:inline;">
+                                <!-- Delete Form with Enhanced Confirmation -->
+                                <form action="{{ route('student.destroy', $student->id) }}" method="POST" class="delete-form" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="action-btn delete-btn" title="Delete" 
-                                            onclick="return confirm('Are you sure you want to delete this record?')">
-                                        <i class="bi bi-trash"></i>
+                                    <button type="button" class="action-btn delete-btn delete-trigger" title="Delete" data-student-name="{{ $student->student_name }}" data-student-id="{{ $student->id }}">
+                                        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                                        </svg>
                                     </button>
                                 </form>
                             </div>
@@ -105,11 +147,16 @@
                     <tr>
                         <td colspan="8">
                             <div class="empty-state">
-                                <i class="bi bi-inbox"></i>
+                                <svg viewBox="0 0 24 24" width="48" height="48" fill="#dee2e6" style="margin-bottom:15px;">
+                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h10v2H7zm0 4h6v2H7z"/>
+                                </svg>
                                 <h5>No Students Found</h5>
                                 <p>Start by adding your first student record.</p>
                                 <a href="{{ route('student.create') }}" class="btn btn-primary btn-sm mt-3">
-                                    <i class="bi bi-person-plus"></i> Add First Student
+                                    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="margin-right:4px;">
+                                        <path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                                    </svg>
+                                    Add First Student
                                 </a>
                             </div>
                         </td>
@@ -144,6 +191,32 @@
         color: #6c757d;
     }
 
+    /* Alerts */
+    .alert {
+        border: none;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+    .alert-danger {
+        background: #f8d7da;
+        color: #721c24;
+        border-left: 4px solid #dc3545;
+    }
+    .alert .close {
+        color: inherit;
+        opacity: 0.5;
+    }
+    .alert .close:hover {
+        opacity: 1;
+    }
+
     /* Search & Action Row */
     .action-row {
         display: flex;
@@ -169,12 +242,6 @@
     .search-container:focus-within {
         border-color: #667eea;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .search-container i {
-        color: #adb5bd;
-        margin-right: 10px;
-        font-size: 1.1rem;
     }
 
     .search-form {
@@ -339,7 +406,7 @@
     .status-graduated { background: #d1ecf1; color: #0c5460; }
     .status-left { background: #f8d7da; color: #721c24; }
 
-    /* Action Buttons - Fixed! */
+    /* Action Buttons */
     .action-buttons {
         display: flex;
         align-items: center;
@@ -359,6 +426,14 @@
         text-decoration: none;
         cursor: pointer;
         font-size: 0.9rem;
+        background: transparent;
+        color: inherit;
+    }
+    .action-btn svg {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        vertical-align: middle;
     }
     .action-btn:hover {
         transform: translateY(-2px);
@@ -386,6 +461,8 @@
     .delete-btn {
         background: #fbe9e7;
         color: #d32f2f;
+        cursor: pointer;
+        border: none;
     }
     .delete-btn:hover {
         background: #d32f2f;
@@ -407,10 +484,8 @@
         text-align: center;
         padding: 50px 20px;
     }
-    .empty-state i {
-        font-size: 4rem;
-        color: #dee2e6;
-        margin-bottom: 20px;
+    .empty-state svg {
+        margin-bottom: 15px;
     }
     .empty-state h5 {
         color: #6c757d;
@@ -446,3 +521,91 @@
 </style>
 
 @endsection
+
+@push('scripts')
+<script>
+console.log('SweetAlert script loaded');
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM fully loaded');
+    
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            var closeButton = alert.querySelector('.close');
+            if (closeButton) {
+                closeButton.click();
+            }
+        });
+    }, 5000);
+
+    // SweetAlert2 Delete Confirmation
+    var deleteButtons = document.querySelectorAll('.sweet-delete');
+    console.log('Found ' + deleteButtons.length + ' delete buttons');
+    
+    deleteButtons.forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            console.log('Delete button clicked');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Get the form element
+            var form = this.closest('.delete-form');
+            console.log('Form found:', form);
+            
+            var studentName = form ? form.getAttribute('data-student-name') : 'this student';
+            console.log('Student name:', studentName);
+            
+            // Show SweetAlert confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You are about to delete '" + studentName + "'. This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel',
+                reverseButtons: true
+            }).then((result) => {
+                console.log('SweetAlert result:', result);
+                if (result.isConfirmed) {
+                    console.log('Form submitted');
+                    form.submit();
+                }
+            });
+        });
+    });
+});
+</script>
+@endpush
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        var alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            var closeButton = alert.querySelector('.close');
+            if (closeButton) {
+                closeButton.click();
+            }
+        });
+    }, 5000);
+
+    // Delete confirmation functionality
+    document.querySelectorAll('.delete-trigger').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            var studentName = this.getAttribute('data-student-name');
+            var studentId = this.getAttribute('data-student-id');
+            var form = this.closest('.delete-form');
+            
+            // Show confirmation dialog
+            if (confirm('Are you sure you want to delete "' + studentName + '"? This action cannot be undone!')) {
+                form.submit();
+            }
+        });
+    });
+});
+</script>

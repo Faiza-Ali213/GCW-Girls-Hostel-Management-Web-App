@@ -144,17 +144,24 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        $student = Student::findOrFail($id);
-        
-        // Delete profile picture if exists
-        if ($student->profile_picture) {
-            Storage::disk('public')->delete($student->profile_picture);
-        }
-        
-        $student->delete();
+        try {
+            $student = Student::findOrFail($id);
+            
+            // Delete profile picture if exists
+            if ($student->profile_picture) {
+                Storage::disk('public')->delete($student->profile_picture);
+            }
+            
+            $student->delete();
 
-        return redirect()->route('student-records')
-                         ->with('success', 'Student deleted successfully!');
+            // Redirect with success message
+            return redirect()->route('student-records')
+                             ->with('success', 'Student "' . $student->student_name . '" deleted successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->route('student-records')
+                             ->with('error', 'Failed to delete student: ' . $e->getMessage());
+        }
     }
 
     /**

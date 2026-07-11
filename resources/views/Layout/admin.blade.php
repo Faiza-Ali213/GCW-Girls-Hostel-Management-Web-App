@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | GCW Hostel</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
             --sidebar-width: 260px;
@@ -172,10 +174,10 @@
 
             <li class="nav-item {{ request()->routeIs('Room_allocation') ? 'active' : '' }}">
             <li class="nav-item {{ request()->routeIs('room_allocation') ? 'active' : '' }}">
-    <a href="{{ route('room_allocation') }}" class="nav-link-custom">
-        <i class="bi bi-door-open"></i> Room Allocation
-    </a>
-</li>
+               <a href="{{ route('room_allocation') }}" class="nav-link-custom">
+                   <i class="bi bi-door-open"></i> Room Allocation
+               </a>
+           </li>
             <li class="nav-item {{ request()->routeIs('fee_record') ? 'active' : '' }}">
                 <a href="{{ route('fee_record') }}" class="nav-link-custom">
                     <i class="bi bi-cash-stack"></i> Fee Record
@@ -219,5 +221,6 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

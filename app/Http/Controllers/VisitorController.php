@@ -96,7 +96,7 @@ class VisitorController extends Controller
                 'remarks' => $request->remarks,
             ]);
 
-            return redirect()->route('visitors_records')
+            return redirect()->route('vistors_records')
                 ->with('success', 'Visitor checked in successfully!');
 
         } catch (\Exception $e) {
@@ -109,17 +109,16 @@ class VisitorController extends Controller
     /**
      * Display the specified visitor.
      */
-   public function show($id)
-{
-    try {
-        $visitor = Visitor::findOrFail($id);
-        return view('Pages.Admin.visitor_show', compact('visitor'));
-    } catch (\Exception $e) {
-        return redirect()->route('visitors_records')
-            ->with('error', 'Visitor record not found');
+    public function show($id)
+    {
+        try {
+            $visitor = Visitor::findOrFail($id);
+            return view('Component.Admin.view_visitors', compact('visitor'));
+        } catch (\Exception $e) {
+            return redirect()->route('vistors_records')
+                ->with('error', 'Visitor record not found');
+        }
     }
-}
-
 
     /**
      * Show the form for editing the specified visitor.
@@ -128,9 +127,9 @@ class VisitorController extends Controller
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            return view('Pages.Admin.edit_visitors', compact('visitor'));
+            return view('Component.Admin.edit_vistors', compact('visitor'));
         } catch (\Exception $e) {
-            return redirect()->route('visitors_records')
+            return redirect()->route('vistors_records')
                 ->with('error', 'Visitor record not found');
         }
     }
@@ -182,7 +181,7 @@ class VisitorController extends Controller
 
             $visitor->update($updateData);
 
-            return redirect()->route('visitors_records')
+            return redirect()->route('vistors_records')
                 ->with('success', 'Visitor record updated successfully!');
 
         } catch (\Exception $e) {
@@ -208,7 +207,7 @@ class VisitorController extends Controller
                 ]);
             }
 
-            return redirect()->route('visitors_records')
+            return redirect()->route('vistors_records')
                 ->with('success', 'Visitor record deleted successfully!');
 
         } catch (\Exception $e) {
@@ -219,15 +218,50 @@ class VisitorController extends Controller
                 ], 500);
             }
 
-            return redirect()->route('visitors_records')
+            return redirect()->route('vistors_records')
                 ->with('error', 'Failed to delete visitor: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Check-in a visitor.
+     */
+    public function checkIn(Request $request, $id)
+    {
+        try {
+            $visitor = Visitor::findOrFail($id);
+            
+            if ($visitor->status == 'active') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Visitor is already checked in'
+                ], 400);
+            }
+
+            $visitor->update([
+                'status' => 'active',
+                'check_in_time' => now(),
+                'check_out_time' => null
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Visitor checked in successfully!',
+                'data' => $visitor
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to checkin visitor: ' . $e->getMessage()
+            ], 500);
         }
     }
 
     /**
      * Checkout a visitor.
      */
-    public function checkout($id)
+    public function checkOut($id)
     {
         try {
             $visitor = Visitor::findOrFail($id);
@@ -239,7 +273,10 @@ class VisitorController extends Controller
                 ], 400);
             }
 
-            $visitor->checkout();
+            $visitor->update([
+                'status' => 'checked_out',
+                'check_out_time' => now()
+            ]);
 
             return response()->json([
                 'success' => true,
@@ -286,6 +323,7 @@ class VisitorController extends Controller
     public function export()
     {
         // You can implement Excel export here
-        return redirect()->back()->with('info', 'Export functionality coming soon!');
+        return redirect()->route('vistors_records')
+            ->with('info', 'Export functionality coming soon!');
     }
 }

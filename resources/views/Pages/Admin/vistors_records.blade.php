@@ -53,7 +53,7 @@
         text-decoration: none;
     }
 
-    /* Statistics Cards - Simple */
+    /* Statistics Cards */
     .stat-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -214,39 +214,66 @@
         font-weight: 500;
     }
 
-    /* Action Buttons */
+    /* Action Buttons - FIXED */
     .action-group {
         display: flex;
         gap: 6px;
         justify-content: center;
+        align-items: center;
     }
     .action-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 34px;
+        height: 34px;
         border-radius: 6px;
         border: 1px solid #e0e0e0;
-        background: transparent;
-        color: #666;
-        font-size: 13px;
+        background: #ffffff;
+        color: #555;
+        font-size: 14px;
         transition: all 0.2s ease;
         text-decoration: none;
         cursor: pointer;
+        line-height: 1;
+        padding: 0;
+    }
+    .action-btn i {
+        font-size: 14px;
+        line-height: 1;
+        color: inherit;
     }
     .action-btn:hover {
         background: #f5f5f5;
         border-color: #0B2E33;
         color: #0B2E33;
         text-decoration: none;
+        transform: scale(1.05);
     }
-    .action-btn.view:hover { border-color: #0B2E33; color: #0B2E33; }
-    .action-btn.edit:hover { border-color: #f57c00; color: #f57c00; }
-    .action-btn.delete:hover { border-color: #dc3545; color: #dc3545; }
-    .action-btn.checkout:hover { border-color: #2e7d32; color: #2e7d32; }
-    .action-btn i {
-        font-size: 13px;
+    .action-btn.view:hover {
+        border-color: #0B2E33;
+        color: #0B2E33;
+        background: #e8f0f1;
+    }
+    .action-btn.edit:hover {
+        border-color: #f57c00;
+        color: #f57c00;
+        background: #fff3e0;
+    }
+    .action-btn.delete:hover {
+        border-color: #dc3545;
+        color: #dc3545;
+        background: #fbe9eb;
+    }
+    .action-btn.checkout:hover {
+        border-color: #2e7d32;
+        color: #2e7d32;
+        background: #e8f5e9;
+    }
+    .action-btn.checkout.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        pointer-events: none;
     }
 
     /* Pagination */
@@ -301,6 +328,25 @@
         margin-top: 15px;
     }
 
+    /* Modal Styles */
+    .modal-content {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    .modal-header {
+        border-bottom: 1px solid #f0f0f0;
+        padding: 16px 24px;
+    }
+    .modal-footer {
+        border-top: 1px solid #f0f0f0;
+        padding: 12px 24px;
+    }
+    .modal-title {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
     /* Responsive */
     @media (max-width: 992px) {
         .stat-grid {
@@ -345,6 +391,17 @@
         .table-wrapper table {
             min-width: 700px;
         }
+        .action-group {
+            gap: 4px;
+        }
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 12px;
+        }
+        .action-btn i {
+            font-size: 12px;
+        }
     }
 </style>
 
@@ -386,12 +443,12 @@
 <div class="filter-section">
     <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Search by name, phone, student...">
+        <input type="text" id="searchInput" placeholder="Search by name, phone, student..." value="{{ request('search') }}">
     </div>
     <select id="statusFilter" class="filter-select">
         <option value="">All Status</option>
-        <option value="active">Active</option>
-        <option value="checked_out">Checked Out</option>
+        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+        <option value="checked_out" {{ request('status') == 'checked_out' ? 'selected' : '' }}>Checked Out</option>
     </select>
 </div>
 
@@ -407,13 +464,13 @@
                 <th>Room</th>
                 <th>Check In</th>
                 <th>Status</th>
-                <th style="width:140px;" class="text-center">Actions</th>
+                <th style="width:160px;" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($visitors ?? [] as $index => $visitor)
             <tr>
-                <td>{{ $index + 1 }}</td>
+                <td>{{ $visitors->firstItem() + $index }}</td>
                 <td>
                     <div style="display:flex;align-items:center;gap:8px;">
                         <div style="width:30px;height:30px;border-radius:50%;background:#0B2E33;color:white;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;flex-shrink:0;">
@@ -446,8 +503,8 @@
                     @endif
                 </td>
                 <td>
-                    <div style="font-size:0.85rem;">{{ $visitor->check_in_time->format('d M Y') }}</div>
-                    <small style="color:#999;font-size:0.7rem;">{{ $visitor->check_in_time->format('h:i A') }}</small>
+                    <div style="font-size:0.85rem;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('d M Y') : 'N/A' }}</div>
+                    <small style="color:#999;font-size:0.7rem;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('h:i A') : '' }}</small>
                 </td>
                 <td>
                     <span class="badge-status {{ $visitor->status }}">
@@ -461,18 +518,22 @@
                 </td>
                 <td>
                     <div class="action-group">
-                        <a href="{{ route('visitor.show', $visitor->id) }}" class="action-btn view" title="View">
+                        <a href="{{ route('visitor.show', $visitor->id) }}" class="action-btn view" title="View Details">
                             <i class="fas fa-eye"></i>
                         </a>
-                        <a href="{{ route('visitor.edit', $visitor->id) }}" class="action-btn edit" title="Edit">
+                        <a href="{{ route('visitor.edit', $visitor->id) }}" class="action-btn edit" title="Edit Visitor">
                             <i class="fas fa-edit"></i>
                         </a>
                         @if($visitor->status == 'active')
                             <button class="action-btn checkout checkout-btn" data-id="{{ $visitor->id }}" title="Check Out">
                                 <i class="fas fa-sign-out-alt"></i>
                             </button>
+                        @else
+                            <button class="action-btn checkout disabled" title="Already Checked Out" disabled>
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
                         @endif
-                        <button class="action-btn delete delete-btn" data-id="{{ $visitor->id }}" title="Delete">
+                        <button class="action-btn delete delete-btn" data-id="{{ $visitor->id }}" title="Delete Visitor">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -497,7 +558,7 @@
     
     @if(isset($visitors) && $visitors->count() > 0)
     <div class="pagination-wrapper">
-        {{ $visitors->links() }}
+        {{ $visitors->appends(request()->query())->links() }}
     </div>
     @endif
 </div>
@@ -506,6 +567,7 @@
 <div class="footer-info">
     <i class="fas fa-info-circle"></i> 
     Showing {{ isset($visitors) ? $visitors->count() : 0 }} visitor(s) 
+    | Total: {{ $totalVisitors ?? 0 }}
     | Last updated: {{ now()->format('d-m-Y H:i:s') }}
 </div>
 
@@ -564,7 +626,7 @@
         let actionType = null;
 
         // Checkout button click
-        $(document).on('click', '.checkout-btn', function() {
+        $(document).on('click', '.checkout-btn:not(.disabled)', function() {
             actionId = $(this).data('id');
             actionType = 'checkout';
             $('#checkoutModal').modal('show');
@@ -574,7 +636,7 @@
         $('#confirmCheckout').on('click', function() {
             if (actionId && actionType == 'checkout') {
                 $.ajax({
-                    url: '/visitor/' + actionId + '/checkout',
+                    url: '/visitor/' + actionId + '/check-out',
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -585,8 +647,8 @@
                             location.reload();
                         }
                     },
-                    error: function() {
-                        alert('Failed to checkout visitor');
+                    error: function(xhr) {
+                        alert('Failed to checkout visitor: ' + (xhr.responseJSON?.message || 'Unknown error'));
                     }
                 });
             }
@@ -614,8 +676,8 @@
                             location.reload();
                         }
                     },
-                    error: function() {
-                        alert('Failed to delete visitor');
+                    error: function(xhr) {
+                        alert('Failed to delete visitor: ' + (xhr.responseJSON?.message || 'Unknown error'));
                     }
                 });
             }
@@ -638,7 +700,14 @@
         function performSearch() {
             const search = $('#searchInput').val();
             const status = $('#statusFilter').val();
-            window.location.href = '{{ route("visitors_records") }}?search=' + encodeURIComponent(search) + '&status=' + encodeURIComponent(status);
+            let url = '{{ route("vistors_records") }}';
+            let params = [];
+            if (search) params.push('search=' + encodeURIComponent(search));
+            if (status) params.push('status=' + encodeURIComponent(status));
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            window.location.href = url;
         }
     });
 </script>
