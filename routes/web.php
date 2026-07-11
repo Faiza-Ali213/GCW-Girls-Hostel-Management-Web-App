@@ -74,6 +74,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('by-room');
     });
 
+    // ADDED: Alias route for student-records (fixes the error)
+    Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
+
     // ============================================
     // Staff Management
     // ============================================
@@ -88,6 +91,9 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [StaffController::class, 'destroy'])->name('destroy');
         Route::get('/search', [StaffController::class, 'search'])->name('search');
     });
+
+    // ADDED: Alias route for staff_records (fixes the error)
+    Route::get('/staff-records', [StaffController::class, 'index'])->name('staff_records');
 
     // ============================================
     // Visitor Management

@@ -18,7 +18,7 @@
 
         /* --- NAVIGATION STYLE --- */
         .navbar {
-            background-color: #0B2E33  !important; 
+            background-color: #11d0ed  !important; 
             padding: 10px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             color: #FFFF !important;
