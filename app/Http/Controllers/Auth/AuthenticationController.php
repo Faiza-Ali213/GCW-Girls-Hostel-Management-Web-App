@@ -34,6 +34,13 @@ class AuthenticationController extends Controller
         
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            
+            // Check if user is admin and redirect accordingly
+            $user = Auth::user();
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.dashboard')->with('success', 'Welcome back, Admin!');
+            }
+            
             return redirect()->intended('/dashboard')->with('success', 'Welcome back! Login successful.');
         }
 
@@ -62,11 +69,12 @@ class AuthenticationController extends Controller
             'password' => 'required|min:6|confirmed',
         ]);
 
-        // Create user
+        // Create user with default role 'user'
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user', // Always set as regular user
         ]);
 
         // Login the user
