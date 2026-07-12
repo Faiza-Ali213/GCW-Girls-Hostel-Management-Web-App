@@ -56,7 +56,7 @@
     /* Statistics Cards */
     .stat-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
         margin-bottom: 24px;
     }
@@ -87,9 +87,6 @@
     }
     .stat-card .stat-number.active {
         color: #2e7d32;
-    }
-    .stat-card .stat-number.checked-out {
-        color: #888;
     }
     .stat-card .stat-number.today {
         color: #0B2E33;
@@ -214,7 +211,7 @@
         font-weight: 500;
     }
 
-    /* Action Buttons - FIXED */
+    /* Action Buttons */
     .action-group {
         display: flex;
         gap: 6px;
@@ -264,16 +261,6 @@
         border-color: #dc3545;
         color: #dc3545;
         background: #fbe9eb;
-    }
-    .action-btn.checkout:hover {
-        border-color: #2e7d32;
-        color: #2e7d32;
-        background: #e8f5e9;
-    }
-    .action-btn.checkout.disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-        pointer-events: none;
     }
 
     /* Pagination */
@@ -412,7 +399,7 @@
             <i class="fas fa-users"></i>
             Visitors Records
         </h4>
-        <div class="sub-title">Manage all visitor entries and track check-ins</div>
+        <div class="sub-title">Manage all visitor entries</div>
     </div>
     <a href="{{ route('visitor.create') }}" class="btn-add">
         <i class="fas fa-plus-circle"></i> Add Visitor
@@ -428,10 +415,6 @@
     <div class="stat-card">
         <div class="stat-number active">{{ $totalActive ?? 0 }}</div>
         <div class="stat-label">Active Visitors</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number checked-out">{{ $totalCheckedOut ?? 0 }}</div>
-        <div class="stat-label">Checked Out</div>
     </div>
     <div class="stat-card">
         <div class="stat-number today">{{ $todayVisitors ?? 0 }}</div>
@@ -464,7 +447,7 @@
                 <th>Room</th>
                 <th>Check In</th>
                 <th>Status</th>
-                <th style="width:160px;" class="text-center">Actions</th>
+                <th style="width:120px;" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -524,15 +507,6 @@
                         <a href="{{ route('visitor.edit', $visitor->id) }}" class="action-btn edit" title="Edit Visitor">
                             <i class="fas fa-edit"></i>
                         </a>
-                        @if($visitor->status == 'active')
-                            <button class="action-btn checkout checkout-btn" data-id="{{ $visitor->id }}" title="Check Out">
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
-                        @else
-                            <button class="action-btn checkout disabled" title="Already Checked Out" disabled>
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
-                        @endif
                         <button class="action-btn delete delete-btn" data-id="{{ $visitor->id }}" title="Delete Visitor">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -571,29 +545,6 @@
     | Last updated: {{ now()->format('d-m-Y H:i:s') }}
 </div>
 
-<!-- Checkout Modal -->
-<div class="modal fade" id="checkoutModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Check Out</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-sign-out-alt" style="font-size:2.5rem;color:#2e7d32;margin-bottom:12px;"></i>
-                <p class="mb-0">Are you sure you want to check out this visitor?</p>
-                <small class="text-muted">This will mark the visitor as checked out.</small>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="confirmCheckout">Check Out</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Delete Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
@@ -622,50 +573,19 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        let actionId = null;
-        let actionType = null;
-
-        // Checkout button click
-        $(document).on('click', '.checkout-btn:not(.disabled)', function() {
-            actionId = $(this).data('id');
-            actionType = 'checkout';
-            $('#checkoutModal').modal('show');
-        });
-
-        // Confirm checkout
-        $('#confirmCheckout').on('click', function() {
-            if (actionId && actionType == 'checkout') {
-                $.ajax({
-                    url: '/visitor/' + actionId + '/check-out',
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#checkoutModal').modal('hide');
-                            location.reload();
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Failed to checkout visitor: ' + (xhr.responseJSON?.message || 'Unknown error'));
-                    }
-                });
-            }
-        });
+        let deleteId = null;
 
         // Delete button click
         $(document).on('click', '.delete-btn', function() {
-            actionId = $(this).data('id');
-            actionType = 'delete';
+            deleteId = $(this).data('id');
             $('#deleteModal').modal('show');
         });
 
         // Confirm delete
         $('#confirmDelete').on('click', function() {
-            if (actionId && actionType == 'delete') {
+            if (deleteId) {
                 $.ajax({
-                    url: '/visitor/' + actionId,
+                    url: '/visitor/' + deleteId,
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
