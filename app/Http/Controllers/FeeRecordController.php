@@ -39,22 +39,6 @@ class FeeRecordController extends Controller
         $totalUnpaid = FeeRecord::where('fee_status', 'unpaid')->count();
         $totalPartial = FeeRecord::where('fee_status', 'partial')->count();
 
-        
-
-        // Filter by status
-        if ($request->has('status') && !empty($request->status)) {
-            $query->where('fee_status', $request->status);
-        }
-
-        $feeRecords = $query->orderBy('created_at', 'desc')->paginate(10);
-        
-        if ($request->ajax()) {
-            return response()->json([
-                'data' => $feeRecords,
-                'statuses' => FeeRecord::getStatuses()
-            ]);
-        }
-
         return view('Pages.Admin.fee_record', compact(
             'feeRecords', 
             'totalRecords', 
@@ -121,13 +105,13 @@ class FeeRecordController extends Controller
      */
     public function show($id)
     {
-          try {
-        $feeRecord = FeeRecord::findOrFail($id);
-        return view('Component.Admin.view_fee', compact('feeRecord'));
-    } catch (\Exception $e) {
-        return redirect()->route('fee_record')
-            ->with('error', 'Fee record not found');
-    }
+        try {
+            $feeRecord = FeeRecord::findOrFail($id);
+            return view('Component.Admin.view_fee', compact('feeRecord'));
+        } catch (\Exception $e) {
+            return redirect()->route('fee_record')
+                ->with('error', 'Fee record not found');
+        }
     }
 
     /**
@@ -135,8 +119,8 @@ class FeeRecordController extends Controller
      */
     public function edit($id)
     {
-         $feeRecord = FeeRecord::findOrFail($id);
-    return view('Component.Admin.edit_fee', compact('feeRecord'));
+        $feeRecord = FeeRecord::findOrFail($id);
+        return view('Component.Admin.edit_fee', compact('feeRecord'));
     }
 
     /**
@@ -194,18 +178,20 @@ class FeeRecordController extends Controller
             $feeRecord = FeeRecord::findOrFail($id);
             $feeRecord->delete();
 
-            if (request()->ajax()) {
+            // Check if it's an AJAX request
+            if (request()->ajax() || request()->wantsJson()) {
                 return response()->json([
                     'success' => true,
                     'message' => 'Fee record deleted successfully!'
                 ]);
             }
 
+            // For non-AJAX requests
             return redirect()->route('fee_record')
                 ->with('success', 'Fee record deleted successfully!');
 
         } catch (\Exception $e) {
-            if (request()->ajax()) {
+            if (request()->ajax() || request()->wantsJson()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Failed to delete fee record: ' . $e->getMessage()
