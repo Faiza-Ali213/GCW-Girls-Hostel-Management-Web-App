@@ -47,6 +47,7 @@
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        background: white;
     }
     .modern-table thead {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -67,7 +68,6 @@
     .modern-table tbody tr:hover {
         background: #f8f9fa;
         border-left-color: #667eea;
-        transform: scale(1.01);
     }
     .modern-table tbody td {
         padding: 12px 20px;
@@ -101,26 +101,40 @@
         letter-spacing: 0.5px;
     }
     .status-pending { background: #fff3cd; color: #856404; }
-    .status-in-progress { background: #d1ecf1; color: #0c5460; }
+    .status-in_progress { background: #d1ecf1; color: #0c5460; }
     .status-resolved { background: #d4edda; color: #155724; }
     .status-rejected { background: #f8d7da; color: #721c24; }
 
     /* Action Buttons */
     .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 5px 12px;
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 500;
         transition: all 0.2s ease;
         margin: 0 2px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
     }
     .action-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        text-decoration: none;
     }
     .action-btn.view { background: #e3f2fd; color: #1976d2; }
     .action-btn.edit { background: #fff3e0; color: #f57c00; }
     .action-btn.delete { background: #fbe9e7; color: #d32f2f; }
+
+    /* Delete Form */
+    .delete-form {
+        display: inline;
+        margin: 0;
+        padding: 0;
+    }
 
     /* Header Section */
     .page-header {
@@ -154,11 +168,13 @@
         font-weight: 600;
         transition: all 0.3s ease;
         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        text-decoration: none;
     }
     .btn-add:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
         color: white;
+        text-decoration: none;
     }
 
     /* Empty State */
@@ -179,6 +195,29 @@
         color: #adb5bd;
     }
 
+    /* Alert Messages */
+    .alert {
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .alert-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
+    }
+    .alert-danger {
+        background: #fbe9eb;
+        color: #c62828;
+        border: 1px solid #f5c6cb;
+    }
+    .alert i {
+        font-size: 1.2rem;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
         .stat-card .stat-number {
@@ -193,8 +232,33 @@
             width: 100%;
             text-align: center;
         }
+        .modern-table {
+            overflow-x: auto;
+        }
+        .modern-table table {
+            min-width: 700px;
+        }
     }
 </style>
+
+<!-- Display Flash Messages -->
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i> {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 
 <!-- Page Header -->
 <div class="page-header">
@@ -306,10 +370,10 @@
                     <a href="{{ route('complaints.edit', $complaint->id) }}" class="action-btn edit" data-toggle="tooltip" title="Edit Complaint">
                         <i class="fas fa-edit"></i>
                     </a>
-                    <form action="{{ route('complaints.destroy', $complaint->id) }}" method="POST" style="display:inline;">
+                    <form action="{{ route('complaints.destroy', $complaint->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this complaint: {{ addslashes($complaint->title) }}? This action cannot be undone.');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="action-btn delete" data-toggle="tooltip" title="Delete Complaint" onclick="return confirm('Are you sure you want to delete this complaint?')">
+                        <button type="submit" class="action-btn delete" data-toggle="tooltip" title="Delete Complaint">
                             <i class="fas fa-trash"></i>
                         </button>
                     </form>
@@ -322,7 +386,7 @@
                         <i class="fas fa-inbox"></i>
                         <h5>No Complaints Found</h5>
                         <p>Start by adding your first complaint using the "Add New Complaint" button above.</p>
-                        <a href="{{ route('complaints.create') }}" class="btn btn-primary btn-sm mt-3">
+                        <a href="{{ route('complaints.create') }}" class="btn-add" style="display:inline-flex;margin-top:10px;">
                             <i class="fas fa-plus"></i> Add First Complaint
                         </a>
                     </div>
@@ -346,9 +410,16 @@
 
 @push('scripts')
 <script>
-    // Initialize tooltips
     $(document).ready(function() {
+        // Initialize tooltips
         $('[data-toggle="tooltip"]').tooltip();
+        
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+
+        console.log('✅ Complaint page loaded successfully');
     });
 </script>
 @endpush

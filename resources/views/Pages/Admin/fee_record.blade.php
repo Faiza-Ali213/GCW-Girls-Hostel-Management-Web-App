@@ -2,10 +2,110 @@
 
 @section('content')
 <style>
-    /* Font Awesome CDN */
-    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+    /* Your existing styles... */
+    .action-group {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        align-items: center;
+    }
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        color: #6c757d !important;
+        cursor: pointer;
+    }
+    .action-btn i {
+        font-size: 0.9rem;
+        color: #6c757d !important;
+        transition: all 0.2s ease;
+    }
+    .action-btn:hover {
+        transform: translateY(-2px);
+        text-decoration: none;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .action-btn.delete:hover {
+        border-color: #dc3545;
+        background: white;
+    }
+    .action-btn.delete:hover i {
+        color: #dc3545 !important;
+    }
 
-    /* ===== STATISTICS CARDS ===== */
+    /* Toast Notification */
+    .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+    .toast {
+        padding: 15px 25px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        margin-bottom: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        animation: slideIn 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 300px;
+    }
+    .toast-success {
+        background: #28a745;
+    }
+    .toast-error {
+        background: #dc3545;
+    }
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .status-badge {
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .status-badge i {
+        font-size: 0.7rem;
+    }
+    .status-paid { 
+        background: #e6f4ea; 
+        color: #1e7e34; 
+    }
+    .status-unpaid { 
+        background: #fce8e6; 
+        color: #b71c1c; 
+    }
+    .status-partial { 
+        background: #fff3e0; 
+        color: #e65100; 
+    }
+
     .stat-card {
         background: white;
         border-radius: 12px;
@@ -51,13 +151,7 @@
     .stat-card.paid { border-top: 3px solid #28a745; }
     .stat-card.unpaid { border-top: 3px solid #dc3545; }
     .stat-card.partial { border-top: 3px solid #e8a317; }
-    
-    .stat-card.total .stat-icon { color: #0B2E33; }
-    .stat-card.paid .stat-icon { color: #28a745; }
-    .stat-card.unpaid .stat-icon { color: #dc3545; }
-    .stat-card.partial .stat-icon { color: #e8a317; }
 
-    /* ===== PAGE HEADER ===== */
     .page-header {
         background: white;
         border-radius: 12px;
@@ -83,12 +177,6 @@
         color: #0B2E33;
         font-size: 1.4rem;
     }
-    .page-header .sub-title {
-        color: #7a8a9e;
-        font-size: 0.9rem;
-        margin-top: 4px;
-        font-weight: 400;
-    }
     .btn-add {
         background: #0B2E33;
         color: white !important;
@@ -110,11 +198,7 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(11, 46, 51, 0.2);
     }
-    .btn-add i {
-        font-size: 1rem;
-    }
 
-    /* ===== FILTER SECTION ===== */
     .filter-section {
         background: white;
         border-radius: 12px;
@@ -174,7 +258,6 @@
         box-shadow: 0 0 0 3px rgba(11, 46, 51, 0.06);
     }
 
-    /* ===== TABLE ===== */
     .modern-table {
         border-radius: 12px;
         overflow: hidden;
@@ -211,107 +294,7 @@
         color: #2c3e50;
         font-size: 0.9rem;
     }
-    .modern-table tbody tr:last-child td {
-        border-bottom: none;
-    }
 
-    /* ===== STATUS BADGES ===== */
-    .status-badge {
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .status-badge i {
-        font-size: 0.7rem;
-    }
-    .status-paid { 
-        background: #e6f4ea; 
-        color: #1e7e34; 
-    }
-    .status-unpaid { 
-        background: #fce8e6; 
-        color: #b71c1c; 
-    }
-    .status-partial { 
-        background: #fff3e0; 
-        color: #e65100; 
-    }
-
-    /* ===== ROOM BADGE ===== */
-    .room-badge {
-        display: inline-block;
-        padding: 4px 12px;
-        background: #f1f3f5;
-        border-radius: 6px;
-        font-size: 0.82rem;
-        color: #0B2E33;
-        font-weight: 600;
-    }
-
-    /* ===== ACTION BUTTONS ===== */
-    .action-group {
-        display: flex;
-        gap: 6px;
-        justify-content: center;
-        align-items: center;
-    }
-    .action-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 34px;
-        height: 34px;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        background: #f8f9fa;
-        border: 1px solid #e9ecef;
-        color: #6c757d !important;
-        cursor: pointer;
-    }
-    .action-btn i {
-        font-size: 0.9rem;
-        color: #6c757d !important;
-        transition: all 0.2s ease;
-    }
-    .action-btn:hover {
-        transform: translateY(-2px);
-        text-decoration: none;
-        background: white;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-    
-    .action-btn.view:hover {
-        border-color: #0B2E33;
-        background: white;
-    }
-    .action-btn.view:hover i {
-        color: #0B2E33 !important;
-    }
-
-    .action-btn.edit:hover {
-        border-color: #f5576c;
-        background: white;
-    }
-    .action-btn.edit:hover i {
-        color: #f5576c !important;
-    }
-
-    .action-btn.delete:hover {
-        border-color: #dc3545;
-        background: white;
-    }
-    .action-btn.delete:hover i {
-        color: #dc3545 !important;
-    }
-
-    /* ===== STUDENT AVATAR ===== */
     .student-avatar {
         width: 34px;
         height: 34px;
@@ -336,42 +319,20 @@
         font-size: 0.9rem;
     }
 
-    /* ===== AMOUNT FORMATTING ===== */
-    .amount-fee { 
-        font-weight: 600; 
-        color: #0B2E33; 
-    }
-    .amount-paid { 
-        font-weight: 600; 
-        color: #28a745; 
-    }
-    .amount-pending { 
-        font-weight: 600; 
-        color: #dc3545; 
-    }
-
-    /* ===== EMPTY STATE ===== */
-    .empty-state {
-        text-align: center;
-        padding: 50px 20px;
-    }
-    .empty-state i {
-        font-size: 4rem;
-        color: #dee2e6;
-        margin-bottom: 16px;
-    }
-    .empty-state h5 {
-        color: #2c3e50;
-        margin-bottom: 8px;
+    .room-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        background: #f1f3f5;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        color: #0B2E33;
         font-weight: 600;
-        font-size: 1.1rem;
-    }
-    .empty-state p {
-        color: #adb5bd;
-        font-size: 0.95rem;
     }
 
-    /* ===== PAGINATION ===== */
+    .amount-fee { font-weight: 600; color: #0B2E33; }
+    .amount-paid { font-weight: 600; color: #28a745; }
+    .amount-pending { font-weight: 600; color: #dc3545; }
+
     .pagination-wrapper {
         padding: 16px 20px;
         background: white;
@@ -402,7 +363,26 @@
         border-color: #e9ecef;
     }
 
-    /* ===== MODAL ===== */
+    .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+    }
+    .empty-state i {
+        font-size: 4rem;
+        color: #dee2e6;
+        margin-bottom: 16px;
+    }
+    .empty-state h5 {
+        color: #2c3e50;
+        margin-bottom: 8px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    .empty-state p {
+        color: #adb5bd;
+        font-size: 0.95rem;
+    }
+
     .modal-content {
         border-radius: 12px;
         border: none;
@@ -457,74 +437,15 @@
         background: #e9ecef;
         color: #2c3e50;
     }
-    .modal .close {
-        font-size: 1.5rem;
-        font-weight: 400;
-        color: #6c757d;
-        opacity: 0.7;
-        transition: all 0.2s ease;
-    }
-    .modal .close:hover {
-        opacity: 1;
-        transform: rotate(90deg);
-    }
 
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-        .page-header {
-            padding: 18px 20px;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        .page-header .btn-add {
-            width: 100%;
-            justify-content: center;
-        }
-        .filter-section {
-            flex-direction: column;
-            align-items: stretch;
-            padding: 14px 16px;
-        }
-        .filter-select {
-            width: 100%;
-        }
-        .stat-card .stat-number {
-            font-size: 1.6rem;
-        }
-        .action-btn {
-            width: 30px;
-            height: 30px;
-        }
-        .action-btn i {
-            font-size: 0.8rem;
-        }
-        .modern-table {
-            overflow-x: auto;
-        }
-        .modern-table table {
-            min-width: 700px;
-        }
-    }
-    @media (max-width: 576px) {
-        .stat-card {
-            padding: 16px 18px;
-        }
-        .stat-card .stat-icon {
-            font-size: 2.2rem;
-        }
-        .action-btn {
-            width: 28px;
-            height: 28px;
-        }
-        .action-group {
-            gap: 4px;
-        }
-        .pagination-wrapper .pagination {
-            justify-content: center;
-        }
+    /* Delete Form Styles */
+    .delete-form {
+        display: inline;
     }
 </style>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
 
 <!-- Page Header -->
 <div class="page-header">
@@ -576,19 +497,19 @@
 <div class="filter-section">
     <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Search by student name, room or phone...">
+        <input type="text" id="searchInput" placeholder="Search by student name, room or phone..." value="{{ request('search') }}">
     </div>
     <select id="statusFilter" class="filter-select">
         <option value="">All Status</option>
-        <option value="paid">Paid</option>
-        <option value="unpaid">Unpaid</option>
-        <option value="partial">Partial</option>
+        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Paid</option>
+        <option value="unpaid" {{ request('status') == 'unpaid' ? 'selected' : '' }}>Unpaid</option>
+        <option value="partial" {{ request('status') == 'partial' ? 'selected' : '' }}>Partial</option>
     </select>
 </div>
 
 <!-- Fee Records Table -->
 <div class="modern-table">
-    <table class="table table-hover">
+    <table class="table table-hover" id="feeTable">
         <thead>
             <tr>
                 <th style="width:50px;">#</th>
@@ -604,9 +525,9 @@
         </thead>
         <tbody>
             @forelse($feeRecords ?? [] as $index => $record)
-            <tr>
+            <tr id="record-{{ $record->id }}" data-id="{{ $record->id }}">
                 <td>
-                    <span class="font-weight-bold" style="color: #0B2E33;">{{ $index + 1 }}</span>
+                    <span class="font-weight-bold" style="color: #0B2E33;">{{ $feeRecords->firstItem() + $index }}</span>
                 </td>
                 <td>
                     <div class="student-info">
@@ -645,9 +566,14 @@
                         <a href="{{ route('fee-record.edit', $record->id) }}" class="action-btn edit" title="Edit Record">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button class="action-btn delete delete-btn" data-id="{{ $record->id }}" title="Delete Record">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <!-- Delete Form -->
+                        <form action="{{ route('fee-record.destroy', $record->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this record for {{ $record->student_name }}?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="action-btn delete" title="Delete Record">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 </td>
             </tr>
@@ -676,6 +602,24 @@
 </div>
 @endif
 
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <i class="fas fa-check-circle"></i> {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
 <!-- Footer Info -->
 <div class="mt-3 text-muted text-center">
     <small>
@@ -685,86 +629,40 @@
     </small>
 </div>
 
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Delete</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-exclamation-triangle" style="font-size:3rem;color:#dc3545;margin-bottom:15px;"></i>
-                <p class="mb-0" style="font-weight:600;">Are you sure you want to delete this fee record?</p>
-                <small class="text-muted">This action cannot be undone.</small>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Delete Record</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+$(document).ready(function() {
+    console.log('✅ Fee Record page loaded successfully');
 
-        let deleteId = null;
-
-        // Delete button click
-        $(document).on('click', '.delete-btn', function() {
-            deleteId = $(this).data('id');
-            $('#deleteModal').modal('show');
-        });
-
-        // Confirm delete
-        $('#confirmDelete').on('click', function() {
-            if (deleteId) {
-                $.ajax({
-                    url: '/fee-records/' + deleteId,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#deleteModal').modal('hide');
-                            location.reload();
-                        }
-                    },
-                    error: function() {
-                        alert('Failed to delete record');
-                    }
-                });
-            }
-        });
-
-        // Search with delay
-        let searchTimeout;
-        $('#searchInput').on('keyup', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function() {
-                performSearch();
-            }, 500);
-        });
-
-        // Status filter
-        $('#statusFilter').on('change', function() {
+    // ========== SEARCH AND FILTER ==========
+    let searchTimeout;
+    
+    $('#searchInput').on('keyup', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
             performSearch();
-        });
-
-        function performSearch() {
-            const search = $('#searchInput').val();
-            const status = $('#statusFilter').val();
-            window.location.href = '{{ route("fee_record") }}?search=' + encodeURIComponent(search) + '&status=' + encodeURIComponent(status);
-        }
+        }, 500);
     });
+
+    $('#statusFilter').on('change', function() {
+        performSearch();
+    });
+
+    function performSearch() {
+        const search = $('#searchInput').val();
+        const status = $('#statusFilter').val();
+        let url = '{{ route("fee-record.index") }}?';
+        if (search) url += 'search=' + encodeURIComponent(search) + '&';
+        if (status) url += 'status=' + encodeURIComponent(status);
+        window.location.href = url;
+    }
+
+    // Auto-dismiss alerts after 5 seconds
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 5000);
+});
 </script>
 @endpush

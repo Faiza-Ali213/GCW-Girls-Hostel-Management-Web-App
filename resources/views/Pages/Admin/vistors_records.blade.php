@@ -56,7 +56,7 @@
     /* Statistics Cards */
     .stat-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
         margin-bottom: 24px;
     }
@@ -87,9 +87,6 @@
     }
     .stat-card .stat-number.active {
         color: #2e7d32;
-    }
-    .stat-card .stat-number.checked-out {
-        color: #888;
     }
     .stat-card .stat-number.today {
         color: #0B2E33;
@@ -214,7 +211,7 @@
         font-weight: 500;
     }
 
-    /* Action Buttons - FIXED */
+    /* Action Buttons */
     .action-group {
         display: flex;
         gap: 6px;
@@ -265,15 +262,22 @@
         color: #dc3545;
         background: #fbe9eb;
     }
-    .action-btn.checkout:hover {
-        border-color: #2e7d32;
-        color: #2e7d32;
-        background: #e8f5e9;
+
+    /* Delete Form Styles */
+    .delete-form {
+        display: inline;
+        margin: 0;
+        padding: 0;
     }
-    .action-btn.checkout.disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-        pointer-events: none;
+    .delete-form .action-btn {
+        background: #ffffff;
+        border: 1px solid #e0e0e0;
+        color: #555;
+    }
+    .delete-form .action-btn:hover {
+        border-color: #dc3545;
+        color: #dc3545;
+        background: #fbe9eb;
     }
 
     /* Pagination */
@@ -328,23 +332,27 @@
         margin-top: 15px;
     }
 
-    /* Modal Styles */
-    .modal-content {
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    /* Alert Messages */
+    .alert {
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
-    .modal-header {
-        border-bottom: 1px solid #f0f0f0;
-        padding: 16px 24px;
+    .alert-success {
+        background: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #c8e6c9;
     }
-    .modal-footer {
-        border-top: 1px solid #f0f0f0;
-        padding: 12px 24px;
+    .alert-danger {
+        background: #fbe9eb;
+        color: #c62828;
+        border: 1px solid #f5c6cb;
     }
-    .modal-title {
-        font-weight: 600;
-        font-size: 1.1rem;
+    .alert i {
+        font-size: 1.2rem;
     }
 
     /* Responsive */
@@ -405,6 +413,25 @@
     }
 </style>
 
+<!-- Display Flash Messages -->
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <i class="fas fa-check-circle"></i> {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
 <!-- Page Header -->
 <div class="page-header">
     <div>
@@ -412,7 +439,7 @@
             <i class="fas fa-users"></i>
             Visitors Records
         </h4>
-        <div class="sub-title">Manage all visitor entries and track check-ins</div>
+        <div class="sub-title">Manage all visitor entries</div>
     </div>
     <a href="{{ route('visitor.create') }}" class="btn-add">
         <i class="fas fa-plus-circle"></i> Add Visitor
@@ -428,10 +455,6 @@
     <div class="stat-card">
         <div class="stat-number active">{{ $totalActive ?? 0 }}</div>
         <div class="stat-label">Active Visitors</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-number checked-out">{{ $totalCheckedOut ?? 0 }}</div>
-        <div class="stat-label">Checked Out</div>
     </div>
     <div class="stat-card">
         <div class="stat-number today">{{ $todayVisitors ?? 0 }}</div>
@@ -464,12 +487,12 @@
                 <th>Room</th>
                 <th>Check In</th>
                 <th>Status</th>
-                <th style="width:160px;" class="text-center">Actions</th>
+                <th style="width:120px;" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($visitors ?? [] as $index => $visitor)
-            <tr>
+            <tr id="visitor-row-{{ $visitor->id }}">
                 <td>{{ $visitors->firstItem() + $index }}</td>
                 <td>
                     <div style="display:flex;align-items:center;gap:8px;">
@@ -524,18 +547,14 @@
                         <a href="{{ route('visitor.edit', $visitor->id) }}" class="action-btn edit" title="Edit Visitor">
                             <i class="fas fa-edit"></i>
                         </a>
-                        @if($visitor->status == 'active')
-                            <button class="action-btn checkout checkout-btn" data-id="{{ $visitor->id }}" title="Check Out">
-                                <i class="fas fa-sign-out-alt"></i>
+                        <!-- DELETE FORM -->
+                        <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this visitor: {{ addslashes($visitor->visitor_name) }}? This action cannot be undone.');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="action-btn delete" title="Delete Visitor">
+                                <i class="fas fa-trash"></i>
                             </button>
-                        @else
-                            <button class="action-btn checkout disabled" title="Already Checked Out" disabled>
-                                <i class="fas fa-sign-out-alt"></i>
-                            </button>
-                        @endif
-                        <button class="action-btn delete delete-btn" data-id="{{ $visitor->id }}" title="Delete Visitor">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        </form>
                     </div>
                 </td>
             </tr>
@@ -571,120 +590,14 @@
     | Last updated: {{ now()->format('d-m-Y H:i:s') }}
 </div>
 
-<!-- Checkout Modal -->
-<div class="modal fade" id="checkoutModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Check Out</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-sign-out-alt" style="font-size:2.5rem;color:#2e7d32;margin-bottom:12px;"></i>
-                <p class="mb-0">Are you sure you want to check out this visitor?</p>
-                <small class="text-muted">This will mark the visitor as checked out.</small>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success" id="confirmCheckout">Check Out</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirm Delete</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body text-center">
-                <i class="fas fa-exclamation-triangle" style="font-size:2.5rem;color:#dc3545;margin-bottom:12px;"></i>
-                <p class="mb-0">Are you sure you want to delete this visitor record?</p>
-                <small class="text-muted">This action cannot be undone.</small>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @push('scripts')
 <script>
     $(document).ready(function() {
-        let actionId = null;
-        let actionType = null;
-
-        // Checkout button click
-        $(document).on('click', '.checkout-btn:not(.disabled)', function() {
-            actionId = $(this).data('id');
-            actionType = 'checkout';
-            $('#checkoutModal').modal('show');
-        });
-
-        // Confirm checkout
-        $('#confirmCheckout').on('click', function() {
-            if (actionId && actionType == 'checkout') {
-                $.ajax({
-                    url: '/visitor/' + actionId + '/check-out',
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#checkoutModal').modal('hide');
-                            location.reload();
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Failed to checkout visitor: ' + (xhr.responseJSON?.message || 'Unknown error'));
-                    }
-                });
-            }
-        });
-
-        // Delete button click
-        $(document).on('click', '.delete-btn', function() {
-            actionId = $(this).data('id');
-            actionType = 'delete';
-            $('#deleteModal').modal('show');
-        });
-
-        // Confirm delete
-        $('#confirmDelete').on('click', function() {
-            if (actionId && actionType == 'delete') {
-                $.ajax({
-                    url: '/visitor/' + actionId,
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            $('#deleteModal').modal('hide');
-                            location.reload();
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('Failed to delete visitor: ' + (xhr.responseJSON?.message || 'Unknown error'));
-                    }
-                });
-            }
-        });
-
-        // Search with delay
+        // ========== SEARCH AND FILTER ==========
         let searchTimeout;
+        
         $('#searchInput').on('keyup', function() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(function() {
@@ -692,7 +605,6 @@
             }, 500);
         });
 
-        // Status filter
         $('#statusFilter').on('change', function() {
             performSearch();
         });
@@ -709,6 +621,14 @@
             }
             window.location.href = url;
         }
+
+        // Auto-dismiss alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+
+        console.log('✅ Visitor Records page loaded successfully');
+        console.log('📍 Delete route: /visitor/{id}');
     });
 </script>
 @endpush

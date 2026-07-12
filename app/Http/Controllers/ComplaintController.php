@@ -54,8 +54,12 @@ class ComplaintController extends Controller
      */
     public function show($id)
     {
-        $complaint = Complaint::findOrFail($id);
-        return view('Component.Admin.view_complaint', compact('complaint'));
+        try {
+            $complaint = Complaint::findOrFail($id);
+            return view('Component.Admin.view_complain', compact('complaint'));
+        } catch (\Exception $e) {
+            return redirect()->route('complaints.index')->with('error', 'Complaint not found!');
+        }
     }
 
     /**
@@ -63,8 +67,12 @@ class ComplaintController extends Controller
      */
     public function edit($id)
     {
-        $complaint = Complaint::findOrFail($id);
-        return view('Component.Admin.edit_complaint', compact('complaint'));
+        try {
+            $complaint = Complaint::findOrFail($id);
+            return view('Component.Admin.edit_complaint', compact('complaint'));
+        } catch (\Exception $e) {
+            return redirect()->route('complaints.index')->with('error', 'Complaint not found!');
+        }
     }
 
     /**
@@ -72,26 +80,30 @@ class ComplaintController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $complaint = Complaint::findOrFail($id);
-        
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'status' => 'sometimes|required|in:pending,in_progress,resolved,rejected',
-            'priority' => 'sometimes|required|in:low,medium,high',
-            'admin_remark' => 'nullable|string',
-            'student_name' => 'sometimes|required|string|max:255',
-            'room_number' => 'nullable|string|max:50',
-            'contact_number' => 'nullable|string|max:20',
-        ]);
+        try {
+            $complaint = Complaint::findOrFail($id);
+            
+            $validated = $request->validate([
+                'title' => 'sometimes|required|string|max:255',
+                'description' => 'sometimes|required|string',
+                'status' => 'sometimes|required|in:pending,in_progress,resolved,rejected',
+                'priority' => 'sometimes|required|in:low,medium,high',
+                'admin_remark' => 'nullable|string',
+                'student_name' => 'sometimes|required|string|max:255',
+                'room_number' => 'nullable|string|max:50',
+                'contact_number' => 'nullable|string|max:20',
+            ]);
 
-        if (isset($validated['status']) && $validated['status'] == 'resolved' && $complaint->status != 'resolved') {
-            $validated['resolved_at'] = now();
+            if (isset($validated['status']) && $validated['status'] == 'resolved' && $complaint->status != 'resolved') {
+                $validated['resolved_at'] = now();
+            }
+
+            $complaint->update($validated);
+
+            return redirect()->route('complaints.index')->with('success', 'Complaint updated successfully!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update complaint: ' . $e->getMessage());
         }
-
-        $complaint->update($validated);
-
-        return redirect()->route('complaints.index')->with('success', 'Complaint updated successfully!');
     }
 
     /**
@@ -99,12 +111,20 @@ class ComplaintController extends Controller
      */
     public function destroy($id)
     {
-        $complaint = Complaint::findOrFail($id);
-        $complaint->delete();
+        try {
+            $complaint = Complaint::findOrFail($id);
+            $complaint->delete();
 
-        return redirect()->route('complaints.index')->with('success', 'Complaint deleted successfully!');
+            return redirect()->route('complaints.index')->with('success', 'Complaint deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('complaints.index')->with('error', 'Failed to delete complaint: ' . $e->getMessage());
+        }
     }
-      public function Complain_request()
+
+    /**
+     * Alternative method for complaint requests page.
+     */
+    public function Complain_request()
     {
         $complaints = Complaint::orderBy('created_at', 'desc')->get();
         $pendingCount = Complaint::where('status', 'pending')->count();
