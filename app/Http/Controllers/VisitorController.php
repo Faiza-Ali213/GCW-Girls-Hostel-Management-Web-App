@@ -127,7 +127,7 @@ class VisitorController extends Controller
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            return view('Component.Admin.edit_vistors', compact('visitor'));
+            return view('Component.Admin.edit_visitors', compact('visitor'));
         } catch (\Exception $e) {
             return redirect()->route('vistors_records')
                 ->with('error', 'Visitor record not found');
