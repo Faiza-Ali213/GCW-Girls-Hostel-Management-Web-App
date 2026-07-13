@@ -12,7 +12,7 @@
 }
 
 .page-header-section h2 {
-    color: #0B2E33;
+    color: #1A365D;
     font-weight: 800;
     margin: 0;
 }
@@ -37,7 +37,7 @@
     left: 15px;
     top: 50%;
     transform: translateY(-50%);
-    color: #0B2E33;
+    color: #1A365D;
 }
 
 .custom-search {
@@ -51,12 +51,12 @@
 
 .custom-search:focus {
     outline: none;
-    border-color: #0B2E33;
-    box-shadow: 0 0 0 4px rgba(11, 46, 51, 0.1);
+    border-color: #1A365D;
+    box-shadow: 0 0 0 4px rgba(26, 54, 93, 0.1);
 }
 
 .btn-add-room {
-    background: #0B2E33;
+    background: #1A365D;
     color: white;
     padding: 12px 25px;
     border-radius: 12px;
@@ -69,9 +69,9 @@
 }
 
 .btn-add-room:hover {
-    background: #144d55;
+    background: #234a7a;
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(11, 46, 51, 0.2);
+    box-shadow: 0 5px 15px rgba(26, 54, 93, 0.2);
     color: white;
 }
 
@@ -79,14 +79,14 @@
 .data-table-card {
     background: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
     padding: 10px;
     border: 1px solid #f0f0f0;
 }
 
 .room-table thead th {
     background: #f8f9fa;
-    color: #0B2E33;
+    color: #1A365D;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -109,8 +109,15 @@
     font-size: 0.85rem;
 }
 
-.space-available { background: #e8f5e9; color: #2e7d32; }
-.space-full { background: #ffebee; color: #c62828; }
+.space-available {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.space-full {
+    background: #ffebee;
+    color: #c62828;
+}
 
 /* Action Dots */
 .btn-action-dots {
@@ -125,5 +132,5 @@
 
 .btn-action-dots:hover {
     background: #f0f0f0;
-    color: #0B2E33;
+    color: #1A365D;
 }
