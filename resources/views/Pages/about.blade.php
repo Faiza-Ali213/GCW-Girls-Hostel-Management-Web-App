@@ -30,7 +30,6 @@
 <script src="{{ asset('js/about.js') }}"></script>
 
 @include('Component.History')
-@include('Component.rules')
 @include('Component.gallery')
 @include('Component.faq')
 @include('Component.contact_detail')

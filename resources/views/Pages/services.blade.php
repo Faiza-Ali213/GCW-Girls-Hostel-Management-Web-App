@@ -24,5 +24,4 @@
 @include('Component.room')
 @include('Component.facilities')
 @include('Component.faq')
-@include('Component.contact_detail')
 @endsection

@@ -30,6 +30,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthenticationController::class, 'signup'])->name('signup.submit');
 });
 
+// ✅ ADD THIS: Register submit route (for the signup form)
+Route::post('/register', [AuthenticationController::class, 'signup'])->name('register.submit');
+
 // Authenticated routes (require login)
 Route::middleware('auth')->group(function () {
     // Logout
