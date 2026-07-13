@@ -1,69 +1,87 @@
+/* Rules.css - Deep Blue Color Scheme */
 .rules-section {
-    background-color: #f8fafd;
+    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    padding: 60px 0;
+    position: relative;
 }
 
 .badge-accent {
-    background: rgba(11, 46, 51, 0.1);
-    color: #0B2E33;
+    background: rgba(26, 42, 108, 0.1);
+    color: #1a2a6c;
     padding: 8px 20px;
     border-radius: 50px;
     font-weight: 600;
+    letter-spacing: 1px;
 }
 
 .header-line {
     width: 60px;
     height: 4px;
-    background: #0B2E33;
+    background: #1a2a6c;
     margin-top: 15px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.header-line::after {
+    content: '';
+    position: absolute;
+    width: 30px;
+    height: 4px;
+    background: #2c3e8f;
+    left: 65px;
     border-radius: 10px;
 }
 
 .rule-card {
-    background: #fff;
+    background: #ffffff;
     padding: 40px 30px;
-    border-radius: 18px; /* Matching your FAQ style */
+    border-radius: 18px;
     border: 2px solid transparent;
     height: 100%;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-    border: 2px solid #0B2E33;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 2px solid #1a2a6c;
 }
 
 .rule-card:hover {
-    border-color: #0B2E33;
+    border-color: #1a2a6c;
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(11, 46, 51, 0.1);
+    box-shadow: 0 20px 40px rgba(26, 42, 108, 0.15);
+    background: #ffffff;
 }
 
 .rule-icon-box {
     width: 60px;
     height: 60px;
-    background: #f0f4f4;
-    color: #0B2E33;
+    background: #e8edf5;
+    color: #1a2a6c;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 28px;
     margin-bottom: 25px;
-    transition: 0.3s;
+    transition: all 0.4s ease;
 }
 
 .rule-card:hover .rule-icon-box {
-    background: #0B2E33;
-    color: #fff;
+    background: #1a2a6c;
+    color: #ffffff;
     transform: rotateY(360deg);
+    box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
 }
 
 .rule-card h4 {
     font-weight: 700;
-    color: #333;
+    color: #1a2a6c;
     margin-bottom: 15px;
+    font-size: 20px;
 }
 
 .rule-card p {
-    color: #666;
+    color: #4a4a5a;
     font-size: 15px;
     line-height: 1.7;
     margin-bottom: 25px;
@@ -72,15 +90,182 @@
 .status-indicator {
     width: 8px;
     height: 8px;
-    background: #0B2E33;
+    background: #1a2a6c;
     border-radius: 50%;
     display: inline-block;
     margin-right: 5px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .rule-card-footer {
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    color: #999;
+    color: #1a2a6c;
+    letter-spacing: 1px;
+    opacity: 0.7;
+}
+
+/* Additional Decorative Elements for Rules Section */
+.rules-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 250px;
+    height: 250px;
+    background: radial-gradient(circle, rgba(26, 42, 108, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.rules-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(26, 42, 108, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.rules-section {
+    position: relative;
+}
+
+/* Rule Card Variations */
+.rule-card.primary {
+    border-color: #1a2a6c;
+}
+
+.rule-card.primary .rule-icon-box {
+    background: #1a2a6c;
+    color: white;
+}
+
+.rule-card.primary:hover .rule-icon-box {
+    background: #2c3e8f;
+}
+
+/* Rule Number Badge */
+.rule-number {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background: #1a2a6c;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(26, 42, 108, 0.3);
+}
+
+/* Grid Layout Enhancement */
+.rule-grid {
+    display: grid;
+    gap: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .rules-section {
+        padding: 30px 0;
+    }
+
+    .rule-card {
+        padding: 30px 20px;
+    }
+
+    .rule-card h4 {
+        font-size: 18px;
+    }
+
+    .rule-card p {
+        font-size: 14px;
+    }
+
+    .rule-icon-box {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+}
+
+/* Hover Animation Enhancement */
+.rule-card {
+    overflow: hidden;
+}
+
+.rule-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #1a2a6c, transparent);
+    transition: left 0.5s ease;
+}
+
+.rule-card:hover::after {
+    left: 100%;
+}
+
+/* Dark Mode Support - Optional */
+@media (prefers-color-scheme: dark) {
+    .rules-section {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+    }
+
+    .rule-card {
+        background: #1a1a2e;
+        border-color: #2c3e8f;
+    }
+
+    .rule-card h4 {
+        color: #e8edf5;
+    }
+
+    .rule-card p {
+        color: #a0a0b0;
+    }
+
+    .rule-icon-box {
+        background: #2c3e8f;
+        color: white;
+    }
+
+    .badge-accent {
+        background: rgba(44, 62, 143, 0.2);
+        color: #e8edf5;
+    }
+}
+
+/* Deep Blue Color Variables */
+:root {
+    --deep-blue: #1a2a6c;
+    --deep-blue-light: #2c3e8f;
+    --deep-blue-lighter: #3b5998;
+    --deep-blue-dark: #0d1a4a;
+    --deep-blue-bg: #f0f4f8;
+    --deep-blue-card-bg: #ffffff;
 }
