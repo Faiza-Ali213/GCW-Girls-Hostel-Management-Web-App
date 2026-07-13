@@ -14,24 +14,28 @@
             box-sizing: border-box;
         }
 
-        body {
+        html, body {
             min-height: 100vh;
+            height: auto;
+        }
+
+        body {
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 20px;
+            padding: 40px 20px;
             background: linear-gradient(-45deg, #1A365D, #2c4a7a, #3b5a8a, #1A365D);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            min-height: 100vh;
         }
 
-        /* Animated background with floating particles */
         body::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
@@ -45,9 +49,8 @@
             animation: pulseBg 8s ease-in-out infinite;
         }
 
-        /* Floating orbs animation */
         .orb {
-            position: absolute;
+            position: fixed;
             border-radius: 50%;
             filter: blur(80px);
             opacity: 0.3;
@@ -106,18 +109,34 @@
             max-width: 500px;
             position: relative;
             z-index: 1;
+            margin: 20px auto;
         }
 
         .auth-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 30px;
-            padding: 45px 40px;
+            padding: 40px 35px;
             box-shadow: 0 30px 80px rgba(26, 54, 93, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.3);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .auth-card::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .auth-card::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .auth-card::-webkit-scrollbar-thumb {
+            background: #1A365D;
+            border-radius: 10px;
         }
 
         .auth-card::before {
@@ -139,25 +158,25 @@
         }
 
         .auth-card:hover {
-            transform: translateY(-8px) scale(1.01);
+            transform: translateY(-5px) scale(1.005);
             box-shadow: 0 40px 100px rgba(26, 54, 93, 0.35);
         }
 
         .auth-header {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
         }
 
         .auth-icon {
-            width: 85px;
-            height: 85px;
+            width: 70px;
+            height: 70px;
             background: linear-gradient(135deg, #1A365D 0%, #2c4a7a 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 20px;
-            font-size: 38px;
+            margin: 0 auto 15px;
+            font-size: 32px;
             color: white;
             box-shadow: 0 15px 40px rgba(26, 54, 93, 0.4);
             transition: all 0.4s ease;
@@ -176,8 +195,8 @@
         .auth-title {
             font-weight: 800;
             color: #1a202c;
-            font-size: 32px;
-            margin-bottom: 8px;
+            font-size: 28px;
+            margin-bottom: 5px;
             letter-spacing: -0.5px;
         }
 
@@ -190,20 +209,20 @@
 
         .auth-subtitle {
             color: #718096;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
             letter-spacing: 0.3px;
         }
 
         .form-group {
-            margin-bottom: 22px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             font-weight: 600;
             color: #2d3748;
-            font-size: 14px;
-            margin-bottom: 8px;
+            font-size: 13px;
+            margin-bottom: 6px;
             display: block;
             transition: color 0.3s ease;
         }
@@ -223,10 +242,10 @@
         }
 
         .input-group-custom .form-control {
-            border-radius: 15px;
-            padding: 14px 20px;
+            border-radius: 12px;
+            padding: 12px 18px;
             border: 2px solid #e2e8f0;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s ease;
             background: rgba(247, 250, 252, 0.8);
             color: #2d3748;
@@ -235,9 +254,8 @@
 
         .input-group-custom .form-control:focus {
             border-color: #1A365D;
-            box-shadow: 0 0 0 5px rgba(26, 54, 93, 0.15);
+            box-shadow: 0 0 0 4px rgba(26, 54, 93, 0.1);
             background: white;
-            transform: scale(1.01);
         }
 
         .input-group-custom .form-control.is-invalid {
@@ -245,7 +263,7 @@
         }
 
         .input-group-custom .form-control.is-invalid:focus {
-            box-shadow: 0 0 0 5px rgba(252, 129, 129, 0.15);
+            box-shadow: 0 0 0 4px rgba(252, 129, 129, 0.15);
         }
 
         .input-group-custom .form-control::placeholder {
@@ -253,9 +271,15 @@
             font-weight: 400;
         }
 
+        .text-danger {
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+        }
+
         .password-toggle {
             position: absolute;
-            right: 15px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
@@ -263,7 +287,7 @@
             transition: all 0.3s ease;
             background: none;
             border: none;
-            padding: 8px;
+            padding: 5px;
             border-radius: 50%;
         }
 
@@ -275,14 +299,15 @@
         .btn-auth {
             background: linear-gradient(135deg, #1A365D 0%, #2c4a7a 100%);
             border: none;
-            padding: 16px;
+            padding: 14px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 15px;
             width: 100%;
-            border-radius: 15px;
+            border-radius: 12px;
             color: white;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             margin-top: 10px;
+            margin-bottom: 5px;
             position: relative;
             overflow: hidden;
             letter-spacing: 0.5px;
@@ -304,8 +329,9 @@
         }
 
         .btn-auth:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 15px 40px rgba(26, 54, 93, 0.5);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 15px 40px rgba(26, 54, 93, 0.4);
+            color: white;
         }
 
         .btn-auth:active {
@@ -323,14 +349,14 @@
 
         .auth-footer {
             text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 15px;
             border-top: 2px solid rgba(247, 250, 252, 0.8);
         }
 
         .auth-footer p {
             color: #718096;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 0;
         }
 
@@ -339,7 +365,6 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s ease;
-            position: relative;
             padding: 5px 10px;
             border-radius: 8px;
         }
@@ -359,20 +384,20 @@
             transform: translateX(-3px);
         }
 
-        /* Alert Styles */
         .alert-custom {
-            border-radius: 15px;
-            padding: 15px 20px;
+            border-radius: 12px;
+            padding: 12px 18px;
             border: none;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             font-weight: 500;
+            font-size: 13px;
             animation: slideDown 0.5s ease;
         }
 
         @keyframes slideDown {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(-15px);
             }
             to {
                 opacity: 1;
@@ -415,10 +440,9 @@
             color: #48bb78;
         }
 
-        /* Password strength indicator */
         .password-strength {
-            margin-top: 8px;
-            height: 4px;
+            margin-top: 6px;
+            height: 3px;
             border-radius: 10px;
             background: #e2e8f0;
             overflow: hidden;
@@ -433,31 +457,35 @@
         }
 
         .password-strength-text {
-            font-size: 12px;
-            margin-top: 5px;
+            font-size: 11px;
+            margin-top: 4px;
             color: #718096;
             font-weight: 500;
             transition: color 0.3s ease;
         }
 
-        /* Responsive */
         @media (max-width: 576px) {
+            body {
+                padding: 20px 15px;
+            }
+            
             .auth-card {
-                padding: 30px 20px;
+                padding: 25px 20px;
+                max-height: 95vh;
             }
 
             .auth-title {
-                font-size: 26px;
+                font-size: 24px;
             }
 
             .auth-icon {
-                width: 65px;
-                height: 65px;
-                font-size: 30px;
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
             }
 
             .btn-auth {
-                padding: 14px;
+                padding: 12px;
                 font-size: 14px;
             }
 
@@ -503,7 +531,7 @@
             @endif
 
             <!-- Registration Form -->
-            <form action="{{ route('register.submit') }}" method="POST">
+            <form action="{{ route('signup.submit') }}" method="POST">
                 @csrf
 
                 <div class="form-group">
@@ -513,6 +541,9 @@
                                id="name" name="name" placeholder="Enter your full name" 
                                value="{{ old('name') }}" required>
                     </div>
+                    @error('name')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="form-group">
@@ -522,23 +553,28 @@
                                id="email" name="email" placeholder="Enter your email" 
                                value="{{ old('email') }}" required>
                     </div>
+                    @error('email')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                 </div>
 
                 <div class="form-group">
                     <label for="password"><i class="fas fa-lock"></i> Password</label>
                     <div class="input-group-custom">
                         <input type="password" class="form-control @error('password') is-invalid @enderror" 
-                               id="password" name="password" placeholder="Create a password" 
+                               id="password" name="password" placeholder="Create a password (min 8 characters)" 
                                required>
                         <button type="button" class="password-toggle" onclick="togglePassword('password')">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
-                    <!-- Password Strength Indicator -->
+                    @error('password')
+                        <small class="text-danger">{{ $message }}</small>
+                    @enderror
                     <div class="password-strength">
                         <div class="password-strength-bar" id="strengthBar"></div>
                     </div>
-                    <div class="password-strength-text" id="strengthText">Enter a strong password</div>
+                    <div class="password-strength-text" id="strengthText">Enter a strong password (min 8 characters)</div>
                 </div>
 
                 <div class="form-group">
@@ -550,6 +586,7 @@
                     </div>
                 </div>
 
+                <!-- ✅ SUBMIT BUTTON - Now always visible -->
                 <button type="submit" class="btn-auth">
                     <i class="fas fa-arrow-right"></i> Create Account
                 </button>
@@ -563,11 +600,9 @@
         </div>
     </div>
 
-    <!-- Bootstrap & Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Password Toggle Function
         function togglePassword(fieldId) {
             const field = document.getElementById(fieldId);
             const toggleBtn = field.parentElement.querySelector('.password-toggle');
@@ -584,7 +619,6 @@
             }
         }
 
-        // Password Strength Checker
         document.getElementById('password').addEventListener('input', function() {
             const password = this.value;
             const strengthBar = document.getElementById('strengthBar');
@@ -592,7 +626,7 @@
             
             let strength = 0;
             let color = '#e2e8f0';
-            let text = 'Enter a strong password';
+            let text = 'Enter a strong password (min 8 characters)';
             
             if (password.length >= 8) strength += 20;
             if (password.match(/[a-z]+/)) strength += 20;
@@ -602,7 +636,7 @@
             
             if (strength === 0) {
                 color = '#e2e8f0';
-                text = 'Enter a strong password';
+                text = 'Enter a strong password (min 8 characters)';
             } else if (strength <= 20) {
                 color = '#fc8181';
                 text = 'Weak password';

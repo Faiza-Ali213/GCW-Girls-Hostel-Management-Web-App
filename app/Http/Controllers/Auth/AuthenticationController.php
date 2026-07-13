@@ -3,45 +3,31 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationController extends Controller
 {
-    /**
-     * Show the login form
-     */
+    // Show login form
     public function showLoginForm()
     {
         return view('Pages.Auth.login');
     }
 
-    /**
-     * Handle login request
-     */
+    // Handle login
     public function login(Request $request)
     {
-        // Validate input
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
-        // Attempt to login
-        $credentials = $request->only('email', 'password');
-        
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            
-            // Check if user is admin and redirect accordingly
-            $user = Auth::user();
-            if ($user->isAdmin()) {
-                return redirect()->route('admin.dashboard')->with('success', 'Welcome back, Admin!');
-            }
-            
-            return redirect()->intended('/dashboard')->with('success', 'Welcome back! Login successful.');
+            return redirect()->intended('/dashboard');
         }
 
         return back()->withErrors([
@@ -49,49 +35,49 @@ class AuthenticationController extends Controller
         ])->onlyInput('email');
     }
 
-    /**
-     * Show the signup form
-     */
+    // Show signup form
     public function showSignupForm()
     {
         return view('Pages.Auth.signup');
     }
 
-    /**
-     * Handle signup request
-     */
+    // Handle signup
     public function signup(Request $request)
     {
-        // Validate input
-        $request->validate([
+        // Validate the request
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6|confirmed',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Create user with default role 'user'
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Always set as regular user
         ]);
 
-        // Login the user
+        // Log the user in automatically
         Auth::login($user);
 
-        return redirect('/dashboard')->with('success', 'Account created successfully!');
+        // Redirect to dashboard with success message
+        return redirect()->route('dashboard')
+            ->with('success', 'Account created successfully! Welcome to GCW Hostel.');
     }
 
-    /**
-     * Handle logout request
-     */
+    // Handle logout
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect('/login')->with('success', 'Logged out successfully!');
+        return redirect('/');
     }
 }
