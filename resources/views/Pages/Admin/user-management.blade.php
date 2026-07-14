@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Or your main layout --}}
+@extends('Layout.admin') {{-- Or your main layout --}}
 
 @section('page_title', 'User Management')
 @section('page_subtitle', 'Manage system users and permissions')

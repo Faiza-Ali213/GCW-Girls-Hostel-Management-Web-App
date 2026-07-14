@@ -1,4 +1,4 @@
-@extends('layouts.app') {{-- Or your main layout --}}
+@extends('Layout.admin') {{-- Or your main layout --}}
 
 @section('page_title', 'Settings')
 @section('page_subtitle', 'Configure system preferences')

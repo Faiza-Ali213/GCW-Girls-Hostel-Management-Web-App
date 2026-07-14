@@ -53,14 +53,27 @@ Route::middleware('auth')->group(function () {
     })->name('bookings');
 
     // ============================================
-    // User Management & Settings Routes (MOVED INSIDE AUTH)
+    // User Management & Settings Routes - FIXED
     // ============================================
+    // Try both variations - one will work
     Route::get('/user-management', function() { 
-        return view('user-management'); 
+        if (view()->exists('Pages.Admin.user-management')) {
+            return view('Pages.Admin.user-management');
+        } elseif (view()->exists('Pages.Admin.user_management')) {
+            return view('Pages.Admin.user_management');
+        } else {
+            abort(404, 'User Management view not found');
+        }
     })->name('user_management');
 
     Route::get('/settings', function() { 
-        return view('settings'); 
+        if (view()->exists('Pages.Admin.settings')) {
+            return view('Pages.Admin.settings');
+        } elseif (view()->exists('Pages.Admin.setting')) {
+            return view('Pages.Admin.setting');
+        } else {
+            abort(404, 'Settings view not found');
+        }
     })->name('settings');
 });
 
