@@ -51,6 +51,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/bookings', function () {
         return view('Pages.bookings');
     })->name('bookings');
+
+    // ============================================
+    // User Management & Settings Routes (MOVED INSIDE AUTH)
+    // ============================================
+    Route::get('/user-management', function() { 
+        return view('user-management'); 
+    })->name('user_management');
+
+    Route::get('/settings', function() { 
+        return view('settings'); 
+    })->name('settings');
 });
 
 /*

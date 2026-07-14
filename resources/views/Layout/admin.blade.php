@@ -6,221 +6,804 @@
     <title>Admin Dashboard | GCW Hostel</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         :root {
-            --sidebar-width: 260px;
-            --gcw-green: #4CAF50;
-            --gcw-dark: #0B2E33;
-            --bg-light: #F8F9FA;
+            --sidebar-width: 280px;
+            --gcw-primary: #4F46E5;
+            --gcw-primary-light: #818CF8;
+            --gcw-primary-dark: #4338CA;
+            --gcw-secondary: #EF4444;
+            --gcw-green: #10B981;
+            --gcw-dark: #1E293B;
+            --bg-light: #F1F5F9;
+            --sidebar-bg: #FFFFFF;
+            --sidebar-text: #64748B;
+            --sidebar-hover: #F1F5F9;
+            --sidebar-active-bg: #EEF2FF;
+            --sidebar-border: #E2E8F0;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--bg-light);
-            margin: 0;
         }
 
-        /* --- SIDEBAR STRUCTURE --- */
+        /* ========== SIDEBAR ========== */
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
             position: fixed;
             left: 0;
             top: 0;
-            background: #FFFFFF;
-            border-right: 1px solid #EAEAEA;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
             display: flex;
             flex-direction: column;
             z-index: 1000;
+            transition: all 0.3s ease;
+            overflow-y: auto;
         }
 
-        /* User Profile Section */
-        .sidebar-user {
-            padding: 25px 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        /* Custom Scrollbar */
+        .sidebar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .sidebar::-webkit-scrollbar-thumb {
+            background: var(--gcw-primary-light);
+            border-radius: 10px;
         }
 
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-            background: #eee;
-        }
-
-        .user-info h6 {
-            margin: 0;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .status-badge {
-            font-size: 11px;
-            color: var(--gcw-green);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--gcw-green);
-            border-radius: 50%;
-        }
-
-        /* Logo Section - Increased Size */
+        /* Logo Section */
         .sidebar-logo {
-            text-align: center;
-            padding: 20px 0 30px 0; /* Adjusted padding for larger logo */
-        }
-        .sidebar-logo img {
-            width: 100px; /* Increased from 50px */
-            height: auto;
-            transition: transform 0.3s ease;
+            padding: 25px 25px 20px;
+            border-bottom: 1px solid var(--sidebar-border);
         }
 
-        /* Navigation Links */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-image {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            color: var(--gcw-dark);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            color: var(--gcw-primary);
+        }
+
+        .logo-subtext {
+            color: var(--sidebar-text);
+            font-size: 11px;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation */
+        .nav-section {
+            padding: 20px 16px 10px;
+            color: var(--sidebar-text);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
         .nav-list {
             list-style: none;
-            padding: 0;
+            padding: 0 12px;
             margin: 0;
             flex-grow: 1;
         }
 
         .nav-item {
-            margin: 4px 15px;
+            margin-bottom: 2px;
         }
 
         .nav-link-custom {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 15px;
+            gap: 14px;
+            padding: 11px 16px;
             text-decoration: none;
-            color: #666;
+            color: var(--sidebar-text);
             font-size: 14px;
             font-weight: 500;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
         }
 
         .nav-link-custom i {
-            font-size: 18px;
-            color: #888;
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
-        /* Active State */
+        .nav-link-custom .nav-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: var(--bg-light);
+            transition: all 0.3s ease;
+        }
+
+        .nav-link-custom .nav-icon-wrapper i {
+            color: var(--sidebar-text);
+        }
+
+        .nav-link-custom .nav-text {
+            flex: 1;
+        }
+
+        .nav-link-custom .nav-badge {
+            background: var(--gcw-secondary);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Hover State */
+        .nav-link-custom:hover {
+            background: var(--sidebar-hover);
+            color: var(--gcw-dark);
+        }
+
+        .nav-link-custom:hover .nav-icon-wrapper {
+            background: var(--gcw-primary);
+        }
+
+        .nav-link-custom:hover .nav-icon-wrapper i {
+            color: white;
+        }
+
+        /* Active State - Light Theme */
         .nav-item.active .nav-link-custom {
-            background-color: #E8F5E9;
-            color: var(--gcw-green);
-        }
-        
-        .nav-item.active .nav-link-custom i {
-            color: var(--gcw-green);
+            background: var(--sidebar-active-bg);
+            color: var(--gcw-primary);
         }
 
-        .nav-link-custom:hover:not(.active) {
-            background-color: #f0f0f0;
-            color: #333;
+        .nav-item.active .nav-link-custom .nav-icon-wrapper {
+            background: var(--gcw-primary);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
         }
 
-        /* Bottom Logout Section */
+        .nav-item.active .nav-link-custom .nav-icon-wrapper i {
+            color: white;
+        }
+
+        /* Active Indicator */
+        .nav-item.active .nav-link-custom::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 24px;
+            background: var(--gcw-primary);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Sidebar Footer */
         .sidebar-footer {
-            padding: 20px;
-            border-top: 1px solid #EAEAEA;
+            padding: 16px 12px 24px;
+            border-top: 1px solid var(--sidebar-border);
+            margin-top: auto;
         }
 
-        /* --- MAIN CONTENT AREA --- */
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--sidebar-border), transparent);
+            margin-bottom: 12px;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 11px 16px;
+            text-decoration: none;
+            color: var(--sidebar-text);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+        }
+
+        .logout-btn i {
+            font-size: 20px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .logout-btn .nav-icon-wrapper {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #FEF2F2;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn .nav-icon-wrapper i {
+            color: var(--gcw-secondary);
+        }
+
+        .logout-btn:hover {
+            background: #FEF2F2;
+            color: var(--gcw-secondary);
+        }
+
+        .logout-btn:hover .nav-icon-wrapper {
+            background: var(--gcw-secondary);
+        }
+
+        .logout-btn:hover .nav-icon-wrapper i {
+            color: white;
+        }
+
+        /* ========== TOP NAVBAR ========== */
+        .top-navbar {
+            margin-left: var(--sidebar-width);
+            padding: 16px 35px;
+            background: white;
+            border-bottom: 1px solid var(--sidebar-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: var(--card-shadow);
+        }
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .hamburger-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--gcw-dark);
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .page-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gcw-dark);
+            margin: 0;
+        }
+
+        .page-title span {
+            color: var(--sidebar-text);
+            font-weight: 400;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Notification Icon */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .notification-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: none;
+            background: var(--bg-light);
+            color: var(--gcw-dark);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .notification-btn:hover {
+            background: #E2E8F0;
+            transform: scale(1.05);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            width: 10px;
+            height: 10px;
+            background: var(--gcw-secondary);
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Profile Dropdown */
+        .profile-wrapper {
+            position: relative;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 6px 14px 6px 6px;
+            border-radius: 50px;
+            border: none;
+            background: var(--bg-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-btn:hover {
+            background: #E2E8F0;
+        }
+
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gcw-primary);
+        }
+
+        .profile-info {
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        .profile-info .name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gcw-dark);
+            margin: 0;
+        }
+
+        .profile-info .role {
+            font-size: 11px;
+            color: var(--sidebar-text);
+            margin: 0;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            min-width: 220px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            border: 1px solid var(--sidebar-border);
+        }
+
+        .profile-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: var(--gcw-dark);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .dropdown-item i {
+            font-size: 16px;
+            width: 20px;
+            color: var(--sidebar-text);
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-light);
+            color: var(--gcw-primary);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--sidebar-border);
+            margin: 6px 20px;
+        }
+
+        .dropdown-item.text-danger:hover {
+            color: var(--gcw-secondary);
+        }
+
+        /* ========== MAIN CONTENT ========== */
         .main-wrapper {
             margin-left: var(--sidebar-width);
-            padding: 30px;
-            min-height: 100vh;
+            padding: 30px 35px;
+            min-height: calc(100vh - 74px);
         }
 
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); transition: 0.3s; }
-            .sidebar.active { transform: translateX(0); }
-            .main-wrapper { margin-left: 0; }
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            .top-navbar {
+                margin-left: 0;
+            }
+            .main-wrapper {
+                margin-left: 0;
+            }
+            .hamburger-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .top-navbar {
+                padding: 12px 16px;
+            }
+            .main-wrapper {
+                padding: 16px;
+            }
+            .page-title {
+                font-size: 16px;
+            }
+            .profile-info {
+                display: none;
+            }
+            .profile-btn {
+                padding: 4px;
+            }
+        }
+
+        /* ========== OVERLAY ========== */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ========== CARD STYLES ========== */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--sidebar-border);
+            border-radius: 12px 12px 0 0 !important;
+            padding: 1rem 1.25rem;
         }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========== SIDEBAR ========== -->
+    <aside class="sidebar" id="sidebar">
+        <!-- Logo -->
         <div class="sidebar-logo">
-            <img src="{{ asset('Assert/logo.png') }}" alt="GCW">
+            <div class="logo-wrapper">
+                <img src="{{ asset('Assert/logo.png') }}" alt="GCW Hostel" class="logo-image">
+                <div>
+                    <div class="logo-text">GCW<span>Hostel</span></div>
+                    <div class="logo-subtext">Admin Panel</div>
+                </div>
+            </div>
         </div>
 
+        <!-- Navigation -->
+        <div class="nav-section">Main Menu</div>
         <ul class="nav-list">
-            <li class="nav-item {{ request()->routeIs('student_records') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                 <a href="{{ route('dashboard') }}" class="nav-link-custom">
-                    <i class="bi bi-grid-fill"></i> Dashboard
+                    <span class="nav-icon-wrapper"><i class="bi bi-grid-fill"></i></span>
+                    <span class="nav-text">Dashboard</span>
                 </a>
             </li>
-            <li class="nav-item {{ request()->routeIs('Room_allocation') ? 'active' : '' }}">
+            <li class="nav-item {{ request()->routeIs('student-records') ? 'active' : '' }}">
                 <a href="{{ route('student-records') }}" class="nav-link-custom">
-                    <i class="bi bi-door-open"></i> Student Records
+                    <span class="nav-icon-wrapper"><i class="bi bi-people-fill"></i></span>
+                    <span class="nav-text">Student Records</span>
                 </a>
             </li>
-
-            <li class="nav-item {{ request()->routeIs('Room_allocation') ? 'active' : '' }}">
             <li class="nav-item {{ request()->routeIs('room_allocation') ? 'active' : '' }}">
-               <a href="{{ route('room_allocation') }}" class="nav-link-custom">
-                   <i class="bi bi-door-open"></i> Room Allocation
-               </a>
-           </li>
+                <a href="{{ route('room_allocation') }}" class="nav-link-custom">
+                    <span class="nav-icon-wrapper"><i class="bi bi-door-open-fill"></i></span>
+                    <span class="nav-text">Room Allocation</span>
+                </a>
+            </li>
             <li class="nav-item {{ request()->routeIs('fee_record') ? 'active' : '' }}">
                 <a href="{{ route('fee_record') }}" class="nav-link-custom">
-                    <i class="bi bi-cash-stack"></i> Fee Record
+                    <span class="nav-icon-wrapper"><i class="bi bi-cash-stack"></i></span>
+                    <span class="nav-text">Fee Record</span>
                 </a>
             </li>
-
             <li class="nav-item {{ request()->routeIs('staff_records') ? 'active' : '' }}">
                 <a href="{{ route('staff_records') }}" class="nav-link-custom">
-                    <i class="bi bi-people"></i> Staff Records
+                    <span class="nav-icon-wrapper"><i class="bi bi-person-badge-fill"></i></span>
+                    <span class="nav-text">Staff Records</span>
                 </a>
             </li>
-
             <li class="nav-item {{ request()->routeIs('vistors_records') ? 'active' : '' }}">
                 <a href="{{ route('vistors_records') }}" class="nav-link-custom">
-                    <i class="bi bi-person-badge"></i> Visitors
+                    <span class="nav-icon-wrapper"><i class="bi bi-person-check-fill"></i></span>
+                    <span class="nav-text">Visitors</span>
                 </a>
             </li>
-
             <li class="nav-item {{ request()->routeIs('Complain_request') ? 'active' : '' }}">
                 <a href="{{ route('Complain_request') }}" class="nav-link-custom">
-                    <i class="bi bi-exclamation-square"></i> Complaints
-                </a>
-            </li>
-
-            <li class="nav-item {{ request()->routeIs('Notification') ? 'active' : '' }}">
-                <a href="{{ route('Notification') }}" class="nav-link-custom">
-                    <i class="bi bi-bell"></i> Notifications
+                    <span class="nav-icon-wrapper"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                    <span class="nav-text">Complaints</span>
+                    <span class="nav-badge">12</span>
                 </a>
             </li>
         </ul>
 
+        <!-- Settings Section -->
+        <div class="nav-section">System</div>
+        <ul class="nav-list">
+            <li class="nav-item {{ request()->routeIs('user_management') ? 'active' : '' }}">
+                <a href="{{ route('user_management') }}" class="nav-link-custom">
+                    <span class="nav-icon-wrapper"><i class="bi bi-person-gear"></i></span>
+                    <span class="nav-text">User Management</span>
+                </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
+                <a href="{{ route('settings') }}" class="nav-link-custom">
+                    <span class="nav-icon-wrapper"><i class="bi bi-gear-fill"></i></span>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </li>
+        </ul>
+
+        <!-- Footer -->
         <div class="sidebar-footer">
-            <a href="#" class="nav-link-custom">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
+            <div class="footer-divider"></div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            <button class="logout-btn" onclick="confirmLogout(event)">
+                <span class="nav-icon-wrapper"><i class="bi bi-box-arrow-right"></i></span>
+                Logout
+            </button>
         </div>
     </aside>
 
+    <!-- ========== TOP NAVBAR ========== -->
+    <nav class="top-navbar">
+        <div class="navbar-left">
+            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle sidebar">
+                <i class="bi bi-list"></i>
+            </button>
+            <h4 class="page-title">
+                @yield('page_title', 'Dashboard')
+                <span>@yield('page_subtitle', '')</span>
+            </h4>
+        </div>
+
+        <div class="navbar-right">
+            <!-- Notification -->
+            <div class="notification-wrapper">
+                <button class="notification-btn" id="notificationBtn" aria-label="Notifications">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-dot"></span>
+                </button>
+            </div>
+
+            <!-- Profile -->
+            <div class="profile-wrapper">
+                <button class="profile-btn" id="profileBtn" aria-label="Profile menu">
+                    <img src="https://ui-avatars.com/api/?name={{ Auth::user()->name ?? 'Admin+User' }}&background=4F46E5&color=fff&size=36" 
+                         alt="Profile" class="profile-avatar">
+                    <div class="profile-info">
+                        <p class="name">{{ Auth::user()->name ?? 'Admin User' }}</p>
+                        <p class="role">{{ Auth::user()->role ?? 'Administrator' }}</p>
+                    </div>
+                    <i class="bi bi-chevron-down" style="font-size: 12px; color: #94A3B8;"></i>
+                </button>
+
+                <!-- Dropdown -->
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="{{ route('profile') }}" class="dropdown-item">
+                        <i class="bi bi-person-circle"></i> My Profile
+                    </a>
+                    <a href="{{ route('settings') }}" class="dropdown-item">
+                        <i class="bi bi-gear"></i> Account Settings
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <button class="dropdown-item text-danger" onclick="confirmLogout(event)">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== MAIN CONTENT ========== -->
     <main class="main-wrapper">
         @yield('content')
     </main>
 
+    <!-- ========== SCRIPTS ========== -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Toggle Sidebar
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const hamburger = document.getElementById('hamburgerBtn');
+
+        function toggleSidebar() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        hamburger.addEventListener('click', toggleSidebar);
+        overlay.addEventListener('click', toggleSidebar);
+
+        // Profile Dropdown
+        const profileBtn = document.getElementById('profileBtn');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        profileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
+
+        document.addEventListener('click', () => {
+            profileDropdown.classList.remove('show');
+        });
+
+        profileDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Notification Click
+        document.getElementById('notificationBtn').addEventListener('click', function() {
+            Swal.fire({
+                icon: 'info',
+                title: 'Notifications',
+                text: 'You have 3 unread notifications',
+                confirmButtonColor: '#4F46E5',
+                confirmButtonText: 'View All',
+                showCancelButton: true,
+                cancelButtonText: 'Dismiss'
+            });
+        });
+
+        // Logout Confirmation
+        function confirmLogout(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You will be logged out of the system",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#4F46E5',
+                cancelButtonColor: '#EF4444',
+                confirmButtonText: 'Yes, Logout',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
+
+        // Auto-close sidebar on route change (for mobile)
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link-custom');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 992) {
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Add active state to current page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUrl = window.location.href;
+            const navLinks = document.querySelectorAll('.nav-link-custom');
+            
+            navLinks.forEach(link => {
+                if (link.href === currentUrl) {
+                    const parentLi = link.closest('.nav-item');
+                    if (parentLi) {
+                        const siblings = parentLi.parentElement.querySelectorAll('.nav-item');
+                        siblings.forEach(s => s.classList.remove('active'));
+                        parentLi.classList.add('active');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
