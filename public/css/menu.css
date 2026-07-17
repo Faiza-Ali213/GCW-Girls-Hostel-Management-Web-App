@@ -13,7 +13,7 @@
     right: -5%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -25,7 +25,7 @@
     left: -5%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(44, 62, 143, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -37,8 +37,8 @@
 
 .section-badge {
     display: inline-block;
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(11, 46, 51, 0.08);
+    color: #0B2E33;
     padding: 8px 25px;
     border-radius: 50px;
     font-size: 13px;
@@ -49,14 +49,14 @@
 }
 
 .section-title {
-    color: #1a2a6c;
+    color: #0B2E33;
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 15px;
 }
 
 .section-title span {
-    color: #2c3e8f;
+    color: #1A4A52;
     position: relative;
 }
 
@@ -67,33 +67,33 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #0B2E33, #1A4A52);
     border-radius: 10px;
     opacity: 0.3;
 }
 
 .section-subtitle {
-    color: #4a4a5a;
+    color: #2D3748;
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
 }
 
 .badge-accent {
-    color: #1a2a6c;
-    background: rgba(26, 42, 108, 0.1);
+    color: #0B2E33;
+    background: rgba(11, 46, 51, 0.08);
     padding: 8px 20px;
     border-radius: 50px;
     font-weight: 600;
     font-size: 14px;
     display: inline-block;
     margin-bottom: 15px;
-    border: 1px solid rgba(26, 42, 108, 0.1);
+    border: 1px solid rgba(11, 46, 51, 0.1);
     transition: all 0.3s ease;
 }
 
 .badge-accent:hover {
-    background: rgba(26, 42, 108, 0.15);
+    background: rgba(11, 46, 51, 0.15);
     transform: translateY(-2px);
 }
 
@@ -103,18 +103,18 @@
     overflow: hidden;
     height: 100%;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 2px solid #1a2a6c;
-    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.08);
+    border: 2px solid #0B2E33;
+    box-shadow: 0 10px 30px rgba(11, 46, 51, 0.08);
 }
 
 .menu-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 25px 50px rgba(26, 42, 108, 0.15);
-    border-color: #2c3e8f;
+    box-shadow: 0 25px 50px rgba(11, 46, 51, 0.15);
+    border-color: #1A4A52;
 }
 
 .menu-day-header {
-    background: linear-gradient(135deg, #0d1a4a 0%, #1a2a6c 50%, #2c3e8f 100%);
+    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
     color: white;
     padding: 20px;
     text-align: center;
@@ -146,6 +146,7 @@
     font-size: 1.3rem;
     margin: 0;
     letter-spacing: 1px;
+    color: #FFFFFF;
 }
 
 .menu-day-header .day-date {
@@ -153,6 +154,7 @@
     opacity: 0.8;
     display: block;
     margin-top: 5px;
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .menu-body {
@@ -162,7 +164,7 @@
 
 .meal-item {
     margin-bottom: 18px;
-    border-bottom: 1px dashed rgba(26, 42, 108, 0.1);
+    border-bottom: 1px dashed rgba(11, 46, 51, 0.1);
     padding-bottom: 12px;
     transition: all 0.3s ease;
 }
@@ -174,14 +176,14 @@
 
 .meal-item:hover {
     padding-left: 5px;
-    border-bottom-color: rgba(26, 42, 108, 0.2);
+    border-bottom-color: rgba(11, 46, 51, 0.2);
 }
 
 .meal-item label {
     display: block;
     font-size: 12px;
     text-transform: uppercase;
-    color: #1a2a6c;
+    color: #0B2E33;
     font-weight: 700;
     letter-spacing: 1.5px;
     margin-bottom: 5px;
@@ -194,7 +196,7 @@
 
 .meal-item span {
     font-size: 15px;
-    color: #4a4a5a;
+    color: #2D3748;
     font-weight: 500;
     display: block;
 }
@@ -212,27 +214,27 @@
 }
 
 .meal-type.veg {
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(11, 46, 51, 0.08);
+    color: #0B2E33;
 }
 
 .meal-type.non-veg {
-    background: rgba(44, 62, 143, 0.1);
-    color: #2c3e8f;
+    background: rgba(26, 74, 82, 0.1);
+    color: #1A4A52;
 }
 
 .meal-type.special {
-    background: linear-gradient(135deg, #1a2a6c, #2c3e8f);
+    background: linear-gradient(135deg, #0B2E33, #1A4A52);
     color: white;
 }
 
 /* Treat Card */
 .treat-card {
-    background: linear-gradient(135deg, #0d1a4a 0%, #1a2a6c 50%, #2c3e8f 100%);
-    border: 2px solid #1a2a6c;
+    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
+    border: 2px solid #0B2E33;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(26, 42, 108, 0.2);
+    box-shadow: 0 15px 40px rgba(11, 46, 51, 0.2);
 }
 
 .treat-card::before {
@@ -254,7 +256,7 @@
     left: -10%;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(59, 89, 152, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(26, 74, 82, 0.1) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -284,7 +286,7 @@
     position: absolute;
     top: 15px;
     right: -30px;
-    background: linear-gradient(135deg, #1a2a6c, #3b5998);
+    background: linear-gradient(135deg, #0B2E33, #1A4A52);
     color: #ffffff;
     padding: 5px 40px;
     transform: rotate(45deg);
@@ -292,7 +294,7 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
+    box-shadow: 0 5px 15px rgba(11, 46, 51, 0.3);
     z-index: 2;
 }
 
@@ -466,12 +468,12 @@
     }
 }
 
-/* Deep Blue Theme Variables */
+/* Dark Teal Theme Variables */
 :root {
-    --mess-deep-blue: #1a2a6c;
-    --mess-deep-blue-light: #2c3e8f;
-    --mess-deep-blue-lighter: #3b5998;
-    --mess-deep-blue-dark: #0d1a4a;
+    --mess-dark-teal: #0B2E33;
+    --mess-dark-teal-light: #1A4A52;
+    --mess-dark-teal-lighter: #2A5E66;
+    --mess-dark-teal-dark: #072128;
     --mess-bg: #f0f4f8;
 }
 
@@ -487,7 +489,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #0B2E33, #1A4A52);
     transition: width 0.3s ease;
 }
 
@@ -514,8 +516,8 @@
 }
 
 .dietary-tag {
-    background: rgba(26, 42, 108, 0.08);
-    color: #1a2a6c;
+    background: rgba(11, 46, 51, 0.08);
+    color: #0B2E33;
     padding: 2px 12px;
     border-radius: 12px;
     font-size: 10px;
@@ -527,4 +529,106 @@
 .treat-card .dietary-tag {
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .mess-section {
+        background: linear-gradient(135deg, #072128 0%, #0B2E33 100%);
+    }
+
+    .section-title {
+        color: #E2E8F0;
+    }
+
+    .section-title span {
+        color: #A8D8EA;
+    }
+
+    .section-title span::after {
+        background: linear-gradient(to right, #A8D8EA, #7AC2D6);
+        opacity: 0.2;
+    }
+
+    .section-subtitle {
+        color: #A0AEC0;
+    }
+
+    .section-badge {
+        background: rgba(168, 216, 234, 0.1);
+        color: #A8D8EA;
+    }
+
+    .badge-accent {
+        color: #A8D8EA;
+        background: rgba(168, 216, 234, 0.1);
+        border-color: rgba(168, 216, 234, 0.1);
+    }
+
+    .badge-accent:hover {
+        background: rgba(168, 216, 234, 0.15);
+    }
+
+    .menu-card {
+        background: #0D1F24;
+        border-color: #1A4A52;
+    }
+
+    .menu-card:hover {
+        border-color: #2A5E66;
+        box-shadow: 0 25px 50px rgba(168, 216, 234, 0.05);
+    }
+
+    .menu-day-header {
+        background: linear-gradient(135deg, #0A1A1F 0%, #072128 50%, #0B2E33 100%);
+    }
+
+    .menu-body {
+        background: #0D1F24;
+    }
+
+    .meal-item {
+        border-bottom-color: rgba(168, 216, 234, 0.08);
+    }
+
+    .meal-item:hover {
+        border-bottom-color: rgba(168, 216, 234, 0.2);
+    }
+
+    .meal-item label {
+        color: #A8D8EA;
+    }
+
+    .meal-item span {
+        color: #E2E8F0;
+    }
+
+    .meal-type.veg {
+        background: rgba(168, 216, 234, 0.1);
+        color: #A8D8EA;
+    }
+
+    .meal-type.non-veg {
+        background: rgba(168, 216, 234, 0.05);
+        color: #7AC2D6;
+    }
+
+    .meal-type.special {
+        background: linear-gradient(135deg, #1A4A52, #2A5E66);
+    }
+
+    .treat-card {
+        background: linear-gradient(135deg, #0A1A1F 0%, #072128 50%, #0B2E33 100%);
+        border-color: #1A4A52;
+    }
+
+    .dietary-tag {
+        background: rgba(168, 216, 234, 0.08);
+        color: #A8D8EA;
+    }
+
+    .mess-section::before,
+    .mess-section::after {
+        background: radial-gradient(circle, rgba(168, 216, 234, 0.03) 0%, transparent 70%);
+    }
 }
