@@ -10,25 +10,131 @@
 .about-heading {
     font-size: 3.5rem;
     font-weight: 900;
-    color: #ffffff;
+    color: #FFFFFF;
+    /* Pure white for maximum contrast */
     letter-spacing: 2px;
     margin-bottom: 10px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .heading-line {
     width: 80px;
     height: 4px;
-    background-color: #ffffff;
+    background: linear-gradient(90deg, #F6AD55, #ED8936);
+    /* Warm orange gradient for accent */
     margin-bottom: 30px;
+    border-radius: 2px;
 }
 
 .about-passage {
-    color: #ffffff;
+    color: #CBD5E0;
+    /* Light gray-blue for excellent readability */
     font-size: 1.1rem;
-    line-height: 1.8;
+    line-height: 1.9;
     max-width: 500px;
     white-space: normal;
-    /* Ensures text wraps correctly */
+}
+
+/* Title / Subtitle Styling */
+.about-title {
+    color: #FBD38D;
+    /* Warm golden color for titles/subtitles */
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+/* For any subheadings */
+.about-sub-heading {
+    color: #F6AD55;
+    /* Soft orange for subheadings */
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* For highlighted or important text */
+.about-highlight {
+    color: #FBD38D;
+    /* Golden color for emphasis */
+    font-weight: 700;
+}
+
+/* For secondary text or descriptions */
+.about-secondary-text {
+    color: #A0AEC0;
+    /* Medium gray for less important text */
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* For small meta text */
+.about-meta-text {
+    color: #718096;
+    /* Darker gray for meta information */
+    font-size: 0.85rem;
+}
+
+/* List items if any */
+.about-list-item {
+    color: #E2E8F0;
+    /* Light gray for list items */
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 8px;
+}
+
+.about-list-item::before {
+    content: "▸";
+    color: #F6AD55;
+    /* Orange bullet points */
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+/* Quote or testimonial text */
+.about-quote {
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.8;
+    padding: 20px 30px;
+    border-left: 4px solid #F6AD55;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.about-quote-author {
+    color: #FBD38D;
+    font-weight: 600;
+    font-style: normal;
+    margin-top: 10px;
+}
+
+/* Button text if any */
+.about-btn {
+    color: #1A365D;
+    background: #FBD38D;
+    /* Golden button with deep blue text */
+    padding: 12px 35px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-btn:hover {
+    background: #F6AD55;
+    color: #1A365D;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
 /* Right Side Graphics */
@@ -43,7 +149,8 @@
     right: -10%;
     width: 100%;
     height: 80%;
-    background-color: #ffffff;
+    background: linear-gradient(135deg, rgba(251, 211, 141, 0.15), rgba(246, 173, 85, 0.08));
+    /* Subtle golden gradient */
     border-radius: 45% 55% 70% 30% / 30% 30% 70% 70%;
     z-index: 1;
 }
@@ -53,7 +160,6 @@
     opacity: 0;
     transition: opacity 0.5s ease;
     margin-right: 5px;
-    /* Forced spacing between words */
 }
 
 .about-main-image {
@@ -86,4 +192,20 @@
 .is-active {
     opacity: 1 !important;
     transform: translate(0, 0) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .about-heading {
+        font-size: 2.5rem;
+    }
+
+    .about-passage {
+        font-size: 1rem;
+        max-width: 100%;
+    }
+
+    .about-title {
+        font-size: 0.95rem;
+    }
 }
