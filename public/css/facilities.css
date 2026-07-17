@@ -13,7 +13,7 @@
     right: -5%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -25,7 +25,7 @@
     left: -5%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle, rgba(44, 62, 143, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -38,8 +38,8 @@
 
 .section-badge {
     display: inline-block;
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(11, 46, 51, 0.08);
+    color: #0B2E33;
     padding: 8px 25px;
     border-radius: 50px;
     font-size: 13px;
@@ -50,14 +50,14 @@
 }
 
 .section-title {
-    color: #1a2a6c;
+    color: #0B2E33;
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 15px;
 }
 
 .section-title span {
-    color: #2c3e8f;
+    color: #1A4A52;
     position: relative;
 }
 
@@ -68,28 +68,28 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #0B2E33, #1A4A52);
     border-radius: 10px;
     opacity: 0.3;
 }
 
 .section-subtitle {
-    color: #4a4a5a;
+    color: #2D3748;
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
 }
 
 .hostel-tag {
-    background: linear-gradient(135deg, #1a2a6c, #2c3e8f);
-    color: #fff;
+    background: linear-gradient(135deg, #0B2E33, #1A4A52);
+    color: #FFFFFF;
     padding: 6px 20px;
     border-radius: 20px;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 1px;
     display: inline-block;
-    box-shadow: 0 5px 15px rgba(26, 42, 108, 0.2);
+    box-shadow: 0 5px 15px rgba(11, 46, 51, 0.2);
 }
 
 .stacked-cards-container {
@@ -120,31 +120,31 @@
     overflow: hidden;
     position: relative;
     padding: 40px;
-    box-shadow: 0 20px 60px rgba(26, 42, 108, 0.15);
+    box-shadow: 0 20px 60px rgba(11, 46, 51, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .facility-card-main:hover {
     transform: scale(1.01);
-    box-shadow: 0 30px 80px rgba(26, 42, 108, 0.25);
+    box-shadow: 0 30px 80px rgba(11, 46, 51, 0.25);
 }
 
-/* Card Background Gradients - Deep Blue Theme */
+/* Card Background Gradients - Dark Teal Theme */
 .facility-card-main.card-1 {
-    background: linear-gradient(135deg, #0d1a4a 0%, #1a2a6c 50%, #2c3e8f 100%);
+    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
 }
 
 .facility-card-main.card-2 {
-    background: linear-gradient(135deg, #1a2a6c 0%, #2c3e8f 50%, #3b5998 100%);
+    background: linear-gradient(135deg, #0B2E33 0%, #1A4A52 50%, #2A5E66 100%);
 }
 
 .facility-card-main.card-3 {
-    background: linear-gradient(135deg, #2c3e8f 0%, #3b5998 50%, #4a6aa8 100%);
+    background: linear-gradient(135deg, #1A4A52 0%, #2A5E66 50%, #3A7279 100%);
 }
 
 .facility-card-main.card-4 {
-    background: linear-gradient(135deg, #0d1a4a 0%, #1a2a6c 50%, #2c3e8f 100%);
+    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
 }
 
 /* Card Overlay Pattern */
@@ -197,11 +197,12 @@
     position: relative;
     z-index: 2;
     text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    color: #FFFFFF;
 }
 
 .card-heading-large span {
-    color: #3b5998;
-    background: linear-gradient(135deg, #5b7db5, #7a9ec9);
+    color: #A8D8EA;
+    background: linear-gradient(135deg, #A8D8EA, #7AC2D6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -242,7 +243,7 @@
 
 .card-feature-item i {
     font-size: 14px;
-    color: #3b5998;
+    color: #A8D8EA;
 }
 
 .card-image-container {
@@ -460,12 +461,12 @@
     }
 }
 
-/* Deep Blue Theme Variables */
+/* Dark Teal Theme Variables */
 :root {
-    --facilities-deep-blue: #1a2a6c;
-    --facilities-deep-blue-light: #2c3e8f;
-    --facilities-deep-blue-lighter: #3b5998;
-    --facilities-deep-blue-dark: #0d1a4a;
+    --facilities-deep-blue: #0B2E33;
+    --facilities-deep-blue-light: #1A4A52;
+    --facilities-deep-blue-lighter: #2A5E66;
+    --facilities-deep-blue-dark: #072128;
     --facilities-bg: #f0f4f8;
 }
 
@@ -483,7 +484,7 @@
 
 .card-progress-bar {
     height: 100%;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #0B2E33, #A8D8EA);
     width: 0%;
     transition: width 1.5s ease;
 }
@@ -494,7 +495,35 @@
 
 /* Glass Effect on Cards */
 .facility-card-main.glass {
-    background: rgba(26, 42, 108, 0.85);
+    background: rgba(11, 46, 51, 0.85);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Additional Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .facilities-stacked-section {
+        background: linear-gradient(135deg, #072128 0%, #0B2E33 100%);
+    }
+
+    .section-title {
+        color: #E2E8F0;
+    }
+
+    .section-title span {
+        color: #A8D8EA;
+    }
+
+    .section-subtitle {
+        color: #A0AEC0;
+    }
+
+    .section-badge {
+        background: rgba(168, 216, 234, 0.1);
+        color: #A8D8EA;
+    }
+
+    .hostel-tag {
+        background: linear-gradient(135deg, #1A4A52, #2A5E66);
+    }
 }

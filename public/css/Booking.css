@@ -1,13 +1,66 @@
 .booking-hero {
-    background: linear-gradient(rgba(11, 46, 51, 0.8), rgba(11, 46, 51, 0.8)), 
-                url('/Assert/spilt-image1.png') center/cover;
+    background: linear-gradient(rgba(11, 46, 51, 0.85), rgba(11, 46, 51, 0.9)),
+        url('/Assert/spilt-image1.png') center/cover;
     height: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hero Title */
+.booking-hero-title {
+    color: #FFFFFF;
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    letter-spacing: 2px;
+}
+
+/* Hero Subtitle */
+.booking-hero-subtitle {
+    color: #A8D8EA;
+    /* Soft light blue for contrast */
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: 400;
+    letter-spacing: 1px;
 }
 
 .info-card {
     margin-top: -60px;
     z-index: 5;
     position: relative;
+    background: #FFFFFF;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Info Card Title */
+.info-card-title {
+    color: #0B2E33;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+/* Info Card Text */
+.info-card-text {
+    color: #2D3748;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* Info Card Highlight */
+.info-card-highlight {
+    color: #0B2E33;
+    font-weight: 700;
+    background: #E8F4F8;
+    padding: 2px 8px;
+    border-radius: 4px;
 }
 
 .step-num {
@@ -17,10 +70,204 @@
     margin-bottom: 10px;
 }
 
+/* Step Title */
+.step-title {
+    color: #0B2E33;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* Step Description */
+.step-desc {
+    color: #4A5568;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Step Icon Color */
+.step-icon {
+    color: #0B2E33;
+    background: #A8D8EA;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
 .booking-page-wrapper {
     background-color: #f8fafd;
     min-height: 80vh;
     border: 2px solid #0B2E33;
+    padding: 40px 0;
+}
+
+/* Section Title */
+.booking-section-title {
+    color: #0B2E33;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+/* Section Subtitle */
+.booking-section-subtitle {
+    color: #4A5568;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* Form Labels */
+.booking-form-label {
+    color: #0B2E33;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+/* Form Inputs */
+.booking-form-input {
+    border: 2px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #0B2E33;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.booking-form-input:focus {
+    border-color: #0B2E33;
+    box-shadow: 0 0 0 3px rgba(11, 46, 51, 0.15);
+    outline: none;
+}
+
+.booking-form-input::placeholder {
+    color: #A0AEC0;
+}
+
+/* Form Select */
+.booking-form-select {
+    border: 2px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: #0B2E33;
+    font-size: 1rem;
+    background: #FFFFFF;
+    width: 100%;
+}
+
+/* Submit Button */
+.booking-submit-btn {
+    background: #0B2E33;
+    color: #FFFFFF;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.booking-submit-btn:hover {
+    background: #1A4A52;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(11, 46, 51, 0.3);
+}
+
+/* Secondary Button */
+.booking-secondary-btn {
+    background: transparent;
+    color: #0B2E33;
+    padding: 12px 35px;
+    border: 2px solid #0B2E33;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.booking-secondary-btn:hover {
+    background: #0B2E33;
+    color: #FFFFFF;
+}
+
+/* Card Item */
+.booking-card {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 1px solid #E2E8F0;
+}
+
+.booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(11, 46, 51, 0.15);
+}
+
+.booking-card-title {
+    color: #0B2E33;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.booking-card-text {
+    color: #4A5568;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+
+/* Price Tag */
+.booking-price {
+    color: #0B2E33;
+    font-size: 1.8rem;
+    font-weight: 800;
+}
+
+.booking-price-small {
+    color: #A0AEC0;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+/* Status Badge */
+.booking-badge {
+    background: #A8D8EA;
+    color: #0B2E33;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.booking-badge-success {
+    background: #C6F6D5;
+    color: #22543D;
+}
+
+.booking-badge-warning {
+    background: #FEFCBF;
+    color: #975A16;
+}
+
+/* Divider */
+.booking-divider {
+    border: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #0B2E33, #A8D8EA, #0B2E33);
+    margin: 30px 0;
 }
 
 /* Transitions */
@@ -39,4 +286,28 @@
 body.page-fade-out {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .booking-hero-title {
+        font-size: 2rem;
+    }
+
+    .booking-hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .booking-section-title {
+        font-size: 1.8rem;
+    }
+
+    .info-card {
+        margin-top: -30px;
+        padding: 20px;
+    }
+
+    .booking-price {
+        font-size: 1.4rem;
+    }
 }
