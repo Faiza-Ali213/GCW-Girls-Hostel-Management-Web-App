@@ -5,7 +5,7 @@
     align-items: center;
     overflow: hidden;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%);
     position: relative;
 }
 
@@ -17,7 +17,7 @@
     right: -5%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -29,7 +29,7 @@
     left: -5%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(44, 62, 143, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -46,8 +46,8 @@
 /* Hero Badge */
 .hero-badge {
     display: inline-block;
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(180, 130, 80, 0.15);
+    color: #8B6B4A;
     padding: 6px 20px;
     border-radius: 50px;
     font-size: 12px;
@@ -55,19 +55,19 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 15px;
-    border: 1px solid rgba(26, 42, 108, 0.1);
+    border: 1px solid rgba(180, 130, 80, 0.2);
 }
 
 .hero-title {
     font-size: 3.5rem;
     font-weight: 800;
-    color: #1a2a6c;
+    color: #4A3228;
     line-height: 1.1;
     margin-bottom: 30px;
 }
 
 .hero-title span {
-    color: #2c3e8f;
+    color: #8B6B4A;
     position: relative;
 }
 
@@ -78,19 +78,19 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #8B6B4A, #C49A6C);
     border-radius: 10px;
-    opacity: 0.3;
+    opacity: 0.4;
 }
 
 .hero-description {
-    border-left: 4px solid #1a2a6c;
+    border-left: 4px solid #C49A6C;
     padding-left: 25px;
     margin-bottom: 40px;
 }
 
 .hero-description p {
-    color: #4a4a5a;
+    color: #6B5544;
     font-size: 1.1rem;
     line-height: 1.6;
     max-width: 500px;
@@ -99,22 +99,22 @@
 /* Search Bar Styles */
 .search-bar {
     display: flex;
-    background: white;
-    box-shadow: 0 15px 40px rgba(26, 42, 108, 0.12);
+    background: #FFFFFF;
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.15);
     border-radius: 12px;
     width: fit-content;
-    border: 2px solid #1a2a6c;
+    border: 2px solid #C49A6C;
     overflow: hidden;
     transition: box-shadow 0.3s ease;
 }
 
 .search-bar:hover {
-    box-shadow: 0 20px 60px rgba(26, 42, 108, 0.18);
+    box-shadow: 0 20px 60px rgba(139, 115, 85, 0.2);
 }
 
 .search-item {
     padding: 20px 30px;
-    border-right: 1px solid rgba(26, 42, 108, 0.08);
+    border-right: 1px solid rgba(180, 130, 80, 0.1);
 }
 
 .search-item:last-of-type {
@@ -126,30 +126,30 @@
     font-weight: 700;
     font-size: 0.85rem;
     margin-bottom: 5px;
-    color: #1a2a6c;
+    color: #6B4F3A;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .input-row {
-    color: #4a4a5a;
+    color: #4A3228;
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
 .input-row i {
-    color: #1a2a6c;
+    color: #C49A6C;
     font-size: 16px;
 }
 
 .input-row span {
-    color: #a0a0b0;
+    color: #B8A090;
 }
 
 .search-btn {
-    background: linear-gradient(135deg, #1a2a6c 0%, #2c3e8f 100%);
-    color: white;
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+    color: #FFFFFF;
     border: none;
     padding: 0 40px;
     font-size: 1.1rem;
@@ -161,7 +161,7 @@
 }
 
 .search-btn:hover {
-    background: linear-gradient(135deg, #2c3e8f 0%, #3b5998 100%);
+    background: linear-gradient(135deg, #7A5D40 0%, #8B6B4A 100%);
     transform: scale(1.02);
 }
 
@@ -181,7 +181,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(26, 42, 108, 0.05), rgba(44, 62, 143, 0.02));
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.05), rgba(90, 74, 58, 0.02));
     z-index: 1;
     pointer-events: none;
 }
@@ -237,7 +237,7 @@
 
     .search-item {
         border-right: none;
-        border-bottom: 1px solid rgba(26, 42, 108, 0.08);
+        border-bottom: 1px solid rgba(180, 130, 80, 0.1);
         padding: 15px 20px;
     }
 
@@ -301,7 +301,7 @@
 /* --- FEATURES COMPONENT STYLES --- */
 .features-section {
     padding: 80px 0;
-    background: linear-gradient(135deg, #f0f4f8 0%, #d5deed 100%);
+    background: linear-gradient(135deg, #f5efe6 0%, #e8dcc8 100%);
     position: relative;
     overflow: hidden;
 }
@@ -314,7 +314,7 @@
     right: -5%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -326,7 +326,7 @@
     left: -5%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle, rgba(44, 62, 143, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -341,8 +341,8 @@
 
 .features-badge {
     display: inline-block;
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(180, 130, 80, 0.15);
+    color: #8B6B4A;
     padding: 8px 25px;
     border-radius: 50px;
     font-size: 13px;
@@ -350,18 +350,18 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 15px;
-    border: 1px solid rgba(26, 42, 108, 0.1);
+    border: 1px solid rgba(180, 130, 80, 0.2);
 }
 
 .features-title {
-    color: #1a2a6c;
+    color: #4A3228;
     font-size: 2.8rem;
     font-weight: 800;
     margin-bottom: 15px;
 }
 
 .features-title span {
-    color: #2c3e8f;
+    color: #8B6B4A;
     position: relative;
 }
 
@@ -372,13 +372,13 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #8B6B4A, #C49A6C);
     border-radius: 10px;
-    opacity: 0.3;
+    opacity: 0.4;
 }
 
 .features-subtitle {
-    color: #4a4a5a;
+    color: #6B5544;
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
@@ -398,27 +398,27 @@
 .icon-circle {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #0d1a4a 0%, #1a2a6c 50%, #2c3e8f 100%);
-    color: #e8edf5;
+    background: linear-gradient(135deg, #7A5D40 0%, #8B6B4A 50%, #A8825A 100%);
+    color: #FFFFFF;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 25px auto;
     font-size: 32px;
-    box-shadow: 0 15px 30px rgba(26, 42, 108, 0.15);
+    box-shadow: 0 15px 30px rgba(139, 115, 85, 0.2);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     border: 2px solid rgba(255, 255, 255, 0.05);
 }
 
 .feature-box:hover .icon-circle {
     transform: translateY(-8px) scale(1.05);
-    box-shadow: 0 25px 50px rgba(26, 42, 108, 0.25);
-    background: linear-gradient(135deg, #1a2a6c 0%, #2c3e8f 50%, #3b5998 100%);
+    box-shadow: 0 25px 50px rgba(139, 115, 85, 0.3);
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 50%, #C49A6C 100%);
 }
 
 .feature-name {
-    color: #1a2a6c;
+    color: #4A3228;
     font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 12px;
@@ -427,11 +427,11 @@
 }
 
 .feature-box:hover .feature-name {
-    color: #2c3e8f;
+    color: #8B6B4A;
 }
 
 .feature-text {
-    color: #4a4a5a;
+    color: #6B5544;
     font-size: 0.95rem;
     line-height: 1.7;
     opacity: 0.9;
@@ -439,11 +439,11 @@
 
 /* Feature Card Style */
 .feature-card {
-    background: white;
+    background: #FFFFFF;
     border-radius: 20px;
     padding: 30px 25px;
-    border: 2px solid #1a2a6c;
-    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.05);
+    border: 2px solid #C49A6C;
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.08);
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: center;
     height: 100%;
@@ -451,8 +451,8 @@
 
 .feature-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 25px 60px rgba(26, 42, 108, 0.12);
-    border-color: #2c3e8f;
+    box-shadow: 0 25px 60px rgba(139, 115, 85, 0.15);
+    border-color: #A8825A;
 }
 
 /* Feature Grid */
@@ -469,8 +469,8 @@
     position: absolute;
     top: -10px;
     right: -10px;
-    background: linear-gradient(135deg, #1a2a6c, #2c3e8f);
-    color: white;
+    background: linear-gradient(135deg, #8B6B4A, #A8825A);
+    color: #FFFFFF;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -479,7 +479,7 @@
     justify-content: center;
     font-size: 14px;
     font-weight: 700;
-    box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
+    box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
 }
 
 .feature-card {
@@ -546,92 +546,116 @@
     }
 }
 
-/* Deep Blue Theme Variables */
+/* Warm Color Theme Variables */
 :root {
-    --hero-deep-blue: #1a2a6c;
-    --hero-deep-blue-light: #2c3e8f;
-    --hero-deep-blue-lighter: #3b5998;
-    --hero-deep-blue-dark: #0d1a4a;
-    --hero-bg: #f0f4f8;
+    --hero-warm-dark: #4A3228;
+    --hero-warm-medium: #6B5544;
+    --hero-warm-primary: #8B6B4A;
+    --hero-warm-light: #A8825A;
+    --hero-warm-lighter: #C49A6C;
+    --hero-warm-bg: #f5efe6;
 }
 
 /* Dark Mode Support - Optional */
 @media (prefers-color-scheme: dark) {
     .hero-container {
-        background: linear-gradient(135deg, #0d1a4a, #1a2a6c);
+        background: linear-gradient(135deg, #2A1A0E 0%, #3D2B1F 100%);
     }
 
     .hero-title {
-        color: #e8edf5;
+        color: #F5EFE6;
     }
 
     .hero-title span {
-        color: #3b5998;
+        color: #C49A6C;
     }
 
     .hero-description p {
-        color: #a0a0b0;
+        color: #C8B8A8;
     }
 
     .hero-badge {
-        background: rgba(44, 62, 143, 0.2);
-        color: #e8edf5;
-        border-color: rgba(44, 62, 143, 0.2);
+        background: rgba(180, 130, 80, 0.2);
+        color: #C49A6C;
+        border-color: rgba(180, 130, 80, 0.2);
     }
 
     .search-bar {
-        background: #1a1a2e;
-        border-color: #2c3e8f;
+        background: #2A1A0E;
+        border-color: #C49A6C;
     }
 
     .search-item label {
-        color: #e8edf5;
+        color: #F5EFE6;
     }
 
     .input-row {
-        color: #a0a0b0;
+        color: #C8B8A8;
     }
 
     .input-row i {
-        color: #3b5998;
+        color: #C49A6C;
     }
 
     .search-item {
-        border-color: rgba(44, 62, 143, 0.1);
+        border-color: rgba(180, 130, 80, 0.15);
+    }
+
+    .search-btn {
+        background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+        color: #FFFFFF;
+    }
+
+    .search-btn:hover {
+        background: linear-gradient(135deg, #7A5D40 0%, #8B6B4A 100%);
     }
 
     .features-section {
-        background: linear-gradient(135deg, #0d1a4a, #1a2a6c);
+        background: linear-gradient(135deg, #2A1A0E 0%, #3D2B1F 100%);
     }
 
     .features-title {
-        color: #e8edf5;
+        color: #F5EFE6;
+    }
+
+    .features-title span {
+        color: #C49A6C;
     }
 
     .features-subtitle {
-        color: #a0a0b0;
+        color: #C8B8A8;
     }
 
     .features-badge {
-        background: rgba(44, 62, 143, 0.2);
-        color: #e8edf5;
-        border-color: rgba(44, 62, 143, 0.2);
+        background: rgba(180, 130, 80, 0.2);
+        color: #C49A6C;
+        border-color: rgba(180, 130, 80, 0.2);
     }
 
     .feature-card {
-        background: #1a1a2e;
-        border-color: #2c3e8f;
+        background: #2A1A0E;
+        border-color: #C49A6C;
     }
 
     .feature-name {
-        color: #e8edf5;
+        color: #F5EFE6;
     }
 
     .feature-text {
-        color: #a0a0b0;
+        color: #C8B8A8;
     }
 
     .icon-circle {
-        background: linear-gradient(135deg, #1a2a6c, #2c3e8f);
+        background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+        color: #FFFFFF;
+    }
+
+    .feature-box:hover .icon-circle {
+        background: linear-gradient(135deg, #A8825A 0%, #C49A6C 100%);
+    }
+
+    .feature-number {
+        background: linear-gradient(135deg, #8B6B4A, #A8825A);
+        color: #FFFFFF;
     }
 }

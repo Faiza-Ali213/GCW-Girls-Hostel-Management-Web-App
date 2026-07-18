@@ -9,10 +9,10 @@
     <style>
         /* Critical styles to prevent flash */
         .navbar {
-            background: linear-gradient(135deg, #e8f0fe 0%, #ffffff 50%, #f0f7ff 100%) !important;
+            background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 50%, #e8dcc8 100%) !important;
             padding: 10px 0;
-            box-shadow: 0 2px 20px rgba(37, 99, 235, 0.12);
-            border-bottom: 3px solid #2563eb;
+            box-shadow: 0 2px 20px rgba(139, 115, 85, 0.15);
+            border-bottom: 3px solid #8B6B4A;
             display: flex;
             align-items: center;
             min-height: 70px;
@@ -22,25 +22,25 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            color: #2563eb !important;
+            color: #4A3228 !important;
             font-size: 24px;
             text-decoration: none;
         }
         .nav-link {
-            color: #2563eb !important;
+            color: #4A3228 !important;
             font-weight: 500;
             text-decoration: none;
         }
         .nav-link:hover {
-            color: #16a34a !important;
+            color: #8B6B4A !important;
         }
         .nav-link.active {
-            color: #16a34a !important;
+            color: #8B6B4A !important;
         }
         .btn-book {
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
             color: #ffffff !important;
-            border: 2px solid #2563eb;
+            border: 2px solid #8B6B4A;
             border-radius: 50px;
             padding: 10px 25px;
             font-weight: 600;
@@ -70,23 +70,23 @@
 
         /* --- FULL NAVIGATION STYLES --- */
         .navbar {
-            background: linear-gradient(135deg, #e8f0fe 0%, #ffffff 50%, #f0f7ff 100%) !important;
+            background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 50%, #e8dcc8 100%) !important;
             padding: 10px 0;
-            box-shadow: 0 2px 20px rgba(37, 99, 235, 0.12);
-            color: #1a3a5c !important;
-            border-bottom: 3px solid #2563eb;
+            box-shadow: 0 2px 20px rgba(139, 115, 85, 0.15);
+            color: #4A3228 !important;
+            border-bottom: 3px solid #8B6B4A;
         }
         .navbar-brand {
             font-weight: 800;
             display: flex;
             align-items: center;
             gap: 15px;
-            color: #2563eb !important;
+            color: #4A3228 !important;
             font-size: 24px;
             transition: color 0.3s ease;
         }
         .navbar-brand:hover {
-            color: #16a34a !important;
+            color: #8B6B4A !important;
         }
         
         .nav-logo-img {
@@ -100,7 +100,7 @@
 
         /* --- NAVIGATION LINKS --- */
         .nav-link {
-            color: #2563eb !important;
+            color: #4A3228 !important;
             margin: 0 15px;
             font-weight: 500;
             position: relative;
@@ -115,13 +115,13 @@
             height: 2px;
             bottom: 0;
             left: 50%;
-            background-color: #16a34a;
+            background-color: #8B6B4A;
             transition: all 0.3s ease-in-out;
             transform: translateX(-50%);
         }
 
         .nav-link:hover {
-            color: #16a34a !important;
+            color: #8B6B4A !important;
         }
 
         .nav-link:hover::after {
@@ -129,11 +129,11 @@
         }
         
         .nav-link.active {
-            color: #16a34a !important;
+            color: #8B6B4A !important;
         }
         .nav-link.active::after {
             width: 100%;
-            background-color: #16a34a;
+            background-color: #8B6B4A;
         }
         
         /* --- BOOK NOW BUTTON --- */
@@ -146,17 +146,17 @@
             transition: 0.3s;
         }
         .btn-book { 
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
             color: #ffffff !important;
-            border: 2px solid #2563eb;
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
+            border: 2px solid #8B6B4A;
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.25);
         }
         .btn-book:hover { 
-            background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+            background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
             color: #ffffff !important;
             transform: translateY(-2px);
-            box-shadow: 0 6px 25px rgba(22, 163, 74, 0.3);
-            border-color: #16a34a;
+            box-shadow: 0 6px 25px rgba(139, 115, 85, 0.3);
+            border-color: #6B5544;
         }
 
         /* --- PROFILE DROPDOWN --- */
@@ -165,15 +165,15 @@
             display: inline-block;
         }
         .profile-btn {
-            background: rgba(37, 99, 235, 0.1);
-            border: 2px solid rgba(37, 99, 235, 0.2);
+            background: rgba(139, 115, 85, 0.15);
+            border: 2px solid rgba(139, 115, 85, 0.2);
             border-radius: 50%;
             width: 42px;
             height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #2563eb;
+            color: #4A3228;
             font-size: 1.2rem;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -183,10 +183,10 @@
             overflow: hidden;
         }
         .profile-btn:hover {
-            background: rgba(22, 163, 74, 0.1);
-            border-color: #16a34a;
+            background: rgba(139, 115, 85, 0.25);
+            border-color: #8B6B4A;
             transform: scale(1.05);
-            color: #16a34a;
+            color: #8B6B4A;
         }
         .profile-btn img {
             width: 100%;
@@ -194,13 +194,15 @@
             object-fit: cover;
         }
         .profile-btn i {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            color: #8B6B4A;
         }
+        /* Profile Avatar - Only for letters if no photo */
         .profile-avatar {
             width: 42px;
             height: 42px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -239,7 +241,7 @@
         }
         .profile-dropdown-menu .dropdown-item {
             padding: 10px 20px;
-            color: #1a3a5c;
+            color: #4A3228;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -253,16 +255,16 @@
             cursor: pointer;
         }
         .profile-dropdown-menu .dropdown-item:hover {
-            background: #f0fdf4;
-            color: #16a34a;
+            background: #f5efe6;
+            color: #8B6B4A;
         }
         .profile-dropdown-menu .dropdown-item i {
             width: 20px;
-            color: #2563eb;
+            color: #8B6B4A;
             transition: color 0.2s ease;
         }
         .profile-dropdown-menu .dropdown-item:hover i {
-            color: #16a34a;
+            color: #8B6B4A;
         }
         .profile-dropdown-menu .dropdown-divider {
             height: 1px;
@@ -272,7 +274,7 @@
         .profile-dropdown-menu .dropdown-header {
             padding: 10px 20px;
             font-weight: 600;
-            color: #1a3a5c;
+            color: #4A3228;
             font-size: 0.85rem;
         }
         .profile-dropdown-menu .dropdown-header small {
@@ -308,31 +310,31 @@
             border: none;
         }
         .btn-login {
-            background: rgba(37, 99, 235, 0.1);
-            color: #2563eb;
-            border: 1px solid rgba(37, 99, 235, 0.2);
+            background: rgba(139, 115, 85, 0.12);
+            color: #4A3228;
+            border: 1px solid rgba(139, 115, 85, 0.2);
         }
         .btn-login:hover {
-            background: rgba(22, 163, 74, 0.1);
-            color: #16a34a;
-            border-color: #16a34a;
+            background: rgba(139, 115, 85, 0.2);
+            color: #8B6B4A;
+            border-color: #8B6B4A;
             transform: translateY(-2px);
         }
         .btn-register {
-            background: #2563eb;
+            background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
             color: #FFFFFF;
             transition: all 0.3s ease;
         }
         .btn-register:hover {
-            background: #16a34a;
+            background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
             color: #FFFFFF;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 115, 85, 0.3);
         }
 
         /* --- FIXED FOOTER STYLING --- */
         .footer-main {
-            background: linear-gradient(135deg, #0a1e33 0%, #1a3a5c 50%, #0d2847 100%);
+            background: linear-gradient(135deg, #2A1A0E 0%, #4A3228 50%, #3D2B1F 100%);
             color: #FFFFFF;
             padding: 80px 0 40px 0;
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -349,13 +351,15 @@
             margin-bottom: 20px;
         }
         .footer-logo-text:hover {
-            color: #e0e8f0;
+            color: #C49A6C;
         }
 
+        /* Footer logo - original colored logo (not white) */
         .footer-logo-img {
             width: 80px;
             height: auto;
-            filter: brightness(0) invert(1);
+            /* Remove filter: brightness(0) invert(1) to keep original colors */
+            filter: none;
         }
 
         .footer-about-text {
@@ -381,7 +385,7 @@
             bottom: 0;
             width: 30px;
             height: 2px;
-            background: linear-gradient(90deg, #60a5fa, #3b82f6);
+            background: linear-gradient(90deg, #C49A6C, #A8825A);
         }
 
         .footer-links { list-style: none; padding: 0; }
@@ -393,7 +397,7 @@
             transition: 0.3s;
         }
         .footer-links a:hover { 
-            color: #60a5fa;
+            color: #C49A6C;
             padding-left: 5px;
         }
         
@@ -412,7 +416,7 @@
 
         .contact-info-list i {
             font-size: 18px;
-            color: #60a5fa;
+            color: #C49A6C;
         }
 
         .social-links { display: flex; gap: 15px; }
@@ -429,17 +433,17 @@
             text-decoration: none;
         }
         .social-links a:hover { 
-            background: #60a5fa;
+            background: #C49A6C;
             color: #FFFFFF;
             transform: translateY(-3px);
         }
 
         .footer-sub-bar {
-            background: #061a2e;
+            background: #1A0E08;
             padding: 20px 0;
             font-size: 14px;
             color: rgba(255,255,255,0.5);
-            border-top: 2px solid rgba(96, 165, 250, 0.2);
+            border-top: 2px solid rgba(196, 154, 108, 0.2);
         }
 
         /* --- RESPONSIVE --- */
@@ -483,6 +487,9 @@
                 height: 36px;
                 font-size: 1rem;
             }
+            .profile-btn i {
+                font-size: 1.2rem;
+            }
             .profile-avatar {
                 width: 36px;
                 height: 36px;
@@ -518,15 +525,14 @@
 
                     <!-- Auth Section -->
                     @auth
-                        <!-- User is logged in - Show Profile -->
+                        <!-- User is logged in - Show Profile with Icon -->
                         <div class="profile-dropdown">
                             <button class="profile-btn" onclick="toggleDropdown()" aria-label="Profile">
                                 @if(Auth::user()->profile_photo)
                                     <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="Profile">
                                 @else
-                                    <div class="profile-avatar">
-                                        {{ substr(Auth::user()->name ?? 'U', 0, 2) }}
-                                    </div>
+                                    <!-- Show user icon instead of alphabet -->
+                                    <i class="bi bi-person-fill"></i>
                                 @endif
                             </button>
                             <div class="profile-dropdown-menu" id="profileDropdown">
@@ -601,6 +607,7 @@
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
                     <a href="{{ route('home') }}" class="footer-logo-text">
+                        <!-- Footer logo - original colored logo (not white) -->
                         <img src="{{ asset('Assert/logo.png') }}" alt="GCW" class="footer-logo-img"> 
                         GCW Hostel Management
                     </a>
