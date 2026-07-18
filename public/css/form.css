@@ -1,6 +1,10 @@
+/* ======================================== */
+/* CONTACT SECTION - WARM THEME */
+/* ======================================== */
+
 .contact-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%);
     position: relative;
     overflow: hidden;
 }
@@ -13,7 +17,7 @@
     right: -5%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.05) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -25,7 +29,7 @@
     left: -5%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle, rgba(44, 62, 143, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(196, 154, 108, 0.04) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -34,11 +38,14 @@
     padding-right: 30px;
 }
 
-/* Section Badge */
+/* ======================================== */
+/* SECTION BADGE */
+/* ======================================== */
+
 .contact-badge {
     display: inline-block;
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(139, 115, 85, 0.12);
+    color: #8B6B4A;
     padding: 8px 25px;
     border-radius: 50px;
     font-size: 13px;
@@ -46,11 +53,11 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     margin-bottom: 15px;
-    border: 1px solid rgba(26, 42, 108, 0.1);
+    border: 1px solid rgba(139, 115, 85, 0.15);
 }
 
 .accent-text {
-    color: #1a2a6c;
+    color: #8B6B4A;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -58,14 +65,14 @@
 }
 
 .contact-title {
-    color: #1a2a6c;
+    color: #4A3228;
     font-weight: 800;
     font-size: 2.5rem;
     margin-bottom: 20px;
 }
 
 .contact-title span {
-    color: #2c3e8f;
+    color: #8B6B4A;
     position: relative;
 }
 
@@ -76,49 +83,57 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #1a2a6c, #3b5998);
+    background: linear-gradient(to right, #8B6B4A, #C49A6C);
     border-radius: 10px;
     opacity: 0.3;
 }
 
 .contact-description {
-    color: #4a4a5a;
+    color: #5A4A3A;
     font-size: 1.05rem;
     line-height: 1.8;
     margin-bottom: 25px;
 }
 
-/* Form Elements with your required 2px border and Radius */
+/* ======================================== */
+/* FORM ELEMENTS - WARM THEME */
+/* ======================================== */
+
 .form-control {
-    border: 2px solid #1a2a6c;
+    border: 2px solid #8B6B4A;
     padding: 15px;
     border-radius: 12px;
     background-color: #ffffff;
     transition: all 0.3s ease;
-    color: #1a2a6c;
+    color: #4A3228;
+    width: 100%;
 }
 
 .form-control:focus {
-    border-color: #2c3e8f;
-    box-shadow: 0 0 0 4px rgba(26, 42, 108, 0.1);
+    border-color: #C49A6C;
+    box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.1);
     outline: none;
 }
 
 .form-control::placeholder {
-    color: #a0a0b0;
+    color: #A8825A;
 }
 
 .form-label {
-    color: #1a2a6c;
+    color: #4A3228;
     font-weight: 600;
     font-size: 14px;
 }
 
+/* ======================================== */
+/* BUTTON - MATCHING ROOM SECTION */
+/* ======================================== */
+
 .btn-submit {
-    background: linear-gradient(135deg, #1a2a6c 0%, #2c3e8f 100%);
-    color: #fff;
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+    color: #ffffff;
     padding: 15px 45px;
-    border: none;
+    border: 2px solid #8B6B4A;
     border-radius: 50px;
     font-weight: 700;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -127,13 +142,16 @@
     letter-spacing: 1px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.2);
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.2);
+    cursor: pointer;
 }
 
 .btn-submit:hover {
-    background: linear-gradient(135deg, #2c3e8f 0%, #3b5998 100%);
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(26, 42, 108, 0.35);
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.35);
+    border-color: #6B5544;
+    color: #ffffff;
 }
 
 .btn-submit:active {
@@ -156,20 +174,23 @@
     transform: scale(1);
 }
 
-/* --- IMAGE STYLING WITH MARGIN --- */
+/* ======================================== */
+/* MAP VISUAL WRAPPER */
+/* ======================================== */
+
 .map-visual-wrapper {
     margin-left: 50px;
-    border: 2px solid #1a2a6c;
+    border: 2px solid #8B6B4A;
     border-radius: 25px;
     overflow: hidden;
-    box-shadow: 0 20px 50px rgba(26, 42, 108, 0.12);
+    box-shadow: 0 20px 50px rgba(139, 115, 85, 0.12);
     transition: all 0.4s ease;
     position: relative;
 }
 
 .map-visual-wrapper:hover {
     transform: translateY(-5px);
-    box-shadow: 0 30px 70px rgba(26, 42, 108, 0.18);
+    box-shadow: 0 30px 70px rgba(139, 115, 85, 0.18);
 }
 
 .map-visual-wrapper::before {
@@ -179,7 +200,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(26, 42, 108, 0.05), rgba(44, 62, 143, 0.02));
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.05), rgba(196, 154, 108, 0.02));
     z-index: 1;
     pointer-events: none;
 }
@@ -196,19 +217,22 @@
     transform: scale(1.02);
 }
 
-/* Map Badge */
+/* ======================================== */
+/* MAP BADGE */
+/* ======================================== */
+
 .map-badge {
     position: absolute;
     bottom: 25px;
     right: 25px;
-    background: linear-gradient(135deg, #1a2a6c, #2c3e8f);
-    color: white;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+    color: #ffffff;
     padding: 12px 20px;
     border-radius: 12px;
     font-size: 14px;
     font-weight: 600;
     z-index: 2;
-    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.3);
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.3);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
@@ -220,7 +244,10 @@
     font-size: 20px;
 }
 
-/* --- ANIMATION: INSIDE TO OUTSIDE --- */
+/* ======================================== */
+/* ANIMATIONS */
+/* ======================================== */
+
 .reveal-zoom {
     opacity: 0;
     transform: scale(0.6);
@@ -233,60 +260,15 @@
     transition: all 1.2s ease-out;
 }
 
-/* Active State triggered by JS */
 .is-active {
     opacity: 1 !important;
     transform: scale(1) translateY(0) !important;
 }
 
-/* Custom SweetAlert2 Styling */
-.hostel-popup-style {
-    border-top: 8px solid #1a2a6c !important;
-    border-radius: 20px !important;
-    padding: 2rem !important;
-    box-shadow: 0 20px 60px rgba(26, 42, 108, 0.25) !important;
-}
+/* ======================================== */
+/* CONTACT INFO GRID */
+/* ======================================== */
 
-.hostel-popup-title {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 700 !important;
-    color: #1a2a6c !important;
-    font-size: 24px !important;
-}
-
-.hostel-popup-button {
-    padding: 12px 40px !important;
-    border-radius: 50px !important;
-    font-weight: 600 !important;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    font-size: 14px !important;
-    background: linear-gradient(135deg, #1a2a6c, #2c3e8f) !important;
-    color: white !important;
-    border: none !important;
-    transition: all 0.3s ease !important;
-}
-
-.hostel-popup-button:hover {
-    background: linear-gradient(135deg, #2c3e8f, #3b5998) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.3) !important;
-}
-
-/* Optional: Add a subtle entry animation if you aren't using Animate.css */
-@keyframes popupEntrance {
-    from {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* Contact Info Cards */
 .contact-info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -299,45 +281,54 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background: white;
+    background: #ffffff;
     border-radius: 12px;
-    border: 2px solid #1a2a6c;
+    border: 2px solid #8B6B4A;
     transition: all 0.3s ease;
 }
 
 .contact-info-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(26, 42, 108, 0.1);
-    border-color: #2c3e8f;
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.1);
+    border-color: #C49A6C;
 }
 
 .contact-info-icon {
     width: 45px;
     height: 45px;
-    background: linear-gradient(135deg, #1a2a6c, #2c3e8f);
-    color: white;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+    color: #ffffff;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 20px;
     flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.contact-info-item:hover .contact-info-icon {
+    background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%);
+    transform: rotateY(10deg);
 }
 
 .contact-info-text h6 {
-    color: #1a2a6c;
+    color: #4A3228;
     font-weight: 700;
     font-size: 14px;
     margin: 0;
 }
 
 .contact-info-text p {
-    color: #4a4a5a;
+    color: #6B5544;
     font-size: 13px;
     margin: 0;
 }
 
-/* Responsive Design */
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
 @media (max-width: 1024px) {
     .contact-section {
         padding: 80px 0;
@@ -451,69 +442,135 @@
     .map-badge i {
         font-size: 16px;
     }
+
+    .btn-submit {
+        padding: 12px 25px;
+        font-size: 13px;
+    }
 }
 
-/* Deep Blue Theme Variables */
-:root {
-    --contact-deep-blue: #1a2a6c;
-    --contact-deep-blue-light: #2c3e8f;
-    --contact-deep-blue-lighter: #3b5998;
-    --contact-deep-blue-dark: #0d1a4a;
-    --contact-bg: #f0f4f8;
-}
+/* ======================================== */
+/* DARK MODE - WARM THEME */
+/* ======================================== */
 
-/* Dark Mode Support - Optional */
 @media (prefers-color-scheme: dark) {
     .contact-section {
-        background: linear-gradient(135deg, #0d1a4a, #1a2a6c);
+        background: linear-gradient(135deg, #2A1F18 0%, #3D2D22 100%);
     }
 
     .contact-title {
-        color: #e8edf5;
+        color: #F5E6D3;
     }
 
     .contact-title span {
-        color: #3b5998;
+        color: #C49A6C;
+    }
+
+    .contact-title span::after {
+        background: linear-gradient(to right, #8B6B4A, #C49A6C);
+        opacity: 0.2;
     }
 
     .contact-description {
-        color: #a0a0b0;
+        color: #D4C5B5;
     }
 
     .contact-badge {
-        background: rgba(44, 62, 143, 0.2);
-        color: #e8edf5;
-        border-color: rgba(44, 62, 143, 0.2);
+        background: rgba(139, 115, 85, 0.15);
+        color: #C49A6C;
+        border-color: rgba(139, 115, 85, 0.15);
     }
 
     .accent-text {
-        color: #3b5998;
+        color: #C49A6C;
     }
 
     .form-control {
-        background-color: #1a1a2e;
-        border-color: #2c3e8f;
-        color: #e8edf5;
+        background-color: #2A1F18;
+        border-color: #6B5544;
+        color: #F5E6D3;
+    }
+
+    .form-control:focus {
+        border-color: #8B6B4A;
+        box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.15);
     }
 
     .form-control::placeholder {
-        color: #666;
+        color: #8B6B4A;
     }
 
     .form-label {
-        color: #e8edf5;
+        color: #F5E6D3;
+    }
+
+    .btn-submit {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+        border-color: #6B5544;
+    }
+
+    .btn-submit:hover {
+        background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%);
+        border-color: #8B6B4A;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .map-visual-wrapper {
+        border-color: #6B5544;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    }
+
+    .map-visual-wrapper:hover {
+        box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+    }
+
+    .map-badge {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
     }
 
     .contact-info-item {
-        background: #1a1a2e;
-        border-color: #2c3e8f;
+        background: #2A1F18;
+        border-color: #6B5544;
+    }
+
+    .contact-info-item:hover {
+        border-color: #8B6B4A;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     }
 
     .contact-info-text h6 {
-        color: #e8edf5;
+        color: #F5E6D3;
     }
 
     .contact-info-text p {
-        color: #a0a0b0;
+        color: #D4C5B5;
     }
+
+    .contact-info-icon {
+        background: linear-gradient(135deg, #4A3228 0%, #6B5544 100%);
+    }
+
+    .contact-info-item:hover .contact-info-icon {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+    }
+
+    .contact-section::before,
+    .contact-section::after {
+        background: radial-gradient(circle, rgba(196, 154, 108, 0.03) 0%, transparent 70%);
+    }
+}
+
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
+
+:root {
+    --contact-deep-blue: #8B6B4A;
+    --contact-deep-blue-light: #A8825A;
+    --contact-deep-blue-lighter: #C49A6C;
+    --contact-deep-blue-dark: #6B5544;
+    --contact-deep-blue-darker: #4A3228;
+    --contact-bg-start: #e8dcc8;
+    --contact-bg-end: #f5efe6;
+    --contact-gold: #E8B86D;
 }

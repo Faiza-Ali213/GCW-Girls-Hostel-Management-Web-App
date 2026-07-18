@@ -1,6 +1,10 @@
+/* ======================================== */
+/* FACILITIES STACKED SECTION - WARM THEME */
+/* ======================================== */
+
 .facilities-stacked-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%);
     position: relative;
     overflow: hidden;
 }
@@ -13,7 +17,7 @@
     right: -5%;
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -25,12 +29,15 @@
     left: -5%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
 
-/* Section Header */
+/* ======================================== */
+/* SECTION HEADER */
+/* ======================================== */
+
 .section-header {
     margin-bottom: 60px;
     position: relative;
@@ -38,8 +45,8 @@
 
 .section-badge {
     display: inline-block;
-    background: rgba(11, 46, 51, 0.08);
-    color: #0B2E33;
+    background: rgba(139, 115, 85, 0.12);
+    color: #8B6B4A;
     padding: 8px 25px;
     border-radius: 50px;
     font-size: 13px;
@@ -50,14 +57,14 @@
 }
 
 .section-title {
-    color: #0B2E33;
+    color: #4A3228;
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 15px;
 }
 
 .section-title span {
-    color: #1A4A52;
+    color: #8B6B4A;
     position: relative;
 }
 
@@ -68,20 +75,20 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #0B2E33, #1A4A52);
+    background: linear-gradient(to right, #8B6B4A, #C49A6C);
     border-radius: 10px;
     opacity: 0.3;
 }
 
 .section-subtitle {
-    color: #2D3748;
+    color: #5A4A3A;
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
 }
 
 .hostel-tag {
-    background: linear-gradient(135deg, #0B2E33, #1A4A52);
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
     color: #FFFFFF;
     padding: 6px 20px;
     border-radius: 20px;
@@ -89,8 +96,12 @@
     font-weight: 600;
     letter-spacing: 1px;
     display: inline-block;
-    box-shadow: 0 5px 15px rgba(11, 46, 51, 0.2);
+    box-shadow: 0 5px 15px rgba(139, 115, 85, 0.2);
 }
+
+/* ======================================== */
+/* STACKED CARDS CONTAINER */
+/* ======================================== */
 
 .stacked-cards-container {
     display: flex;
@@ -113,38 +124,42 @@
     padding-bottom: 0;
 }
 
+/* ======================================== */
+/* FACILITY CARDS - WARM THEME */
+/* ======================================== */
+
 .facility-card-main {
     height: 450px;
     border-radius: 60px;
-    color: white;
+    color: #ffffff;
     overflow: hidden;
     position: relative;
     padding: 40px;
-    box-shadow: 0 20px 60px rgba(11, 46, 51, 0.15);
+    box-shadow: 0 20px 60px rgba(139, 115, 85, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .facility-card-main:hover {
     transform: scale(1.01);
-    box-shadow: 0 30px 80px rgba(11, 46, 51, 0.25);
+    box-shadow: 0 30px 80px rgba(139, 115, 85, 0.25);
 }
 
-/* Card Background Gradients - Dark Teal Theme */
+/* Card Background Gradients - Warm Theme */
 .facility-card-main.card-1 {
-    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
+    background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%);
 }
 
 .facility-card-main.card-2 {
-    background: linear-gradient(135deg, #0B2E33 0%, #1A4A52 50%, #2A5E66 100%);
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 50%, #A8825A 100%);
 }
 
 .facility-card-main.card-3 {
-    background: linear-gradient(135deg, #1A4A52 0%, #2A5E66 50%, #3A7279 100%);
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 50%, #C49A6C 100%);
 }
 
 .facility-card-main.card-4 {
-    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
+    background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%);
 }
 
 /* Card Overlay Pattern */
@@ -169,6 +184,10 @@
     background: radial-gradient(circle at 0% 100%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
     pointer-events: none;
 }
+
+/* ======================================== */
+/* CARD HEADER */
+/* ======================================== */
 
 .card-header-label {
     text-align: center;
@@ -201,8 +220,7 @@
 }
 
 .card-heading-large span {
-    color: #A8D8EA;
-    background: linear-gradient(135deg, #A8D8EA, #7AC2D6);
+    background: linear-gradient(135deg, #E8B86D, #C49A6C);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -218,7 +236,10 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
-/* Card Features List */
+/* ======================================== */
+/* CARD FEATURES LIST */
+/* ======================================== */
+
 .card-features {
     display: flex;
     gap: 20px;
@@ -243,7 +264,7 @@
 
 .card-feature-item i {
     font-size: 14px;
-    color: #A8D8EA;
+    color: #E8B86D;
 }
 
 .card-image-container {
@@ -266,7 +287,10 @@
     transform: scale(1.05);
 }
 
-/* Card Number Badge */
+/* ======================================== */
+/* CARD NUMBER BADGE */
+/* ======================================== */
+
 .card-number {
     position: absolute;
     top: 20px;
@@ -279,13 +303,16 @@
     font-family: 'Arial', sans-serif;
 }
 
-/* Card Explore Button */
+/* ======================================== */
+/* CARD EXPLORE BUTTON */
+/* ======================================== */
+
 .card-explore-btn {
     display: inline-block;
     margin-top: 20px;
     padding: 12px 30px;
     background: rgba(255, 255, 255, 0.15);
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     border-radius: 50px;
     font-weight: 600;
@@ -301,9 +328,14 @@
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    color: #ffffff;
+    text-decoration: none;
 }
 
-/* Scroll Animation States */
+/* ======================================== */
+/* SCROLL ANIMATION STATES */
+/* ======================================== */
+
 .reveal-active {
     opacity: 1 !important;
     transform: translateY(0) scale(1) !important;
@@ -331,7 +363,36 @@
     transition-delay: 0.4s;
 }
 
-/* Responsive Design */
+/* ======================================== */
+/* PROGRESS INDICATOR */
+/* ======================================== */
+
+.card-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 2;
+    overflow: hidden;
+}
+
+.card-progress-bar {
+    height: 100%;
+    background: linear-gradient(to right, #8B6B4A, #E8B86D);
+    width: 0%;
+    transition: width 1.5s ease;
+}
+
+.reveal-active .card-progress-bar {
+    width: 100%;
+}
+
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
 @media (max-width: 1024px) {
     .facilities-stacked-section {
         padding: 80px 0;
@@ -461,69 +522,97 @@
     }
 }
 
-/* Dark Teal Theme Variables */
-:root {
-    --facilities-deep-blue: #0B2E33;
-    --facilities-deep-blue-light: #1A4A52;
-    --facilities-deep-blue-lighter: #2A5E66;
-    --facilities-deep-blue-dark: #072128;
-    --facilities-bg: #f0f4f8;
-}
+/* ======================================== */
+/* DARK MODE - WARM THEME */
+/* ======================================== */
 
-/* Progress Indicator for Cards */
-.card-progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 2;
-    overflow: hidden;
-}
-
-.card-progress-bar {
-    height: 100%;
-    background: linear-gradient(to right, #0B2E33, #A8D8EA);
-    width: 0%;
-    transition: width 1.5s ease;
-}
-
-.reveal-active .card-progress-bar {
-    width: 100%;
-}
-
-/* Glass Effect on Cards */
-.facility-card-main.glass {
-    background: rgba(11, 46, 51, 0.85);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-/* Additional Dark Mode Support */
 @media (prefers-color-scheme: dark) {
     .facilities-stacked-section {
-        background: linear-gradient(135deg, #072128 0%, #0B2E33 100%);
+        background: linear-gradient(135deg, #2A1F18 0%, #3D2D22 100%);
     }
 
     .section-title {
-        color: #E2E8F0;
+        color: #F5E6D3;
     }
 
     .section-title span {
-        color: #A8D8EA;
+        color: #C49A6C;
+    }
+
+    .section-title span::after {
+        background: linear-gradient(to right, #8B6B4A, #C49A6C);
+        opacity: 0.2;
     }
 
     .section-subtitle {
-        color: #A0AEC0;
+        color: #D4C5B5;
     }
 
     .section-badge {
-        background: rgba(168, 216, 234, 0.1);
-        color: #A8D8EA;
+        background: rgba(139, 115, 85, 0.15);
+        color: #C49A6C;
     }
 
     .hostel-tag {
-        background: linear-gradient(135deg, #1A4A52, #2A5E66);
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
     }
+
+    .facility-card-main {
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .facility-card-main:hover {
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    }
+
+    .facility-card-main.card-1 {
+        background: linear-gradient(135deg, #2A1F18 0%, #4A3228 50%, #6B5544 100%);
+    }
+
+    .facility-card-main.card-2 {
+        background: linear-gradient(135deg, #3D2D22 0%, #4A3228 50%, #6B5544 100%);
+    }
+
+    .facility-card-main.card-3 {
+        background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%);
+    }
+
+    .facility-card-main.card-4 {
+        background: linear-gradient(135deg, #2A1F18 0%, #4A3228 50%, #6B5544 100%);
+    }
+
+    .card-heading-large span {
+        background: linear-gradient(135deg, #C49A6C, #E8B86D);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .card-feature-item i {
+        color: #C49A6C;
+    }
+
+    .card-progress-bar {
+        background: linear-gradient(to right, #6B5544, #C49A6C);
+    }
+
+    .facilities-stacked-section::before,
+    .facilities-stacked-section::after {
+        background: radial-gradient(circle, rgba(196, 154, 108, 0.04) 0%, transparent 70%);
+    }
+}
+
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
+
+:root {
+    --facilities-primary: #8B6B4A;
+    --facilities-primary-light: #A8825A;
+    --facilities-primary-lighter: #C49A6C;
+    --facilities-primary-dark: #6B5544;
+    --facilities-primary-darker: #4A3228;
+    --facilities-gold: #E8B86D;
+    --facilities-bg-start: #e8dcc8;
+    --facilities-bg-end: #f5efe6;
 }
