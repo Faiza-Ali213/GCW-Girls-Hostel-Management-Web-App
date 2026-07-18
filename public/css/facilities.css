@@ -87,7 +87,7 @@
 }
 
 /* ======================================== */
-/* STACKED CARDS CONTAINER */
+/* STACKED CARDS CONTAINER - STICKY NOTES */
 /* ======================================== */
 
 .stacked-cards-container {
@@ -102,9 +102,18 @@
     position: sticky;
     top: 100px;
     padding-bottom: 50px;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s;
+    transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
     opacity: 0;
-    transform: translateY(100px) scale(0.95);
+    transform: translateY(80px) scale(0.92) rotate(-2deg);
+}
+
+/* Sticky Notes Effect - Alternating Rotation */
+.stacked-card-wrapper:nth-child(odd) .facility-card-main {
+    transform: rotate(-1.5deg);
+}
+
+.stacked-card-wrapper:nth-child(even) .facility-card-main {
+    transform: rotate(1.5deg);
 }
 
 .stacked-card-wrapper:last-child {
@@ -130,7 +139,11 @@
 
 .reveal-active {
     opacity: 1 !important;
-    transform: translateY(0) scale(1) !important;
+    transform: translateY(0) scale(1) rotate(0deg) !important;
+}
+
+.reveal-active .facility-card-main {
+    transform: rotate(0deg) !important;
 }
 
 /* ======================================== */
@@ -143,14 +156,15 @@
     color: #ffffff;
     overflow: hidden;
     position: relative;
-    padding: 40px;
+    padding: 40px 40px 30px 40px;
+    /* ✅ Added bottom padding */
     box-shadow: 0 20px 60px rgba(139, 115, 85, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
 }
 
 .facility-card-main:hover {
-    transform: scale(1.01);
+    transform: scale(1.01) !important;
     box-shadow: 0 30px 80px rgba(139, 115, 85, 0.25);
 }
 
@@ -218,17 +232,27 @@
     margin: 10px auto 0;
 }
 
+/* ======================================== */
+/* CARD NUMBER - FIXED (Not Cutting) */
+/* ======================================== */
+
 .card-number {
     position: absolute;
-    top: 20px;
-    right: 30px;
-    font-size: 4rem;
+    top: 10px;
+    right: 25px;
+    font-size: 3.5rem;
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.06);
     z-index: 1;
     pointer-events: none;
     font-family: 'Arial', sans-serif;
+    line-height: 1;
+    overflow: visible;
 }
+
+/* ======================================== */
+/* CARD HEADING */
+/* ======================================== */
 
 .card-heading-large {
     font-size: 3.5rem;
@@ -288,11 +312,14 @@
     color: #E8B86D;
 }
 
+/* ======================================== */
+/* CARD IMAGE CONTAINER */
+/* ======================================== */
+
 .card-image-container {
     height: 100%;
     border-radius: 30px;
     overflow: hidden;
-    padding-bottom: 10px;
     position: relative;
     z-index: 1;
 }
@@ -393,6 +420,12 @@
     .section-title {
         font-size: 2.5rem;
     }
+
+    .card-number {
+        font-size: 3rem;
+        top: 8px;
+        right: 20px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -404,7 +437,7 @@
         height: auto;
         min-height: 500px;
         border-radius: 30px;
-        padding: 25px;
+        padding: 25px 25px 20px 25px;
     }
 
     .card-heading-large {
@@ -425,9 +458,9 @@
     }
 
     .card-number {
-        font-size: 3rem;
-        top: 15px;
-        right: 20px;
+        font-size: 2.8rem;
+        top: 8px;
+        right: 18px;
     }
 
     .stacked-card-wrapper {
@@ -438,6 +471,7 @@
     .card-image-container {
         height: 250px;
         margin-top: 15px;
+        border-radius: 20px;
     }
 
     .card-features {
@@ -461,6 +495,11 @@
     .px-lg-5 {
         padding: 0 !important;
     }
+
+    .stacked-card-wrapper:nth-child(odd) .facility-card-main,
+    .stacked-card-wrapper:nth-child(even) .facility-card-main {
+        transform: rotate(0deg);
+    }
 }
 
 @media (max-width: 576px) {
@@ -471,7 +510,7 @@
     .facility-card-main {
         min-height: 450px;
         border-radius: 20px;
-        padding: 20px;
+        padding: 20px 20px 15px 20px;
     }
 
     .card-heading-large {
@@ -496,8 +535,8 @@
     }
 
     .card-number {
-        font-size: 2.5rem;
-        top: 10px;
+        font-size: 2.2rem;
+        top: 6px;
         right: 15px;
     }
 
@@ -523,6 +562,7 @@
 
     .card-image-container {
         height: 200px;
+        border-radius: 15px;
     }
 }
 
@@ -606,6 +646,10 @@
 
     .card-explore-btn:hover {
         background: rgba(255, 255, 255, 0.15);
+    }
+
+    .card-number {
+        color: rgba(255, 255, 255, 0.04);
     }
 }
 
