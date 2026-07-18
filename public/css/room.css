@@ -1,14 +1,14 @@
-/* Room Section Styles - Deep Blue Theme */
+/* Room Section Styles - Warm Theme */
 
 /* Main Room Section */
 .room-section {
-    background-color: #FFFFFF;
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%);
     overflow-x: hidden;
     padding: 80px 0;
 }
 
 .accent-text {
-    color: #1A365D;
+    color: #8B6B4A;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -22,8 +22,8 @@
     transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
     border-radius: 30px;
     overflow: hidden;
-    background-color: #1A365D;
-    box-shadow: 0 20px 40px rgba(26, 54, 93, 0.2);
+    background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%);
+    box-shadow: 0 20px 40px rgba(139, 115, 85, 0.25);
 }
 
 .room-card.is-active {
@@ -68,6 +68,10 @@
     color: #FFFFFF;
 }
 
+.room-name span {
+    color: #C49A6C;
+}
+
 .room-desc {
     font-size: 1.05rem;
     line-height: 1.7;
@@ -75,6 +79,20 @@
     color: #FFFFFF;
 }
 
+/* ======================================== */
+/* ✅ UPDATED: Room Specification Title Color */
+/* ======================================== */
+.room-specs-title {
+    color: #E8B86D !important;
+    /* Bright Gold - Prominent */
+    font-weight: 800;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+/* Room Specs List */
 .room-specs {
     list-style: none;
     padding: 0;
@@ -83,15 +101,15 @@
 
 .room-specs li {
     color: #FFFFFF;
-    opacity: 0.8;
+    opacity: 0.85;
     padding: 5px 0;
     font-size: 0.95rem;
 }
 
 .room-specs li i {
-    color: #ffffff;
+    color: #C49A6C;
     margin-right: 10px;
-    opacity: 0.7;
+    opacity: 0.9;
 }
 
 .divider {
@@ -101,47 +119,56 @@
 
 /* Buttons */
 .btn-reserve-primary {
-    background-color: #FFFFFF;
-    color: #1A365D !important;
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+    color: #FFFFFF !important;
     padding: 16px 30px;
     border-radius: 50px;
     text-decoration: none;
     font-weight: 800;
     display: inline-block;
-    transition: all 0.3s ease;
-    border: 2px solid #FFFFFF;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #8B6B4A;
     text-align: center;
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
 }
 
 .btn-reserve-primary:hover {
-    background-color: transparent;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
     color: #FFFFFF !important;
-    border: 2px solid #FFFFFF;
+    border: 2px solid #6B5544;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.35);
 }
 
 .btn-all-rooms {
-    background-color: #1A365D;
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
     color: #FFFFFF !important;
     padding: 12px 30px;
     border-radius: 50px;
     text-decoration: none;
     font-weight: 700;
     display: inline-block;
-    transition: all 0.3s ease;
-    border: 2px solid #1A365D;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #8B6B4A;
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.25);
 }
 
 .btn-all-rooms:hover {
-    background-color: transparent;
-    color: #1A365D !important;
-    border: 2px solid #1A365D;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+    color: #FFFFFF !important;
+    border: 2px solid #6B5544;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(139, 115, 85, 0.35);
 }
 
 /* Heading Line */
 .heading-line {
     width: 80px;
     height: 4px;
-    background-color: #1A365D;
+    background: linear-gradient(90deg, #8B6B4A, #C49A6C);
     margin: 15px auto 0;
     border-radius: 2px;
 }

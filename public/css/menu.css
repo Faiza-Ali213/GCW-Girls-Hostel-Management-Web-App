@@ -1,6 +1,10 @@
+/* ======================================== */
+/* MENU SECTION - MATCHING ROOM SECTION THEME */
+/* ======================================== */
+
 .mess-section {
     padding: 80px 0;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%);
     position: relative;
     overflow: hidden;
 }
@@ -13,7 +17,7 @@
     right: -5%;
     width: 350px;
     height: 350px;
-    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -25,7 +29,7 @@
     left: -5%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(11, 46, 51, 0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -37,8 +41,8 @@
 
 .section-badge {
     display: inline-block;
-    background: rgba(11, 46, 51, 0.08);
-    color: #0B2E33;
+    background: rgba(139, 115, 85, 0.15);
+    color: #8B6B4A;
     padding: 8px 25px;
     border-radius: 50px;
     font-size: 13px;
@@ -49,14 +53,14 @@
 }
 
 .section-title {
-    color: #0B2E33;
+    color: #4A3228;
     font-size: 3rem;
     font-weight: 800;
     margin-bottom: 15px;
 }
 
 .section-title span {
-    color: #1A4A52;
+    color: #8B6B4A;
     position: relative;
 }
 
@@ -67,35 +71,39 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(to right, #0B2E33, #1A4A52);
+    background: linear-gradient(to right, #8B6B4A, #C49A6C);
     border-radius: 10px;
     opacity: 0.3;
 }
 
 .section-subtitle {
-    color: #2D3748;
+    color: #5A4A3A;
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
 }
 
 .badge-accent {
-    color: #0B2E33;
-    background: rgba(11, 46, 51, 0.08);
+    color: #8B6B4A;
+    background: rgba(139, 115, 85, 0.12);
     padding: 8px 20px;
     border-radius: 50px;
     font-weight: 600;
     font-size: 14px;
     display: inline-block;
     margin-bottom: 15px;
-    border: 1px solid rgba(11, 46, 51, 0.1);
+    border: 1px solid rgba(139, 115, 85, 0.15);
     transition: all 0.3s ease;
 }
 
 .badge-accent:hover {
-    background: rgba(11, 46, 51, 0.15);
+    background: rgba(139, 115, 85, 0.2);
     transform: translateY(-2px);
 }
+
+/* ======================================== */
+/* MENU CARDS - UPDATED COLORS */
+/* ======================================== */
 
 .menu-card {
     background: #ffffff;
@@ -103,18 +111,19 @@
     overflow: hidden;
     height: 100%;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 2px solid #0B2E33;
-    box-shadow: 0 10px 30px rgba(11, 46, 51, 0.08);
+    border: 2px solid #8B6B4A;
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.12);
 }
 
 .menu-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 25px 50px rgba(11, 46, 51, 0.15);
-    border-color: #1A4A52;
+    box-shadow: 0 25px 50px rgba(139, 115, 85, 0.2);
+    border-color: #C49A6C;
 }
 
+/* Menu Day Header - Updated to Warm Theme */
 .menu-day-header {
-    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
+    background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%);
     color: white;
     padding: 20px;
     text-align: center;
@@ -129,16 +138,62 @@
     right: -20%;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
 
+/* ======================================== */
+/* ✅ ICONS - REAL/COLORED */
+/* ======================================== */
+
 .menu-day-header i {
-    font-size: 28px;
+    font-size: 32px;
     display: block;
     margin-bottom: 8px;
-    color: rgba(255, 255, 255, 0.9);
+    /* Real colors for each icon */
+}
+
+/* Day-specific icon colors */
+.menu-card:nth-child(1) .menu-day-header i {
+    color: #FF6B35;
+    /* Monday - Orange */
+}
+
+.menu-card:nth-child(2) .menu-day-header i {
+    color: #4ECDC4;
+    /* Tuesday - Teal */
+}
+
+.menu-card:nth-child(3) .menu-day-header i {
+    color: #FFD93D;
+    /* Wednesday - Yellow */
+}
+
+.menu-card:nth-child(4) .menu-day-header i {
+    color: #6C5CE7;
+    /* Thursday - Purple */
+}
+
+.menu-card:nth-child(5) .menu-day-header i {
+    color: #FF6B6B;
+    /* Friday - Red */
+}
+
+.menu-card:nth-child(6) .menu-day-header i {
+    color: #A8E6CF;
+    /* Saturday - Mint Green */
+}
+
+.menu-card:nth-child(7) .menu-day-header i {
+    color: #FF8A5C;
+    /* Sunday - Peach */
+}
+
+/* Hover effect on icons */
+.menu-card:hover .menu-day-header i {
+    transform: scale(1.2) rotate(5deg);
+    transition: all 0.4s ease;
 }
 
 .menu-day-header h4 {
@@ -157,6 +212,7 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
+/* Menu Body */
 .menu-body {
     padding: 25px;
     background: #ffffff;
@@ -164,7 +220,7 @@
 
 .meal-item {
     margin-bottom: 18px;
-    border-bottom: 1px dashed rgba(11, 46, 51, 0.1);
+    border-bottom: 1px dashed rgba(139, 115, 85, 0.15);
     padding-bottom: 12px;
     transition: all 0.3s ease;
 }
@@ -176,14 +232,14 @@
 
 .meal-item:hover {
     padding-left: 5px;
-    border-bottom-color: rgba(11, 46, 51, 0.2);
+    border-bottom-color: rgba(139, 115, 85, 0.3);
 }
 
 .meal-item label {
     display: block;
     font-size: 12px;
     text-transform: uppercase;
-    color: #0B2E33;
+    color: #8B6B4A;
     font-weight: 700;
     letter-spacing: 1.5px;
     margin-bottom: 5px;
@@ -192,11 +248,12 @@
 .meal-item label i {
     margin-right: 5px;
     font-size: 14px;
+    color: #C49A6C;
 }
 
 .meal-item span {
     font-size: 15px;
-    color: #2D3748;
+    color: #4A3228;
     font-weight: 500;
     display: block;
 }
@@ -214,27 +271,30 @@
 }
 
 .meal-type.veg {
-    background: rgba(11, 46, 51, 0.08);
-    color: #0B2E33;
+    background: rgba(139, 115, 85, 0.12);
+    color: #8B6B4A;
 }
 
 .meal-type.non-veg {
-    background: rgba(26, 74, 82, 0.1);
-    color: #1A4A52;
+    background: rgba(196, 154, 108, 0.15);
+    color: #A8825A;
 }
 
 .meal-type.special {
-    background: linear-gradient(135deg, #0B2E33, #1A4A52);
+    background: linear-gradient(135deg, #8B6B4A, #C49A6C);
     color: white;
 }
 
-/* Treat Card */
+/* ======================================== */
+/* TREAT CARD - UPDATED */
+/* ======================================== */
+
 .treat-card {
-    background: linear-gradient(135deg, #072128 0%, #0B2E33 50%, #1A4A52 100%);
-    border: 2px solid #0B2E33;
+    background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%);
+    border: 2px solid #8B6B4A;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(11, 46, 51, 0.2);
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.25);
 }
 
 .treat-card::before {
@@ -256,7 +316,7 @@
     left: -10%;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(26, 74, 82, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(196, 154, 108, 0.1) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -282,11 +342,65 @@
     border-bottom-color: rgba(255, 255, 255, 0.1);
 }
 
+/* ======================================== */
+/* BUTTONS - MATCHING ROOM SECTION */
+/* ======================================== */
+
+.btn-menu-primary {
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+    color: #FFFFFF !important;
+    padding: 16px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 800;
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #8B6B4A;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-menu-primary:hover {
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+    color: #FFFFFF !important;
+    border: 2px solid #6B5544;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.35);
+}
+
+.btn-menu-secondary {
+    background: transparent;
+    color: #8B6B4A !important;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid #8B6B4A;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-menu-secondary:hover {
+    background: rgba(139, 115, 85, 0.1);
+    color: #6B5544 !important;
+    border-color: #6B5544;
+    transform: translateY(-3px);
+}
+
 .special-badge {
     position: absolute;
     top: 15px;
     right: -30px;
-    background: linear-gradient(135deg, #0B2E33, #1A4A52);
+    background: linear-gradient(135deg, #8B6B4A, #C49A6C);
     color: #ffffff;
     padding: 5px 40px;
     transform: rotate(45deg);
@@ -294,7 +408,7 @@
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 1px;
-    box-shadow: 0 5px 15px rgba(11, 46, 51, 0.3);
+    box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
     z-index: 2;
 }
 
@@ -352,7 +466,44 @@
     animation-delay: 0.7s;
 }
 
-/* Responsive Design */
+/* Treat Icon */
+.treat-icon {
+    font-size: 40px;
+    color: rgba(255, 255, 255, 0.15);
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1;
+}
+
+/* Dietary Info Tags */
+.dietary-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.dietary-tag {
+    background: rgba(139, 115, 85, 0.1);
+    color: #8B6B4A;
+    padding: 2px 12px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.treat-card .dietary-tag {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
 @media (max-width: 1024px) {
     .mess-section {
         padding: 60px 0;
@@ -401,6 +552,11 @@
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 15px;
     }
+
+    .btn-menu-primary {
+        padding: 14px 30px;
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -431,7 +587,7 @@
     }
 
     .menu-day-header i {
-        font-size: 22px;
+        font-size: 24px;
     }
 
     .menu-day-header h4 {
@@ -466,18 +622,22 @@
         top: 10px;
         right: -25px;
     }
+
+    .btn-menu-primary {
+        padding: 12px 25px;
+        font-size: 11px;
+    }
+
+    .btn-menu-secondary {
+        padding: 10px 20px;
+        font-size: 11px;
+    }
 }
 
-/* Dark Teal Theme Variables */
-:root {
-    --mess-dark-teal: #0B2E33;
-    --mess-dark-teal-light: #1A4A52;
-    --mess-dark-teal-lighter: #2A5E66;
-    --mess-dark-teal-dark: #072128;
-    --mess-bg: #f0f4f8;
-}
+/* ======================================== */
+/* HOVER EFFECTS */
+/* ======================================== */
 
-/* Hover Effect for Meal Items */
 .meal-item {
     position: relative;
 }
@@ -489,7 +649,7 @@
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(to right, #0B2E33, #1A4A52);
+    background: linear-gradient(to right, #8B6B4A, #C49A6C);
     transition: width 0.3s ease;
 }
 
@@ -497,138 +657,16 @@
     width: 100%;
 }
 
-/* Special Treat Icon */
-.treat-icon {
-    font-size: 40px;
-    color: rgba(255, 255, 255, 0.2);
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    z-index: 1;
-}
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
 
-/* Dietary Info Tags */
-.dietary-tags {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.dietary-tag {
-    background: rgba(11, 46, 51, 0.08);
-    color: #0B2E33;
-    padding: 2px 12px;
-    border-radius: 12px;
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.treat-card .dietary-tag {
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-    .mess-section {
-        background: linear-gradient(135deg, #072128 0%, #0B2E33 100%);
-    }
-
-    .section-title {
-        color: #E2E8F0;
-    }
-
-    .section-title span {
-        color: #A8D8EA;
-    }
-
-    .section-title span::after {
-        background: linear-gradient(to right, #A8D8EA, #7AC2D6);
-        opacity: 0.2;
-    }
-
-    .section-subtitle {
-        color: #A0AEC0;
-    }
-
-    .section-badge {
-        background: rgba(168, 216, 234, 0.1);
-        color: #A8D8EA;
-    }
-
-    .badge-accent {
-        color: #A8D8EA;
-        background: rgba(168, 216, 234, 0.1);
-        border-color: rgba(168, 216, 234, 0.1);
-    }
-
-    .badge-accent:hover {
-        background: rgba(168, 216, 234, 0.15);
-    }
-
-    .menu-card {
-        background: #0D1F24;
-        border-color: #1A4A52;
-    }
-
-    .menu-card:hover {
-        border-color: #2A5E66;
-        box-shadow: 0 25px 50px rgba(168, 216, 234, 0.05);
-    }
-
-    .menu-day-header {
-        background: linear-gradient(135deg, #0A1A1F 0%, #072128 50%, #0B2E33 100%);
-    }
-
-    .menu-body {
-        background: #0D1F24;
-    }
-
-    .meal-item {
-        border-bottom-color: rgba(168, 216, 234, 0.08);
-    }
-
-    .meal-item:hover {
-        border-bottom-color: rgba(168, 216, 234, 0.2);
-    }
-
-    .meal-item label {
-        color: #A8D8EA;
-    }
-
-    .meal-item span {
-        color: #E2E8F0;
-    }
-
-    .meal-type.veg {
-        background: rgba(168, 216, 234, 0.1);
-        color: #A8D8EA;
-    }
-
-    .meal-type.non-veg {
-        background: rgba(168, 216, 234, 0.05);
-        color: #7AC2D6;
-    }
-
-    .meal-type.special {
-        background: linear-gradient(135deg, #1A4A52, #2A5E66);
-    }
-
-    .treat-card {
-        background: linear-gradient(135deg, #0A1A1F 0%, #072128 50%, #0B2E33 100%);
-        border-color: #1A4A52;
-    }
-
-    .dietary-tag {
-        background: rgba(168, 216, 234, 0.08);
-        color: #A8D8EA;
-    }
-
-    .mess-section::before,
-    .mess-section::after {
-        background: radial-gradient(circle, rgba(168, 216, 234, 0.03) 0%, transparent 70%);
-    }
+:root {
+    --mess-primary: #8B6B4A;
+    --mess-primary-light: #A8825A;
+    --mess-primary-lighter: #C49A6C;
+    --mess-primary-dark: #6B5544;
+    --mess-primary-darker: #4A3228;
+    --mess-bg-start: #e8dcc8;
+    --mess-bg-end: #f5efe6;
 }
