@@ -1,13 +1,16 @@
-/* Rules.css - Deep Blue Color Scheme */
+/* ======================================== */
+/* RULES SECTION - WARM THEME */
+/* ======================================== */
+
 .rules-section {
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%) !important;
     padding: 60px 0;
     position: relative;
 }
 
 .badge-accent {
-    background: rgba(26, 42, 108, 0.1);
-    color: #1a2a6c;
+    background: rgba(139, 115, 85, 0.12) !important;
+    color: #8B6B4A !important;
     padding: 8px 20px;
     border-radius: 50px;
     font-weight: 600;
@@ -17,7 +20,7 @@
 .header-line {
     width: 60px;
     height: 4px;
-    background: #1a2a6c;
+    background: #8B6B4A !important;
     margin-top: 15px;
     border-radius: 10px;
     position: relative;
@@ -28,35 +31,34 @@
     position: absolute;
     width: 30px;
     height: 4px;
-    background: #2c3e8f;
+    background: #C49A6C !important;
     left: 65px;
     border-radius: 10px;
 }
 
 .rule-card {
-    background: #ffffff;
+    background: #ffffff !important;
     padding: 40px 30px;
     border-radius: 18px;
-    border: 2px solid transparent;
+    border: 2px solid #8B6B4A !important;
     height: 100%;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
-    border: 2px solid #1a2a6c;
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.06);
 }
 
 .rule-card:hover {
-    border-color: #1a2a6c;
+    border-color: #C49A6C !important;
     transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(26, 42, 108, 0.15);
-    background: #ffffff;
+    box-shadow: 0 20px 40px rgba(139, 115, 85, 0.18);
+    background: #ffffff !important;
 }
 
 .rule-icon-box {
     width: 60px;
     height: 60px;
-    background: #e8edf5;
-    color: #1a2a6c;
+    background: rgba(139, 115, 85, 0.1) !important;
+    color: #8B6B4A !important;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -67,21 +69,21 @@
 }
 
 .rule-card:hover .rule-icon-box {
-    background: #1a2a6c;
-    color: #ffffff;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+    color: #ffffff !important;
     transform: rotateY(360deg);
-    box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
+    box-shadow: 0 5px 15px rgba(139, 115, 85, 0.3);
 }
 
 .rule-card h4 {
     font-weight: 700;
-    color: #1a2a6c;
+    color: #4A3228 !important;
     margin-bottom: 15px;
     font-size: 20px;
 }
 
 .rule-card p {
-    color: #4a4a5a;
+    color: #5A4A3A !important;
     font-size: 15px;
     line-height: 1.7;
     margin-bottom: 25px;
@@ -90,7 +92,7 @@
 .status-indicator {
     width: 8px;
     height: 8px;
-    background: #1a2a6c;
+    background: #8B6B4A !important;
     border-radius: 50%;
     display: inline-block;
     margin-right: 5px;
@@ -115,7 +117,7 @@
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
-    color: #1a2a6c;
+    color: #8B6B4A !important;
     letter-spacing: 1px;
     opacity: 0.7;
 }
@@ -128,7 +130,7 @@
     right: 0;
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -139,7 +141,7 @@
     left: 0;
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(26, 42, 108, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -149,16 +151,16 @@
 
 /* Rule Card Variations */
 .rule-card.primary {
-    border-color: #1a2a6c;
+    border-color: #8B6B4A !important;
 }
 
 .rule-card.primary .rule-icon-box {
-    background: #1a2a6c;
-    color: white;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+    color: white !important;
 }
 
 .rule-card.primary:hover .rule-icon-box {
-    background: #2c3e8f;
+    background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%) !important;
 }
 
 /* Rule Number Badge */
@@ -166,8 +168,8 @@
     position: absolute;
     top: -12px;
     right: 20px;
-    background: #1a2a6c;
-    color: white;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+    color: white !important;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -176,7 +178,7 @@
     justify-content: center;
     font-size: 14px;
     font-weight: 700;
-    box-shadow: 0 3px 10px rgba(26, 42, 108, 0.3);
+    box-shadow: 0 3px 10px rgba(139, 115, 85, 0.3);
 }
 
 /* Grid Layout Enhancement */
@@ -185,7 +187,10 @@
     gap: 25px;
 }
 
-/* Responsive Design */
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
 @media (max-width: 768px) {
     .rules-section {
         padding: 30px 0;
@@ -222,7 +227,7 @@
     left: -100%;
     width: 100%;
     height: 3px;
-    background: linear-gradient(to right, transparent, #1a2a6c, transparent);
+    background: linear-gradient(to right, transparent, #C49A6C, transparent) !important;
     transition: left 0.5s ease;
 }
 
@@ -230,42 +235,102 @@
     left: 100%;
 }
 
-/* Dark Mode Support - Optional */
+/* ======================================== */
+/* DARK MODE - WARM THEME */
+/* ======================================== */
+
 @media (prefers-color-scheme: dark) {
     .rules-section {
-        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        background: linear-gradient(135deg, #2A1F18 0%, #3D2D22 100%) !important;
     }
 
     .rule-card {
-        background: #1a1a2e;
-        border-color: #2c3e8f;
+        background: #2A1F18 !important;
+        border-color: #6B5544 !important;
+    }
+
+    .rule-card:hover {
+        border-color: #8B6B4A !important;
+        background: #2A1F18 !important;
     }
 
     .rule-card h4 {
-        color: #e8edf5;
+        color: #F5E6D3 !important;
     }
 
     .rule-card p {
-        color: #a0a0b0;
+        color: #D4C5B5 !important;
     }
 
     .rule-icon-box {
-        background: #2c3e8f;
-        color: white;
+        background: rgba(139, 115, 85, 0.15) !important;
+        color: #C49A6C !important;
+    }
+
+    .rule-card:hover .rule-icon-box {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+        color: #ffffff !important;
     }
 
     .badge-accent {
-        background: rgba(44, 62, 143, 0.2);
-        color: #e8edf5;
+        background: rgba(139, 115, 85, 0.15) !important;
+        color: #C49A6C !important;
+    }
+
+    .header-line {
+        background: #8B6B4A !important;
+    }
+
+    .header-line::after {
+        background: #C49A6C !important;
+    }
+
+    .rule-card-footer {
+        color: #C49A6C !important;
+    }
+
+    .status-indicator {
+        background: #C49A6C !important;
+    }
+
+    .rule-number {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+    }
+
+    .rule-card.primary {
+        border-color: #6B5544 !important;
+    }
+
+    .rule-card.primary .rule-icon-box {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+        color: white !important;
+    }
+
+    .rule-card.primary:hover .rule-icon-box {
+        background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%) !important;
+    }
+
+    .rules-section::before,
+    .rules-section::after {
+        background: radial-gradient(circle, rgba(139, 115, 85, 0.05) 0%, transparent 70%);
+    }
+
+    .rule-card::after {
+        background: linear-gradient(to right, transparent, #C49A6C, transparent) !important;
     }
 }
 
-/* Deep Blue Color Variables */
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
+
 :root {
-    --deep-blue: #1a2a6c;
-    --deep-blue-light: #2c3e8f;
-    --deep-blue-lighter: #3b5998;
-    --deep-blue-dark: #0d1a4a;
-    --deep-blue-bg: #f0f4f8;
-    --deep-blue-card-bg: #ffffff;
+    --rule-primary: #8B6B4A;
+    --rule-primary-light: #A8825A;
+    --rule-primary-lighter: #C49A6C;
+    --rule-primary-dark: #6B5544;
+    --rule-primary-darker: #4A3228;
+    --rule-bg-start: #e8dcc8;
+    --rule-bg-end: #f5efe6;
+    --rule-card-bg: #ffffff;
 }

@@ -1,7 +1,10 @@
-/* --- GALLERY LAYOUT --- */
+/* ======================================== */
+/* GALLERY SECTION - WARM THEME */
+/* ======================================== */
+
 .gallery-section {
     padding: 100px 0;
-    background: linear-gradient(135deg, #f0f4f8 0%, #e8edf5 100%);
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%) !important;
     position: relative;
 }
 
@@ -13,7 +16,7 @@
     right: 0;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(11, 46, 51, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -24,7 +27,7 @@
     left: 0;
     width: 250px;
     height: 250px;
-    background: radial-gradient(circle, rgba(11, 46, 51, 0.03) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(139, 115, 85, 0.06) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -36,8 +39,8 @@
 
 .gallery-badge-text {
     display: inline-block;
-    background: rgba(11, 46, 51, 0.08);
-    color: #0B2E33;
+    background: rgba(139, 115, 85, 0.12) !important;
+    color: #8B6B4A !important;
     padding: 6px 20px;
     border-radius: 50px;
     font-size: 13px;
@@ -50,12 +53,12 @@
 .gallery-title {
     font-size: 3rem;
     font-weight: 800;
-    color: #0B2E33;
+    color: #4A3228 !important;
     margin-bottom: 15px;
 }
 
 .gallery-title span {
-    color: #1A4A52;
+    color: #8B6B4A !important;
     position: relative;
 }
 
@@ -66,12 +69,12 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: rgba(11, 46, 51, 0.2);
+    background: rgba(139, 115, 85, 0.25) !important;
     border-radius: 10px;
 }
 
 .gallery-subtitle {
-    color: #2D3748;
+    color: #5A4A3A !important;
     font-size: 1.1rem;
     max-width: 600px;
     margin: 0 auto;
@@ -89,16 +92,16 @@
     border-radius: 15px;
     position: relative;
     opacity: 0;
-    box-shadow: 0 5px 20px rgba(11, 46, 51, 0.08);
+    box-shadow: 0 5px 20px rgba(139, 115, 85, 0.1);
     transition: box-shadow 0.4s ease, transform 0.4s ease;
     border: 2px solid transparent;
-    background: #ffffff;
+    background: #ffffff !important;
     cursor: pointer;
 }
 
 .gallery-item:hover {
-    box-shadow: 0 15px 40px rgba(11, 46, 51, 0.2);
-    border-color: rgba(11, 46, 51, 0.2);
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.2);
+    border-color: rgba(139, 115, 85, 0.3) !important;
     transform: translateY(-5px);
 }
 
@@ -113,7 +116,7 @@
     transform: scale(1.1);
 }
 
-/* Gallery Overlay - Dark Teal Theme */
+/* Gallery Overlay - Warm Theme */
 .gallery-item::after {
     content: '';
     position: absolute;
@@ -121,7 +124,7 @@
     left: 0;
     right: 0;
     height: 60%;
-    background: linear-gradient(to top, rgba(11, 46, 51, 0.75), transparent);
+    background: linear-gradient(to top, rgba(74, 50, 40, 0.8), transparent) !important;
     opacity: 0;
     transition: opacity 0.4s ease;
     border-radius: 0 0 15px 15px;
@@ -152,7 +155,7 @@
 }
 
 .gallery-caption span {
-    background: rgba(11, 46, 51, 0.85);
+    background: rgba(74, 50, 40, 0.85) !important;
     padding: 5px 15px;
     border-radius: 20px;
     font-size: 12px;
@@ -175,8 +178,8 @@
     position: absolute;
     top: 15px;
     right: 15px;
-    background: #0B2E33;
-    color: white;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+    color: white !important;
     padding: 5px 12px;
     border-radius: 20px;
     font-size: 10px;
@@ -198,8 +201,8 @@
     position: absolute;
     top: 15px;
     left: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #0B2E33;
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #4A3228 !important;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 10px;
@@ -217,39 +220,36 @@
     transform: translateY(0);
 }
 
-/* --- DIRECTIONAL ANIMATIONS --- */
+/* ======================================== */
+/* DIRECTIONAL ANIMATIONS */
+/* ======================================== */
 
-/* Left to Right */
 .reveal-left {
     transform: translateX(-100px);
     transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-/* Right to Left */
 .reveal-right {
     transform: translateX(100px);
     transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-/* Up to Downward */
 .reveal-down {
     transform: translateY(-100px);
     transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-/* Downward to Upward */
 .reveal-up {
     transform: translateY(100px);
     transition: all 1.2s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-/* Active State Triggered by JS */
 .is-active {
     opacity: 1 !important;
     transform: translate(0, 0) !important;
 }
 
-/* Stagger Animation Delays for Gallery Items */
+/* Stagger Animation Delays */
 .gallery-item:nth-child(1) {
     transition-delay: 0.05s;
 }
@@ -286,7 +286,10 @@
     transition-delay: 0.45s;
 }
 
-/* Responsive Design */
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
 @media (max-width: 992px) {
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -350,10 +353,10 @@
     position: absolute;
     bottom: 15px;
     right: 15px;
-    color: white;
+    color: white !important;
     font-size: 12px;
     font-weight: 600;
-    background: rgba(11, 46, 51, 0.8);
+    background: rgba(74, 50, 40, 0.8) !important;
     padding: 3px 12px;
     border-radius: 20px;
     z-index: 2;
@@ -365,41 +368,14 @@
     opacity: 1;
 }
 
-/* Dark Teal Theme Variables */
-:root {
-    --gallery-dark-teal: #0B2E33;
-    --gallery-dark-teal-light: #1A4A52;
-    --gallery-dark-teal-lighter: #2A5E66;
-    --gallery-dark-teal-dark: #072128;
-    --gallery-bg: #f0f4f8;
-}
-
-/* Optional: Loading Skeleton for Gallery */
-.gallery-skeleton {
-    background: linear-gradient(90deg, #e8edf5 25%, #d5deed 50%, #e8edf5 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 15px;
-}
-
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-
-    100% {
-        background-position: 200% 0;
-    }
-}
-
 /* Gallery Zoom Button */
 .gallery-zoom-btn {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0);
-    background: #0B2E33;
-    color: white;
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
+    color: white !important;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -420,12 +396,12 @@
 }
 
 .gallery-zoom-btn:hover {
-    background: #1A4A52;
+    background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%) !important;
     transform: translate(-50%, -50%) scale(1.1);
     border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* Lightbox Overlay for Gallery */
+/* Lightbox Overlay */
 .gallery-lightbox {
     display: none;
     position: fixed;
@@ -433,7 +409,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(7, 33, 40, 0.95);
+    background: rgba(74, 50, 40, 0.95) !important;
     z-index: 9999;
     justify-content: center;
     align-items: center;
@@ -458,7 +434,7 @@
     position: absolute;
     top: 20px;
     right: 30px;
-    color: white;
+    color: white !important;
     font-size: 40px;
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -494,96 +470,117 @@
 }
 
 .gallery-dot.active {
-    background: #0B2E33;
+    background: #8B6B4A !important;
     width: 30px;
     border-radius: 10px;
 }
 
 .gallery-dot:hover {
-    background: #1A4A52;
+    background: #C49A6C !important;
 }
 
-/* Dark Mode Support */
+/* ======================================== */
+/* DARK MODE - WARM THEME */
+/* ======================================== */
+
 @media (prefers-color-scheme: dark) {
     .gallery-section {
-        background: linear-gradient(135deg, #072128 0%, #0B2E33 100%);
+        background: linear-gradient(135deg, #2A1F18 0%, #3D2D22 100%) !important;
     }
 
     .gallery-title {
-        color: #E2E8F0;
+        color: #F5E6D3 !important;
     }
 
     .gallery-title span {
-        color: #A8D8EA;
+        color: #C49A6C !important;
     }
 
     .gallery-title span::after {
-        background: rgba(168, 216, 234, 0.2);
+        background: rgba(196, 154, 108, 0.2) !important;
     }
 
     .gallery-subtitle {
-        color: #A0AEC0;
+        color: #D4C5B5 !important;
     }
 
     .gallery-badge-text {
-        background: rgba(168, 216, 234, 0.1);
-        color: #A8D8EA;
+        background: rgba(139, 115, 85, 0.15) !important;
+        color: #C49A6C !important;
     }
 
     .gallery-item {
-        background: #0D1F24;
-        border-color: rgba(168, 216, 234, 0.05);
+        background: #2A1F18 !important;
+        border-color: rgba(139, 115, 85, 0.1);
     }
 
     .gallery-item:hover {
-        border-color: rgba(168, 216, 234, 0.2);
-        box-shadow: 0 15px 40px rgba(168, 216, 234, 0.05);
+        border-color: rgba(196, 154, 108, 0.3) !important;
+        box-shadow: 0 15px 40px rgba(139, 115, 85, 0.1);
     }
 
     .gallery-item::after {
-        background: linear-gradient(to top, rgba(7, 33, 40, 0.8), transparent);
+        background: linear-gradient(to top, rgba(42, 31, 24, 0.85), transparent) !important;
     }
 
     .gallery-badge {
-        background: #1A4A52;
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
     }
 
     .gallery-category {
-        background: rgba(255, 255, 255, 0.1);
-        color: #A8D8EA;
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: #C49A6C !important;
     }
 
     .gallery-caption span {
-        background: rgba(7, 33, 40, 0.85);
-        border-color: rgba(168, 216, 234, 0.1);
+        background: rgba(42, 31, 24, 0.85) !important;
+        border-color: rgba(196, 154, 108, 0.1);
     }
 
     .gallery-zoom-btn {
-        background: #1A4A52;
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%) !important;
     }
 
     .gallery-zoom-btn:hover {
-        background: #2A5E66;
+        background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%) !important;
     }
 
     .gallery-counter {
-        background: rgba(7, 33, 40, 0.8);
+        background: rgba(42, 31, 24, 0.8) !important;
     }
 
     .gallery-dot {
-        background: #1A4A52;
+        background: #6B5544;
     }
 
     .gallery-dot.active {
-        background: #A8D8EA;
+        background: #C49A6C !important;
     }
 
     .gallery-dot:hover {
-        background: #7AC2D6;
+        background: #8B6B4A !important;
+    }
+
+    .gallery-lightbox {
+        background: rgba(42, 31, 24, 0.95) !important;
     }
 
     .gallery-section::before,
     .gallery-section::after {
-        background: radial-gradient(circle, rgba(168, 216, 234, 0.03) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(196, 154, 108, 0.04) 0%, transparent 70%);
     }
+}
+
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
+
+:root {
+    --gallery-primary: #8B6B4A;
+    --gallery-primary-light: #A8825A;
+    --gallery-primary-lighter: #C49A6C;
+    --gallery-primary-dark: #6B5544;
+    --gallery-primary-darker: #4A3228;
+    --gallery-bg-start: #e8dcc8;
+    --gallery-bg-end: #f5efe6;
 }

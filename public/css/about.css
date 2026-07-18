@@ -1,17 +1,44 @@
+/* ======================================== */
+/* ABOUT SECTION - WARM THEME */
+/* ======================================== */
+
 .about-section {
     padding: 100px 0;
-    background-color: #1A365D;
-    /* Professional deep blue for government institution */
-    border-top: 5px solid #ffffff;
+    background: linear-gradient(135deg, #4A3228 0%, #6B5544 50%, #8B6B4A 100%) !important;
+    border-top: 5px solid #C49A6C !important;
     overflow: hidden;
     position: relative;
+}
+
+/* Decorative Elements */
+.about-section::before {
+    content: '';
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(196, 154, 108, 0.08) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.about-section::after {
+    content: '';
+    position: absolute;
+    bottom: -20%;
+    left: -10%;
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(196, 154, 108, 0.06) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 .about-heading {
     font-size: 3.5rem;
     font-weight: 900;
-    color: #FFFFFF;
-    /* Pure white for maximum contrast */
+    color: #FFFFFF !important;
     letter-spacing: 2px;
     margin-bottom: 10px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
@@ -20,15 +47,13 @@
 .heading-line {
     width: 80px;
     height: 4px;
-    background: linear-gradient(90deg, #F6AD55, #ED8936);
-    /* Warm orange gradient for accent */
+    background: linear-gradient(90deg, #C49A6C, #E8B86D) !important;
     margin-bottom: 30px;
     border-radius: 2px;
 }
 
 .about-passage {
-    color: #CBD5E0;
-    /* Light gray-blue for excellent readability */
+    color: #F5E6D3 !important;
     font-size: 1.1rem;
     line-height: 1.9;
     max-width: 500px;
@@ -37,8 +62,7 @@
 
 /* Title / Subtitle Styling */
 .about-title {
-    color: #FBD38D;
-    /* Warm golden color for titles/subtitles */
+    color: #E8B86D !important;
     font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 3px;
@@ -48,8 +72,7 @@
 
 /* For any subheadings */
 .about-sub-heading {
-    color: #F6AD55;
-    /* Soft orange for subheadings */
+    color: #C49A6C !important;
     font-size: 1.3rem;
     font-weight: 600;
     margin-top: 20px;
@@ -58,30 +81,26 @@
 
 /* For highlighted or important text */
 .about-highlight {
-    color: #FBD38D;
-    /* Golden color for emphasis */
+    color: #E8B86D !important;
     font-weight: 700;
 }
 
 /* For secondary text or descriptions */
 .about-secondary-text {
-    color: #A0AEC0;
-    /* Medium gray for less important text */
+    color: #D4C5B5 !important;
     font-size: 0.95rem;
     line-height: 1.7;
 }
 
 /* For small meta text */
 .about-meta-text {
-    color: #718096;
-    /* Darker gray for meta information */
+    color: #A8825A !important;
     font-size: 0.85rem;
 }
 
 /* List items if any */
 .about-list-item {
-    color: #E2E8F0;
-    /* Light gray for list items */
+    color: #F5E6D3 !important;
     font-size: 1rem;
     line-height: 1.8;
     margin-bottom: 8px;
@@ -89,38 +108,39 @@
 
 .about-list-item::before {
     content: "▸";
-    color: #F6AD55;
-    /* Orange bullet points */
+    color: #C49A6C !important;
     margin-right: 10px;
     font-weight: 700;
 }
 
 /* Quote or testimonial text */
 .about-quote {
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     font-size: 1.2rem;
     font-style: italic;
     line-height: 1.8;
     padding: 20px 30px;
-    border-left: 4px solid #F6AD55;
+    border-left: 4px solid #C49A6C !important;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 4px;
 }
 
 .about-quote-author {
-    color: #FBD38D;
+    color: #E8B86D !important;
     font-weight: 600;
     font-style: normal;
     margin-top: 10px;
 }
 
-/* Button text if any */
+/* ======================================== */
+/* BUTTON - MATCHING ROOM SECTION */
+/* ======================================== */
+
 .about-btn {
-    color: #1A365D;
-    background: #FBD38D;
-    /* Golden button with deep blue text */
+    color: #4A3228 !important;
+    background: linear-gradient(135deg, #C49A6C 0%, #E8B86D 100%) !important;
     padding: 12px 35px;
-    border: none;
+    border: none !important;
     border-radius: 30px;
     font-weight: 700;
     font-size: 1rem;
@@ -128,16 +148,20 @@
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(196, 154, 108, 0.3);
 }
 
 .about-btn:hover {
-    background: #F6AD55;
-    color: #1A365D;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #E8B86D 0%, #C49A6C 100%) !important;
+    color: #4A3228 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(196, 154, 108, 0.4);
 }
 
-/* Right Side Graphics */
+/* ======================================== */
+/* RIGHT SIDE GRAPHICS */
+/* ======================================== */
+
 .about-img-col {
     position: relative;
     height: 500px;
@@ -149,8 +173,7 @@
     right: -10%;
     width: 100%;
     height: 80%;
-    background: linear-gradient(135deg, rgba(251, 211, 141, 0.15), rgba(246, 173, 85, 0.08));
-    /* Subtle golden gradient */
+    background: linear-gradient(135deg, rgba(196, 154, 108, 0.15), rgba(232, 184, 109, 0.08)) !important;
     border-radius: 45% 55% 70% 30% / 30% 30% 70% 70%;
     z-index: 1;
 }
@@ -176,7 +199,10 @@
     transform: translateX(20px);
 }
 
-/* --- ANIMATION STATES --- */
+/* ======================================== */
+/* ANIMATION STATES */
+/* ======================================== */
+
 .reveal-down {
     opacity: 0;
     transform: translateY(-50px);
@@ -194,8 +220,15 @@
     transform: translate(0, 0) !important;
 }
 
-/* Responsive adjustments */
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
 @media (max-width: 768px) {
+    .about-section {
+        padding: 60px 0;
+    }
+
     .about-heading {
         font-size: 2.5rem;
     }
@@ -208,4 +241,149 @@
     .about-title {
         font-size: 0.95rem;
     }
+
+    .about-img-col {
+        height: 350px;
+        margin-top: 30px;
+    }
+
+    .about-bg-shape {
+        height: 70%;
+    }
+}
+
+@media (max-width: 576px) {
+    .about-section {
+        padding: 40px 0;
+    }
+
+    .about-heading {
+        font-size: 2rem;
+    }
+
+    .about-passage {
+        font-size: 0.9rem;
+    }
+
+    .about-title {
+        font-size: 0.85rem;
+        letter-spacing: 2px;
+    }
+
+    .about-sub-heading {
+        font-size: 1.1rem;
+    }
+
+    .about-img-col {
+        height: 280px;
+    }
+
+    .about-quote {
+        font-size: 1rem;
+        padding: 15px 20px;
+    }
+
+    .about-btn {
+        padding: 10px 25px;
+        font-size: 0.85rem;
+        width: 100%;
+    }
+
+    .about-list-item {
+        font-size: 0.9rem;
+    }
+
+    .heading-line {
+        width: 60px;
+        height: 3px;
+    }
+}
+
+/* ======================================== */
+/* DARK MODE SUPPORT - WARM THEME */
+/* ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    .about-section {
+        background: linear-gradient(135deg, #2A1F18 0%, #3D2D22 50%, #4A3228 100%) !important;
+        border-top-color: #8B6B4A !important;
+    }
+
+    .about-passage {
+        color: #D4C5B5 !important;
+    }
+
+    .about-title {
+        color: #E8B86D !important;
+    }
+
+    .about-sub-heading {
+        color: #C49A6C !important;
+    }
+
+    .about-highlight {
+        color: #E8B86D !important;
+    }
+
+    .about-secondary-text {
+        color: #C4B5A5 !important;
+    }
+
+    .about-meta-text {
+        color: #A8825A !important;
+    }
+
+    .about-list-item {
+        color: #D4C5B5 !important;
+    }
+
+    .about-list-item::before {
+        color: #C49A6C !important;
+    }
+
+    .about-quote {
+        border-left-color: #C49A6C !important;
+    }
+
+    .about-quote-author {
+        color: #E8B86D !important;
+    }
+
+    .about-btn {
+        background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%) !important;
+        color: #FFFFFF !important;
+    }
+
+    .about-btn:hover {
+        background: linear-gradient(135deg, #C49A6C 0%, #E8B86D 100%) !important;
+        color: #4A3228 !important;
+    }
+
+    .about-bg-shape {
+        background: linear-gradient(135deg, rgba(139, 115, 85, 0.15), rgba(196, 154, 108, 0.08)) !important;
+    }
+
+    .about-section::before {
+        background: radial-gradient(circle, rgba(196, 154, 108, 0.05) 0%, transparent 70%);
+    }
+
+    .about-section::after {
+        background: radial-gradient(circle, rgba(196, 154, 108, 0.04) 0%, transparent 70%);
+    }
+}
+
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
+
+:root {
+    --about-primary: #8B6B4A;
+    --about-primary-light: #A8825A;
+    --about-primary-lighter: #C49A6C;
+    --about-primary-dark: #6B5544;
+    --about-primary-darker: #4A3228;
+    --about-gold: #E8B86D;
+    --about-bg-start: #4A3228;
+    --about-bg-mid: #6B5544;
+    --about-bg-end: #8B6B4A;
 }
