@@ -87,7 +87,7 @@
 }
 
 /* ======================================== */
-/* STACKED CARDS CONTAINER - STICKY NOTES */
+/* STACKED CARDS CONTAINER */
 /* ======================================== */
 
 .stacked-cards-container {
@@ -103,17 +103,7 @@
     top: 100px;
     padding-bottom: 50px;
     transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-    opacity: 0;
-    transform: translateY(80px) scale(0.92) rotate(-2deg);
-}
-
-/* Sticky Notes Effect - Alternating Rotation */
-.stacked-card-wrapper:nth-child(odd) .facility-card-main {
-    transform: rotate(-1.5deg);
-}
-
-.stacked-card-wrapper:nth-child(even) .facility-card-main {
-    transform: rotate(1.5deg);
+    opacity: 1;
 }
 
 .stacked-card-wrapper:last-child {
@@ -139,11 +129,6 @@
 
 .reveal-active {
     opacity: 1 !important;
-    transform: translateY(0) scale(1) rotate(0deg) !important;
-}
-
-.reveal-active .facility-card-main {
-    transform: rotate(0deg) !important;
 }
 
 /* ======================================== */
@@ -157,14 +142,15 @@
     overflow: hidden;
     position: relative;
     padding: 40px 40px 30px 40px;
-    /* ✅ Added bottom padding */
     box-shadow: 0 20px 60px rgba(139, 115, 85, 0.15);
     border: 2px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    opacity: 1;
+    visibility: visible;
 }
 
 .facility-card-main:hover {
-    transform: scale(1.01) !important;
+    transform: scale(1.01);
     box-shadow: 0 30px 80px rgba(139, 115, 85, 0.25);
 }
 
@@ -233,7 +219,7 @@
 }
 
 /* ======================================== */
-/* CARD NUMBER - FIXED (Not Cutting) */
+/* CARD NUMBER */
 /* ======================================== */
 
 .card-number {
@@ -289,6 +275,7 @@
     display: flex;
     gap: 10px;
     margin-top: 15px;
+    margin-bottom: 10px;
     flex-wrap: wrap;
     position: relative;
     z-index: 2;
@@ -336,36 +323,43 @@
 }
 
 /* ======================================== */
-/* CARD EXPLORE BUTTON */
+/* ✅ CARD EXPLORE BUTTON - FULLY VISIBLE */
 /* ======================================== */
 
 .card-explore-btn {
-    display: inline-block;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
     margin-top: 15px;
-    padding: 10px 25px;
+    padding: 12px 30px;
     background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    text-decoration: none;
+    color: #ffffff !important;
+    text-decoration: none !important;
     border-radius: 50px;
     font-weight: 600;
     font-size: 0.9rem;
     transition: all 0.4s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
     position: relative;
-    z-index: 2;
+    z-index: 5;
+    cursor: pointer;
+    visibility: visible !important;
+    opacity: 1 !important;
 }
 
 .card-explore-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    color: #ffffff;
-    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    color: #ffffff !important;
+    text-decoration: none !important;
+    border-color: rgba(255, 255, 255, 0.4);
 }
 
 .card-explore-btn i {
     transition: transform 0.3s ease;
+    font-size: 0.9rem;
 }
 
 .card-explore-btn:hover i {
@@ -425,6 +419,11 @@
         font-size: 3rem;
         top: 8px;
         right: 20px;
+    }
+
+    .card-explore-btn {
+        padding: 10px 25px;
+        font-size: 0.85rem;
     }
 }
 
@@ -496,9 +495,9 @@
         padding: 0 !important;
     }
 
-    .stacked-card-wrapper:nth-child(odd) .facility-card-main,
-    .stacked-card-wrapper:nth-child(even) .facility-card-main {
-        transform: rotate(0deg);
+    .card-explore-btn {
+        padding: 10px 22px;
+        font-size: 0.85rem;
     }
 }
 
@@ -548,6 +547,8 @@
     .card-explore-btn {
         padding: 8px 18px;
         font-size: 0.8rem;
+        width: 100%;
+        justify-content: center;
     }
 
     .card-feature-item {
@@ -642,10 +643,12 @@
 
     .card-explore-btn {
         background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.1);
     }
 
     .card-explore-btn:hover {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.18);
+        border-color: rgba(255, 255, 255, 0.25);
     }
 
     .card-number {

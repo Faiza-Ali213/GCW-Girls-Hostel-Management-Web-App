@@ -54,7 +54,7 @@
                         <div class="col-lg-6 px-lg-5">
                             <h3 class="card-heading-large">{{ $f['title'] }}</h3>
                             <p class="card-text-detail">{{ $f['desc'] }}</p>
-                            @if(isset($f['features']))
+                            
                             <div class="card-features">
                                 @foreach($f['features'] as $feature)
                                 <span class="card-feature-item">
@@ -62,9 +62,10 @@
                                 </span>
                                 @endforeach
                             </div>
-                            @endif
+
+                            <!-- ✅ Explore More Button - Now visible on all cards -->
                             <a href="#" class="card-explore-btn">
-                                Explore More <i class="fas fa-arrow-right ms-2"></i>
+                                Explore More <i class="fas fa-arrow-right"></i>
                             </a>
                         </div>
                         <div class="col-lg-6 h-100">
