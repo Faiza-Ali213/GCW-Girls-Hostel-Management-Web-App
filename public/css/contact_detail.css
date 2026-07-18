@@ -1,27 +1,32 @@
-/* --- CONTACT SECTION UPDATED --- */
+/* ======================================== */
+/* CONTACT SECTION - WARM THEME */
+/* ======================================== */
+
 .contact-section {
-    padding: 10px 0;
-    background-color: #f8fafd;
+    padding: 60px 0;
+    background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 100%);
 }
 
 .contact-wrapper {
-    background: #fff;
-    border-radius: 25px; 
-    border: 2px solid #0B2E33; 
+    background: #ffffff;
+    border-radius: 25px;
+    border: 2px solid #8B6B4A;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+    box-shadow: 0 15px 40px rgba(139, 115, 85, 0.12);
     display: flex;
+    flex-wrap: wrap;
 }
 
 .contact-content {
     padding: 60px;
     background-color: #ffffff;
+    flex: 1 1 50%;
 }
 
 .contact-main-heading {
     font-size: 3rem;
     font-weight: 800;
-    color: #000;
+    color: #4A3228;
     margin-bottom: 20px;
 }
 
@@ -36,40 +41,51 @@
 .info-label {
     font-size: 1.2rem;
     font-weight: 700;
-    color: #0B2E33;
+    color: #4A3228;
     margin-bottom: 8px;
 }
 
 .info-detail {
-    color: #555;
+    color: #6B5544;
     font-size: 0.95rem;
     margin: 0;
+    line-height: 1.6;
 }
 
-/* Wide Button: Spans from Column 1 to Column 2 */
+/* ======================================== */
+/* BUTTON - MATCHING ROOM SECTION */
+/* ======================================== */
+
 .btn-contact-wide {
     display: block;
-    width: 100%; /* Spans full width of the info-grid container */
-    background-color: #0B2E33;
-    color: #fff;
+    width: 100%;
+    background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
+    color: #FFFFFF;
     text-align: center;
     padding: 18px;
     text-decoration: none;
     font-weight: 700;
     font-size: 1.1rem;
-    border-radius: 12px; /* Matching the card aesthetic */
-    transition: 0.3s ease;
+    border-radius: 12px;
+    border: 2px solid #8B6B4A;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 115, 85, 0.2);
+    cursor: pointer;
 }
 
 .btn-contact-wide:hover {
-    background-color: #082125;
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(139, 115, 85, 0.35);
+    border-color: #6B5544;
+    color: #FFFFFF;
 }
 
 /* Map Styling */
 .map-container {
     position: relative;
-    min-height: 550px; /* Divider border */
+    min-height: 550px;
+    flex: 1 1 50%;
 }
 
 .map-img {
@@ -78,7 +94,10 @@
     object-fit: cover;
 }
 
-/* Animation Reveal (Inside to Outside) */
+/* ======================================== */
+/* ANIMATIONS */
+/* ======================================== */
+
 .reveal-zoom {
     opacity: 0;
     transform: scale(0.6);
@@ -88,4 +107,170 @@
 .is-active {
     opacity: 1 !important;
     transform: scale(1) !important;
+}
+
+/* ======================================== */
+/* RESPONSIVE */
+/* ======================================== */
+
+@media (max-width: 992px) {
+    .contact-content {
+        padding: 40px;
+        flex: 1 1 100%;
+    }
+
+    .contact-main-heading {
+        font-size: 2.5rem;
+    }
+
+    .info-grid {
+        gap: 25px 15px;
+    }
+
+    .map-container {
+        min-height: 400px;
+        flex: 1 1 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-section {
+        padding: 30px 0;
+    }
+
+    .contact-wrapper {
+        flex-direction: column;
+        border-radius: 20px;
+    }
+
+    .contact-content {
+        padding: 30px 25px;
+    }
+
+    .contact-main-heading {
+        font-size: 2rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px 15px;
+    }
+
+    .info-label {
+        font-size: 1rem;
+    }
+
+    .info-detail {
+        font-size: 0.85rem;
+    }
+
+    .btn-contact-wide {
+        padding: 14px;
+        font-size: 1rem;
+    }
+
+    .map-container {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .contact-section {
+        padding: 20px 0;
+    }
+
+    .contact-content {
+        padding: 20px 15px;
+    }
+
+    .contact-main-heading {
+        font-size: 1.6rem;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .info-label {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .info-detail {
+        font-size: 0.85rem;
+    }
+
+    .btn-contact-wide {
+        padding: 12px;
+        font-size: 0.9rem;
+        border-radius: 10px;
+    }
+
+    .map-container {
+        min-height: 250px;
+    }
+
+    .contact-wrapper {
+        border-radius: 15px;
+        border-width: 1.5px;
+    }
+}
+
+/* ======================================== */
+/* DARK MODE - WARM THEME */
+/* ======================================== */
+
+@media (prefers-color-scheme: dark) {
+    .contact-section {
+        background: linear-gradient(135deg, #2A1F18 0%, #3D2D22 100%);
+    }
+
+    .contact-wrapper {
+        background: #2A1F18;
+        border-color: #6B5544;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact-content {
+        background-color: #2A1F18;
+    }
+
+    .contact-main-heading {
+        color: #F5E6D3;
+    }
+
+    .info-label {
+        color: #E8B86D;
+    }
+
+    .info-detail {
+        color: #D4C5B5;
+    }
+
+    .btn-contact-wide {
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
+        border-color: #6B5544;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-contact-wide:hover {
+        background: linear-gradient(135deg, #8B6B4A 0%, #C49A6C 100%);
+        border-color: #8B6B4A;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+}
+
+/* ======================================== */
+/* ROOT VARIABLES - WARM THEME */
+/* ======================================== */
+
+:root {
+    --contact-primary: #8B6B4A;
+    --contact-primary-light: #A8825A;
+    --contact-primary-lighter: #C49A6C;
+    --contact-primary-dark: #6B5544;
+    --contact-primary-darker: #4A3228;
+    --contact-bg-start: #e8dcc8;
+    --contact-bg-end: #f5efe6;
 }
