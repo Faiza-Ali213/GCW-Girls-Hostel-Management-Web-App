@@ -620,7 +620,6 @@
                 <a href="{{ route('Complain_request') }}" class="nav-link-custom">
                     <span class="nav-icon-wrapper"><i class="bi bi-exclamation-triangle-fill"></i></span>
                     <span class="nav-text">Complaints</span>
-                    <span class="nav-badge">12</span>
                 </a>
             </li>
         </ul>
@@ -634,7 +633,6 @@
             <i class="bi bi-people"></i>
         </span>
         <span class="nav-text">User Management</span>
-        <span class="nav-badge" id="userCount">0</span>
     </a>
 </li>
             <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
