@@ -1225,8 +1225,6 @@
     </div>
 </div>
 
-<!-- Include Add User Modal (for separate component page) -->
-@include('Component.Admin.add-user-modal')
 @endsection
 
 @push('scripts')

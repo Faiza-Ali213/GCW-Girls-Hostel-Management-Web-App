@@ -31,13 +31,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthenticationController::class, 'signup'])->name('signup.submit');
 });
 
-// Register submit route (for the signup form)
 Route::post('/register', [AuthenticationController::class, 'signup'])->name('register.submit');
-
-// Authenticated routes (require login)
 Route::middleware('auth')->group(function () {
-    // Logout
-    Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
     
     // ============================================
     // Profile Management Routes
@@ -54,32 +50,28 @@ Route::middleware('auth')->group(function () {
     })->name('bookings');
 
     // ============================================
-    // User Management Routes (Full CRUD)
+    // User Management Routes (Full CRUD) - ORDER MATTERS!
     // ============================================
-    // Main index page
-    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
-    
-    // Create routes
+    // 1. CREATE - Must come before {id} routes
     Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
     Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
     
-    // Read route
-    Route::get('/users/{id}', [UserManagementController::class, 'show'])->name('users.show');
+    // 2. INDEX
+    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
     
-    // Update routes
+    // 3. READ, UPDATE, DELETE - These have {id} parameters (must come after /create)
+    Route::get('/users/{id}', [UserManagementController::class, 'show'])->name('users.show');
     Route::get('/users/{id}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
     Route::put('/users/{id}', [UserManagementController::class, 'update'])->name('users.update');
-    
-    // Delete route
     Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');
     
-    // Status update route
+    // 4. Status update
     Route::patch('/users/{id}/status', [UserManagementController::class, 'updateStatus'])->name('users.update-status');
     
-    // Export route
+    // 5. Export route
     Route::get('/users/export', [UserManagementController::class, 'export'])->name('users.export');
     
-    // Alias for user-management (redirects to users index)
+    // 6. Alias for user-management
     Route::get('/user-management', [UserManagementController::class, 'index'])->name('user_management');
 
     // ============================================
@@ -297,12 +289,3 @@ Route::middleware('auth')->group(function () {
     Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
     Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');
 });
-
-/*
-|--------------------------------------------------------------------------
-| Fallback Route (Optional)
-|--------------------------------------------------------------------------
-*/
-// Route::fallback(function () {
-//     return redirect('/');
-// });
