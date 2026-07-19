@@ -38,17 +38,14 @@ class UserManagementController extends Controller
         $activeUsers = User::active()->count();
         $inactiveUsers = User::inactive()->count();
         $adminUsers = User::admins()->count();
-        $wardenUsers = User::wardens()->count();
-        $regularUsers = User::regularUsers()->count();
 
+        // Fix: Use the correct view path
         return view('Pages.Admin.user-management', compact(
             'users', 
             'totalUsers', 
             'activeUsers', 
             'inactiveUsers',
-            'adminUsers',
-            'wardenUsers',
-            'regularUsers'
+            'adminUsers'
         ));
     }
 
