@@ -957,9 +957,6 @@
                 <span class="stat-label">Total Users</span>
                 <h3 class="stat-value">{{ $totalUsers ?? 0 }}</h3>
             </div>
-            <div class="stat-trend up">
-                <i class="bi bi-arrow-up-short"></i> 12.5%
-            </div>
         </div>
         <div class="stat-item stat-active">
             <div class="stat-icon-circle">
@@ -968,9 +965,6 @@
             <div class="stat-info">
                 <span class="stat-label">Active Users</span>
                 <h3 class="stat-value">{{ $activeUsers ?? 0 }}</h3>
-            </div>
-            <div class="stat-trend up">
-                <i class="bi bi-arrow-up-short"></i> 8.2%
             </div>
         </div>
         <div class="stat-item stat-inactive">
@@ -981,9 +975,6 @@
                 <span class="stat-label">Inactive Users</span>
                 <h3 class="stat-value">{{ $inactiveUsers ?? 0 }}</h3>
             </div>
-            <div class="stat-trend down">
-                <i class="bi bi-arrow-down-short"></i> 3.1%
-            </div>
         </div>
         <div class="stat-item stat-admin">
             <div class="stat-icon-circle">
@@ -992,9 +983,6 @@
             <div class="stat-info">
                 <span class="stat-label">Administrators</span>
                 <h3 class="stat-value">{{ $adminUsers ?? 0 }}</h3>
-            </div>
-            <div class="stat-trend up">
-                <i class="bi bi-arrow-up-short"></i> 5.7%
             </div>
         </div>
     </div>
@@ -1053,7 +1041,7 @@
                         <div class="search-input-wrapper">
                             <i class="bi bi-search"></i>
                             <input type="text" name="search" class="search-input" 
-                                   placeholder="Search users by name, email, or phone..." 
+                                   placeholder="Search here..." 
                                    value="{{ request('search') }}">
                             <button type="submit" class="search-btn">
                                 <i class="bi bi-arrow-right"></i>

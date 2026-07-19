@@ -144,6 +144,9 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .badge-role {
@@ -171,6 +174,11 @@
     color: #991B1B;
 }
 
+.badge-online {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
 /* Info Grid */
 .info-grid {
     display: grid;
@@ -193,6 +201,10 @@
     letter-spacing: 0.5px;
     display: block;
     margin-bottom: 4px;
+}
+
+.info-label i {
+    margin-right: 4px;
 }
 
 .info-value {
@@ -222,6 +234,10 @@
     font-weight: 600;
     font-size: 14px;
     transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
 }
 
 .btn-secondary {
@@ -233,6 +249,7 @@
 .btn-secondary:hover {
     background: #E2E8F0;
     color: #0F172A;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -246,6 +263,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 .btn-warning {
@@ -259,6 +277,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 .btn-danger {
@@ -272,6 +291,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 /* Responsive */
@@ -379,7 +399,7 @@
                             {{ ucfirst($user->status) }}
                         </span>
                         @if($user->isOnline())
-                            <span class="badge-custom" style="background:#D1FAE5;color:#065F46;">
+                            <span class="badge-custom badge-online">
                                 <i class="bi bi-circle-fill" style="font-size:8px;color:#10B981;"></i> Online
                             </span>
                         @endif
@@ -426,14 +446,14 @@
             <!-- Action Buttons -->
             <div class="profile-actions">
                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">
-                    <i class="bi bi-pencil me-2"></i> Edit User
+                    <i class="bi bi-pencil"></i> Edit User
                 </a>
                 <a href="{{ route('users.index') }}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left me-2"></i> Back to List
+                    <i class="bi bi-arrow-left"></i> Back to List
                 </a>
                 @if($user->id !== auth()->id())
                     <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')">
-                        <i class="bi bi-trash3 me-2"></i> Delete User
+                        <i class="bi bi-trash3"></i> Delete User
                     </button>
                 @endif
             </div>
