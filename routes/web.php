@@ -31,7 +31,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/signup', [AuthenticationController::class, 'signup'])->name('signup.submit');
 });
 
-// ✅ ADD THIS: Register submit route (for the signup form)
+// Register submit route (for the signup form)
 Route::post('/register', [AuthenticationController::class, 'signup'])->name('register.submit');
 
 // Authenticated routes (require login)
@@ -54,21 +54,37 @@ Route::middleware('auth')->group(function () {
     })->name('bookings');
 
     // ============================================
-    // User Management Routes (CRUD)
+    // User Management Routes (Full CRUD)
     // ============================================
+    // Main index page
     Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+    
+    // Create routes
+    Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
     Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
-    Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
-    Route::patch('/users/{user}/status', [UserManagementController::class, 'updateStatus'])->name('users.update-status');
+    
+    // Read route
+    Route::get('/users/{id}', [UserManagementController::class, 'show'])->name('users.show');
+    
+    // Update routes
+    Route::get('/users/{id}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{id}', [UserManagementController::class, 'update'])->name('users.update');
+    
+    // Delete route
+    Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+    
+    // Status update route
+    Route::patch('/users/{id}/status', [UserManagementController::class, 'updateStatus'])->name('users.update-status');
+    
+    // Export route
+    Route::get('/users/export', [UserManagementController::class, 'export'])->name('users.export');
+    
+    // Alias for user-management (redirects to users index)
+    Route::get('/user-management', [UserManagementController::class, 'index'])->name('user_management');
 
     // ============================================
-    // User Management & Settings Routes (View pages)
+    // Settings Route
     // ============================================
-    Route::get('/user-management', function() { 
-        return redirect()->route('users.index');
-    })->name('user_management');
-
     Route::get('/settings', function() { 
         if (view()->exists('Pages.Admin.settings')) {
             return view('Pages.Admin.settings');

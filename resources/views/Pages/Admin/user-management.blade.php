@@ -5,311 +5,339 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0"><i class="bi bi-people me-2"></i>User Management</h5>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="bi bi-plus-circle me-1"></i> Add New User
-                    </button>
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3 col-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-primary">
+                    <i class="bi bi-people-fill"></i>
                 </div>
-                <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
+                <div class="stats-info">
+                    <h4>{{ $totalUsers }}</h4>
+                    <span>Total Users</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-success">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ $activeUsers }}</h4>
+                    <span>Active Users</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-danger">
+                    <i class="bi bi-x-circle-fill"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ $inactiveUsers }}</h4>
+                    <span>Inactive Users</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="stats-card">
+                <div class="stats-icon bg-info">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+                <div class="stats-info">
+                    <h4>{{ $adminUsers }}</h4>
+                    <span>Administrators</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
+    <!-- Main Card -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-people me-2"></i>User Management
+            </h5>
+            <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm">
+                <i class="bi bi-plus-circle me-1"></i> Add New User
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Alerts -->
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
 
-                    <div class="table-responsive">
-                        <table class="table table-hover" id="usersTable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Last Login</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($users as $user)
-                                <tr>
-                                    <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=6C63FF&color=fff&size=32" 
-                                                 class="rounded-circle me-2" width="32" height="32">
-                                            <div>
-                                                <div class="fw-semibold">{{ $user->name }}</div>
-                                                <small class="text-muted">{{ $user->email }}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ $user->getRoleBadgeColor() }}">
-                                            {{ ucfirst($user->role) }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-{{ $user->getStatusBadgeColor() }}">
-                                            {{ ucfirst($user->status) }}
-                                        </span>
-                                    </td>
-                                    <td>{{ $user->last_login ? $user->last_login->format('Y-m-d H:i A') : 'Never' }}</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <button class="btn btn-sm btn-outline-primary edit-user" 
-                                                    data-id="{{ $user->id }}"
-                                                    data-name="{{ $user->name }}"
-                                                    data-email="{{ $user->email }}"
-                                                    data-role="{{ $user->role }}"
-                                                    data-phone="{{ $user->phone }}"
-                                                    data-address="{{ $user->address }}"
-                                                    data-status="{{ $user->status }}"
-                                                    title="Edit">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-{{ $user->status === 'active' ? 'warning' : 'success' }} toggle-status" 
-                                                    data-id="{{ $user->id }}"
-                                                    data-status="{{ $user->status === 'active' ? 'inactive' : 'active' }}"
-                                                    title="Toggle Status">
-                                                <i class="bi bi-{{ $user->status === 'active' ? 'pause-circle' : 'play-circle' }}"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-outline-danger delete-user" 
-                                                    data-id="{{ $user->id }}"
-                                                    data-name="{{ $user->name }}"
-                                                    title="Delete">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="7" class="text-center py-4">
-                                        <i class="bi bi-people fs-1 d-block text-muted"></i>
-                                        <p class="text-muted mt-2">No users found.</p>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <!-- Pagination -->
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <small class="text-muted">
-                            Showing {{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }} of {{ $users->total() }} users
-                        </small>
-                        {{ $users->links() }}
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            <!-- Search and Filter -->
+            <div class="row g-3 mb-3">
+                <div class="col-md-5">
+                    <form action="{{ route('users.index') }}" method="GET" class="search-form">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" name="search" class="form-control" placeholder="Search users..." value="{{ request('search') }}">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-7">
+                    <div class="d-flex gap-2 justify-content-md-end">
+                        <form action="{{ route('users.index') }}" method="GET" class="d-flex gap-2">
+                            <select name="role" class="form-select form-select-sm" style="width: 140px;" onchange="this.form.submit()">
+                                <option value="">All Roles</option>
+                                <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Administrator</option>
+                                <option value="warden" {{ request('role') == 'warden' ? 'selected' : '' }}>Warden</option>
+                                <option value="user" {{ request('role') == 'user' ? 'selected' : '' }}>User</option>
+                            </select>
+                            <select name="status" class="form-select form-select-sm" style="width: 140px;" onchange="this.form.submit()">
+                                <option value="">All Status</option>
+                                <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
+                                <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                            <a href="{{ route('users.index') }}" class="btn btn-sm btn-secondary">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </a>
+                        </form>
                     </div>
                 </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th>Last Login</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($users as $user)
+                        <tr>
+                            <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ $user->getAvatarUrl() }}" class="rounded-circle me-2" width="35" height="35">
+                                    <strong>{{ $user->name }}</strong>
+                                </div>
+                            </td>
+                            <td>{{ $user->email }}</td>
+                            <td>
+                                <span class="badge bg-{{ $user->getRoleBadgeColor() }}">
+                                    {{ ucfirst($user->role) }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $user->getStatusBadgeColor() }}">
+                                    {{ ucfirst($user->status) }}
+                                </span>
+                            </td>
+                            <td>{{ $user->last_login ? $user->last_login->format('Y-m-d H:i') : 'Never' }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-sm btn-outline-info" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-primary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="button" class="btn btn-sm btn-outline-danger delete-btn" 
+                                            data-id="{{ $user->id }}" 
+                                            data-name="{{ $user->name }}"
+                                            title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="7" class="text-center py-4">
+                                <i class="bi bi-people fs-1 d-block text-muted"></i>
+                                <p class="text-muted mt-2">No users found.</p>
+                                <a href="{{ route('users.create') }}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-plus-circle me-1"></i> Add New User
+                                </a>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <small class="text-muted">
+                    Showing {{ $users->firstItem() ?? 0 }} - {{ $users->lastItem() ?? 0 }} of {{ $users->total() }} users
+                </small>
+                {{ $users->withQueryString()->links() }}
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add User Modal -->
-@include('components.add-user-modal')
-
-<!-- Edit User Modal -->
-@include('components.edit-user-modal')
-
-<!-- Delete User Modal -->
-@include('components.delete-user-modal')
-
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="" method="POST" id="deleteForm">
+                @csrf
+                @method('DELETE')
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Delete User
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete user <strong id="deleteUserName"></strong>?</p>
+                    <p class="text-muted small">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
+
+@push('styles')
+<style>
+.stats-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.stats-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 22px;
+}
+
+.stats-icon.bg-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.stats-icon.bg-success { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+.stats-icon.bg-danger { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+.stats-icon.bg-info { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+
+.stats-info h4 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+    color: #2d3748;
+}
+
+.stats-info span {
+    font-size: 13px;
+    color: #718096;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 15px 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.search-form .input-group-text {
+    background: #fff;
+    border-right: none;
+}
+
+.search-form .form-control {
+    border-left: none;
+}
+
+.search-form .form-control:focus {
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+
+.table th {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-top: none;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.badge {
+    padding: 5px 12px;
+    font-weight: 500;
+}
+
+.btn-group .btn {
+    padding: 4px 8px;
+}
+
+.btn-group .btn:hover {
+    transform: scale(1.05);
+}
+
+.btn-group .btn i {
+    font-size: 14px;
+}
+</style>
+@endpush
 
 @push('scripts')
 <script>
 $(document).ready(function() {
-    // Initialize DataTable with pagination disabled since we're using Laravel pagination
-    // But we can add search functionality if needed
-    
-    // Edit User - Set form action
-    $('.edit-user').click(function() {
-        const user = $(this).data();
-        const editForm = $('#editUserForm');
-        editForm.attr('action', `/users/${user.id}`);
-        
-        $('#editUserId').val(user.id);
-        $('#editName').val(user.name);
-        $('#editEmail').val(user.email);
-        $('#editRole').val(user.role);
-        $('#editPhone').val(user.phone || '');
-        $('#editAddress').val(user.address || '');
-        $('#editStatus').val(user.status);
-        $('#editPassword').val('');
-        $('#editPasswordConfirmation').val('');
-        $('#editPasswordFeedback').html('<small class="text-muted">Leave blank to keep current password</small>');
-        $('#editUserModal').modal('show');
-    });
-
-    // Delete User - Set form action
-    $('.delete-user').click(function() {
+    // Delete button handler
+    $('.delete-btn').click(function() {
         const userId = $(this).data('id');
         const userName = $(this).data('name');
-        const deleteForm = $('#deleteUserForm');
-        deleteForm.attr('action', `/users/${userId}`);
         
-        $('#deleteUserId').val(userId);
         $('#deleteUserName').text(userName);
-        $('#deleteUserModal').modal('show');
+        $('#deleteForm').attr('action', `/users/${userId}`);
+        $('#deleteModal').modal('show');
     });
-
-    // Toggle Status
-    $('.toggle-status').click(function() {
-        const userId = $(this).data('id');
-        const newStatus = $(this).data('status');
-        const button = $(this);
-        
-        if (!confirm('Are you sure you want to change this user\'s status?')) {
-            return;
-        }
-        
-        $.ajax({
-            url: `/users/${userId}/status`,
-            method: 'PATCH',
-            data: {
-                _token: '{{ csrf_token() }}',
-                status: newStatus
-            },
-            success: function(response) {
-                if (response.success) {
-                    // Show success message
-                    toastr.success(response.message || 'Status updated successfully!');
-                    // Reload after a short delay
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1000);
-                }
-            },
-            error: function(xhr) {
-                let errorMessage = 'Error updating status';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                }
-                toastr.error(errorMessage);
-            }
-        });
-    });
-
-    // Password validation for add user
-    $('#addPassword, #addPasswordConfirmation').on('keyup', function() {
-        const password = $('#addPassword').val();
-        const confirm = $('#addPasswordConfirmation').val();
-        const feedback = $('#addPasswordFeedback');
-        
-        if (password.length > 0 && confirm.length > 0) {
-            if (password === confirm) {
-                feedback.html('<i class="bi bi-check-circle text-success"></i> Passwords match');
-                feedback.removeClass('text-danger').addClass('text-success');
-            } else {
-                feedback.html('<i class="bi bi-exclamation-circle text-danger"></i> Passwords do not match');
-                feedback.removeClass('text-success').addClass('text-danger');
-            }
-        } else {
-            feedback.html('');
-        }
-    });
-
-    // Password validation for edit user
-    $('#editPassword, #editPasswordConfirmation').on('keyup', function() {
-        const password = $('#editPassword').val();
-        const confirm = $('#editPasswordConfirmation').val();
-        const feedback = $('#editPasswordFeedback');
-        
-        if (password.length > 0 || confirm.length > 0) {
-            if (password === confirm && password.length >= 8) {
-                feedback.html('<i class="bi bi-check-circle text-success"></i> Passwords match');
-                feedback.removeClass('text-danger').addClass('text-success');
-            } else if (password !== confirm && password.length > 0 && confirm.length > 0) {
-                feedback.html('<i class="bi bi-exclamation-circle text-danger"></i> Passwords do not match');
-                feedback.removeClass('text-success').addClass('text-danger');
-            } else if (password.length > 0 && password.length < 8) {
-                feedback.html('<i class="bi bi-exclamation-circle text-danger"></i> Password must be at least 8 characters');
-                feedback.removeClass('text-success').addClass('text-danger');
-            } else {
-                feedback.html('<small class="text-muted">Leave blank to keep current password</small>');
-            }
-        } else {
-            feedback.html('<small class="text-muted">Leave blank to keep current password</small>');
-        }
-    });
-
-    // Auto-hide alerts after 5 seconds
-    setTimeout(function() {
-        $('.alert').fadeOut('slow');
-    }, 5000);
-
-    // Add toastr configuration if not already present
-    if (typeof toastr !== 'undefined') {
-        toastr.options = {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-top-right',
-            timeOut: 3000,
-        };
-    }
 });
 </script>
-@endpush
-
-@push('styles')
-<style>
-.card {
-    border: none;
-    border-radius: 12px;
-}
-.card-header {
-    border-bottom: 1px solid #f0f0f0;
-    border-radius: 12px 12px 0 0 !important;
-}
-.table th {
-    font-weight: 600;
-    color: #6c757d;
-    border-top: none;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.table td {
-    vertical-align: middle;
-}
-.badge {
-    font-weight: 500;
-    padding: 5px 12px;
-}
-.modal-content {
-    border-radius: 12px;
-}
-.modal-header {
-    border-bottom: 1px solid #f0f0f0;
-}
-.modal-footer {
-    border-top: 1px solid #f0f0f0;
-}
-.btn-group .btn {
-    border-radius: 4px;
-    margin: 0 2px;
-}
-.btn-group .btn:first-child {
-    border-radius: 4px 0 0 4px;
-}
-.btn-group .btn:last-child {
-    border-radius: 0 4px 4px 0;
-}
-</style>
 @endpush

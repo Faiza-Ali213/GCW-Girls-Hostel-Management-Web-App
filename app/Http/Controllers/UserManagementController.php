@@ -9,126 +9,198 @@ use Illuminate\Validation\Rule;
 
 class UserManagementController extends Controller
 {
-    public function index()
+    /**
+     * Display a listing of users.
+     */
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
-        return view('admin.user_management', compact('users'));
+        $query = User::query();
+
+        // Search functionality
+        if ($request->has('search') && !empty($request->search)) {
+            $query->search($request->search);
+        }
+
+        // Filter by role
+        if ($request->has('role') && !empty($request->role)) {
+            $query->where('role', $request->role);
+        }
+
+        // Filter by status
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        $users = $query->orderBy('created_at', 'desc')->paginate(10);
+        
+        // Get statistics
+        $totalUsers = User::count();
+        $activeUsers = User::active()->count();
+        $inactiveUsers = User::inactive()->count();
+        $adminUsers = User::admins()->count();
+        $wardenUsers = User::wardens()->count();
+        $regularUsers = User::regularUsers()->count();
+
+        return view('Pages.Admin.user-management', compact(
+            'users', 
+            'totalUsers', 
+            'activeUsers', 
+            'inactiveUsers',
+            'adminUsers',
+            'wardenUsers',
+            'regularUsers'
+        ));
     }
 
+    /**
+     * Show form to create new user.
+     */
+    public function create()
+    {
+        return view('Component.Admin.add-user-modal');
+    }
+
+    /**
+     * Store a new user.
+     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:warden,user',
+            'role' => 'required|in:admin,warden,user',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'status' => 'required|in:active,inactive',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'status' => $request->status,
-        ]);
+        $validated['password'] = Hash::make($validated['password']);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User created successfully!',
-                'user' => $user
-            ]);
-        }
+        User::create($validated);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully!');
+        return redirect()->route('users.index')
+                         ->with('success', 'User created successfully!');
     }
 
-    public function update(Request $request, User $user)
+    /**
+     * Show a specific user.
+     */
+    public function show($id)
     {
-        $request->validate([
+        $user = User::findOrFail($id);
+        return view('Component.Admin.view-user-modal', compact('user'));
+    }
+
+    /**
+     * Show form to edit user.
+     */
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        return view('Component.Admin.edit-user-modal', compact('user'));
+    }
+
+    /**
+     * Update a user.
+     */
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'role' => 'required|in:warden,user',
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+            'role' => 'required|in:admin,warden,user',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'status' => 'required|in:active,inactive',
         ]);
 
-        $data = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'status' => $request->status,
-        ];
-
+        // Handle password update only if provided
         if ($request->filled('password')) {
             $request->validate([
                 'password' => 'string|min:8|confirmed',
             ]);
-            $data['password'] = Hash::make($request->password);
+            $validated['password'] = Hash::make($request->password);
         }
 
-        $user->update($data);
+        $user->update($validated);
 
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User updated successfully!',
-                'user' => $user
-            ]);
-        }
-
-        return redirect()->route('users.index')->with('success', 'User updated successfully!');
+        return redirect()->route('users.index')
+                         ->with('success', 'User updated successfully!');
     }
 
-    public function destroy(User $user)
+    /**
+     * Delete a user.
+     */
+    public function destroy($id)
     {
-        // Prevent deleting self
-        if ($user->id === auth()->id()) {
-            if (request()->ajax()) {
+        try {
+            $user = User::findOrFail($id);
+            
+            // Prevent deleting self
+            if ($user->id === auth()->id()) {
+                return redirect()->route('users.index')
+                                 ->with('error', 'You cannot delete your own account!');
+            }
+
+            $user->delete();
+
+            return redirect()->route('users.index')
+                             ->with('success', 'User "' . $user->name . '" deleted successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->route('users.index')
+                             ->with('error', 'Failed to delete user: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Update user status.
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            
+            $request->validate([
+                'status' => 'required|in:active,inactive'
+            ]);
+
+            $user->update(['status' => $request->status]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User status updated successfully!',
+                    'status' => $user->status
+                ]);
+            }
+
+            return redirect()->route('users.index')
+                             ->with('success', 'User status updated successfully!');
+
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'You cannot delete your own account!'
-                ], 403);
+                    'message' => 'Failed to update status: ' . $e->getMessage()
+                ], 500);
             }
-            return back()->with('error', 'You cannot delete your own account!');
+            
+            return redirect()->route('users.index')
+                             ->with('error', 'Failed to update status: ' . $e->getMessage());
         }
-
-        $user->delete();
-
-        if (request()->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User deleted successfully!'
-            ]);
-        }
-
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
     }
 
-    public function updateStatus(Request $request, User $user)
+    /**
+     * Export users to CSV (optional).
+     */
+    public function export()
     {
-        $request->validate([
-            'status' => 'required|in:active,inactive'
-        ]);
-
-        $user->update(['status' => $request->status]);
-
-        if ($request->ajax()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'User status updated successfully!',
-                'status' => $user->status
-            ]);
-        }
-
-        return back()->with('success', 'User status updated successfully!');
+        $users = User::all();
+        // Implement CSV export logic
+        return redirect()->back()->with('success', 'Export started!');
     }
 }
