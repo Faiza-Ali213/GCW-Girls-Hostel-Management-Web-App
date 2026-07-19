@@ -11,6 +11,7 @@ use App\Http\Controllers\FeeRecordController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticationController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,17 +54,19 @@ Route::middleware('auth')->group(function () {
     })->name('bookings');
 
     // ============================================
-    // User Management & Settings Routes - FIXED
+    // User Management Routes (CRUD)
     // ============================================
-    // Try both variations - one will work
+    Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
+    Route::put('/users/{user}', [UserManagementController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+    Route::patch('/users/{user}/status', [UserManagementController::class, 'updateStatus'])->name('users.update-status');
+
+    // ============================================
+    // User Management & Settings Routes (View pages)
+    // ============================================
     Route::get('/user-management', function() { 
-        if (view()->exists('Pages.Admin.user-management')) {
-            return view('Pages.Admin.user-management');
-        } elseif (view()->exists('Pages.Admin.user_management')) {
-            return view('Pages.Admin.user_management');
-        } else {
-            abort(404, 'User Management view not found');
-        }
+        return redirect()->route('users.index');
     })->name('user_management');
 
     Route::get('/settings', function() { 

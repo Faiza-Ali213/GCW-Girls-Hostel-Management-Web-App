@@ -628,11 +628,12 @@
         <!-- Settings Section -->
         <div class="nav-section">System</div>
         <ul class="nav-list">
-            <li class="nav-item {{ request()->routeIs('user_management') ? 'active' : '' }}">
-                <a href="{{ route('user_management') }}" class="nav-link-custom">
-                    <span class="nav-icon-wrapper"><i class="bi bi-person-gear"></i></span>
-                    <span class="nav-text">User Management</span>
-                </a>
+            <li class="nav-item">
+    <a class="nav-link" href="{{ route('users.index') }}">
+        <i class="bi bi-people"></i>
+        <span>User Management</span>
+    </a>
+</li>
             </li>
             <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
                 <a href="{{ route('settings') }}" class="nav-link-custom">

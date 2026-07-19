@@ -67,25 +67,33 @@
                                             {{ ucfirst($user->status) }}
                                         </span>
                                     </td>
-                                    <td>{{ $user->last_login_at ? $user->last_login_at->format('Y-m-d H:i A') : 'Never' }}</td>
+                                    <td>{{ $user->last_login ? $user->last_login->format('Y-m-d H:i A') : 'Never' }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 edit-user" 
-                                                data-id="{{ $user->id }}"
-                                                data-name="{{ $user->name }}"
-                                                data-email="{{ $user->email }}"
-                                                data-role="{{ $user->role }}"
-                                                data-phone="{{ $user->phone }}"
-                                                data-address="{{ $user->address }}"
-                                                data-status="{{ $user->status }}"
-                                                title="Edit">
-                                            <i class="bi bi-pencil"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-user" 
-                                                data-id="{{ $user->id }}"
-                                                data-name="{{ $user->name }}"
-                                                title="Delete">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
+                                        <div class="btn-group" role="group">
+                                            <button class="btn btn-sm btn-outline-primary edit-user" 
+                                                    data-id="{{ $user->id }}"
+                                                    data-name="{{ $user->name }}"
+                                                    data-email="{{ $user->email }}"
+                                                    data-role="{{ $user->role }}"
+                                                    data-phone="{{ $user->phone }}"
+                                                    data-address="{{ $user->address }}"
+                                                    data-status="{{ $user->status }}"
+                                                    title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-{{ $user->status === 'active' ? 'warning' : 'success' }} toggle-status" 
+                                                    data-id="{{ $user->id }}"
+                                                    data-status="{{ $user->status === 'active' ? 'inactive' : 'active' }}"
+                                                    title="Toggle Status">
+                                                <i class="bi bi-{{ $user->status === 'active' ? 'pause-circle' : 'play-circle' }}"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger delete-user" 
+                                                    data-id="{{ $user->id }}"
+                                                    data-name="{{ $user->name }}"
+                                                    title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                                 @empty
@@ -130,9 +138,12 @@ $(document).ready(function() {
     // Initialize DataTable with pagination disabled since we're using Laravel pagination
     // But we can add search functionality if needed
     
-    // Edit User
+    // Edit User - Set form action
     $('.edit-user').click(function() {
         const user = $(this).data();
+        const editForm = $('#editUserForm');
+        editForm.attr('action', `/users/${user.id}`);
+        
         $('#editUserId').val(user.id);
         $('#editName').val(user.name);
         $('#editEmail').val(user.email);
@@ -142,16 +153,57 @@ $(document).ready(function() {
         $('#editStatus').val(user.status);
         $('#editPassword').val('');
         $('#editPasswordConfirmation').val('');
+        $('#editPasswordFeedback').html('<small class="text-muted">Leave blank to keep current password</small>');
         $('#editUserModal').modal('show');
     });
 
-    // Delete User
+    // Delete User - Set form action
     $('.delete-user').click(function() {
         const userId = $(this).data('id');
         const userName = $(this).data('name');
+        const deleteForm = $('#deleteUserForm');
+        deleteForm.attr('action', `/users/${userId}`);
+        
         $('#deleteUserId').val(userId);
         $('#deleteUserName').text(userName);
         $('#deleteUserModal').modal('show');
+    });
+
+    // Toggle Status
+    $('.toggle-status').click(function() {
+        const userId = $(this).data('id');
+        const newStatus = $(this).data('status');
+        const button = $(this);
+        
+        if (!confirm('Are you sure you want to change this user\'s status?')) {
+            return;
+        }
+        
+        $.ajax({
+            url: `/users/${userId}/status`,
+            method: 'PATCH',
+            data: {
+                _token: '{{ csrf_token() }}',
+                status: newStatus
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Show success message
+                    toastr.success(response.message || 'Status updated successfully!');
+                    // Reload after a short delay
+                    setTimeout(function() {
+                        location.reload();
+                    }, 1000);
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'Error updating status';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                toastr.error(errorMessage);
+            }
+        });
     });
 
     // Password validation for add user
@@ -190,7 +242,7 @@ $(document).ready(function() {
                 feedback.html('<i class="bi bi-exclamation-circle text-danger"></i> Password must be at least 8 characters');
                 feedback.removeClass('text-success').addClass('text-danger');
             } else {
-                feedback.html('');
+                feedback.html('<small class="text-muted">Leave blank to keep current password</small>');
             }
         } else {
             feedback.html('<small class="text-muted">Leave blank to keep current password</small>');
@@ -201,10 +253,21 @@ $(document).ready(function() {
     setTimeout(function() {
         $('.alert').fadeOut('slow');
     }, 5000);
+
+    // Add toastr configuration if not already present
+    if (typeof toastr !== 'undefined') {
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-right',
+            timeOut: 3000,
+        };
+    }
 });
 </script>
 @endpush
 
+@push('styles')
 <style>
 .card {
     border: none;
@@ -238,4 +301,15 @@ $(document).ready(function() {
 .modal-footer {
     border-top: 1px solid #f0f0f0;
 }
+.btn-group .btn {
+    border-radius: 4px;
+    margin: 0 2px;
+}
+.btn-group .btn:first-child {
+    border-radius: 4px 0 0 4px;
+}
+.btn-group .btn:last-child {
+    border-radius: 0 4px 4px 0;
+}
 </style>
+@endpush
