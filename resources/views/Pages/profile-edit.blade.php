@@ -19,32 +19,32 @@
         }
 
         body {
-            background: #f0f4f8;
+            background: #e8dcc8;
             min-height: 100vh;
             padding: 2rem 0;
         }
 
         /* Navbar Custom */
         .navbar-custom {
-            background: linear-gradient(135deg, #0b2b3c 0%, #1a4b5e 100%);
+            background: #4A3228;
             padding: 0.8rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 20px rgba(74, 50, 40, 0.3);
         }
 
         .navbar-custom .navbar-brand {
-            color: #fff;
+            color: #FFFFFF;
             font-weight: 700;
             font-size: 1.5rem;
             letter-spacing: -0.5px;
         }
 
         .navbar-custom .navbar-brand i {
-            color: #6fc3d9;
+            color: #C49A6C;
             margin-right: 10px;
         }
 
         .navbar-custom .navbar-brand span {
-            color: #6fc3d9;
+            color: #C49A6C;
         }
 
         .navbar-custom .nav-link {
@@ -55,14 +55,14 @@
         }
 
         .navbar-custom .nav-link:hover {
-            color: #fff !important;
-            background: rgba(255, 255, 255, 0.1);
+            color: #FFFFFF !important;
+            background: rgba(196, 154, 108, 0.15);
             border-radius: 8px;
         }
 
         .navbar-custom .nav-link.active {
-            color: #fff !important;
-            background: rgba(255, 255, 255, 0.15);
+            color: #FFFFFF !important;
+            background: rgba(196, 154, 108, 0.2);
             border-radius: 8px;
         }
 
@@ -75,40 +75,41 @@
 
         /* Breadcrumb */
         .breadcrumb-custom {
-            background: white;
+            background: #f5efe6;
             padding: 0.8rem 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(74, 50, 40, 0.08);
             margin-bottom: 1.8rem;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             flex-wrap: wrap;
+            border: 1px solid rgba(196, 154, 108, 0.2);
         }
 
         .breadcrumb-custom i {
-            color: #1a4b5e;
+            color: #8B6B4A;
         }
 
         .breadcrumb-custom .path {
-            color: #1a4b5e;
+            color: #6B5544;
             font-weight: 500;
             font-size: 0.9rem;
         }
 
         .breadcrumb-custom .path span {
-            background: #e3ecf3;
+            background: #e8dcc8;
             padding: 0.2rem 0.8rem;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
-            color: #0b2b3c;
+            color: #4A3228;
             margin-left: 6px;
         }
 
         .breadcrumb-custom .badge-active {
-            background: #1f6579;
-            color: white;
+            background: #8B6B4A;
+            color: #FFFFFF;
             padding: 0.2rem 1rem;
             border-radius: 20px;
             font-size: 0.75rem;
@@ -117,20 +118,22 @@
 
         /* Profile Card */
         .profile-card {
-            background: white;
+            background: #f5efe6;
             border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 40px rgba(74, 50, 40, 0.12);
             overflow: hidden;
+            border: 1px solid rgba(196, 154, 108, 0.15);
         }
 
         .profile-header {
-            background: linear-gradient(135deg, #0b2b3c 0%, #1f6579 100%);
+            background: linear-gradient(135deg, #4A3228 0%, #6B5544 100%);
             padding: 2rem 2rem 1.5rem;
-            color: white;
+            color: #FFFFFF;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            border-bottom: 3px solid #C49A6C;
         }
 
         .profile-header .user-info {
@@ -142,31 +145,35 @@
         .profile-header .user-info .avatar {
             width: 70px;
             height: 70px;
-            background: rgba(255, 255, 255, 0.2);
+            background: linear-gradient(135deg, #C49A6C, #A8825A);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 2.2rem;
-            border: 3px solid rgba(255, 255, 255, 0.4);
+            color: #4A3228;
+            border: 3px solid #C49A6C;
         }
 
         .profile-header .user-info h4 {
             font-weight: 600;
             margin: 0;
+            color: #FFFFFF;
         }
 
         .profile-header .user-info small {
             opacity: 0.8;
             font-weight: 400;
+            color: #f5efe6;
         }
 
         .profile-header .user-stats {
             display: flex;
             gap: 2rem;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             padding: 0.6rem 1.5rem;
             border-radius: 50px;
+            border: 1px solid rgba(196, 154, 108, 0.2);
         }
 
         .profile-header .user-stats .stat {
@@ -176,22 +183,25 @@
         .profile-header .user-stats .stat strong {
             display: block;
             font-size: 1.2rem;
+            color: #C49A6C;
         }
 
         .profile-header .user-stats .stat span {
             font-size: 0.75rem;
-            opacity: 0.8;
+            opacity: 0.7;
+            color: #f5efe6;
         }
 
         /* Profile Body */
         .profile-body {
             padding: 2rem;
+            background: #f5efe6;
         }
 
         .profile-body .section-title {
             font-size: 1rem;
             font-weight: 600;
-            color: #0b2b3c;
+            color: #4A3228;
             margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
@@ -199,14 +209,14 @@
         }
 
         .profile-body .section-title i {
-            color: #1f6579;
+            color: #8B6B4A;
         }
 
         .profile-body .section-title::after {
             content: '';
             flex: 1;
             height: 2px;
-            background: linear-gradient(to right, #dce8f0, transparent);
+            background: linear-gradient(to right, #C49A6C, transparent);
         }
 
         /* Edit Form */
@@ -217,7 +227,7 @@
         .edit-form .form-group label {
             font-weight: 600;
             font-size: 0.85rem;
-            color: #1a4b5e;
+            color: #6B5544;
             margin-bottom: 0.4rem;
             display: flex;
             align-items: center;
@@ -225,34 +235,36 @@
         }
 
         .edit-form .form-group label i {
-            color: #1f6579;
+            color: #8B6B4A;
             width: 1.2rem;
         }
 
         .edit-form .form-group .form-control,
         .edit-form .form-group .form-select {
-            border: 2px solid #e5edf3;
+            border: 2px solid #d5c9b8;
             border-radius: 12px;
             padding: 0.7rem 1.2rem;
             font-size: 0.95rem;
             transition: 0.2s;
-            background: #fafcfe;
+            background: #FFFFFF;
+            color: #4A3228;
         }
 
         .edit-form .form-group .form-control:focus,
         .edit-form .form-group .form-select:focus {
-            border-color: #1f6579;
-            box-shadow: 0 0 0 4px rgba(31, 101, 121, 0.1);
-            background: white;
+            border-color: #C49A6C;
+            box-shadow: 0 0 0 4px rgba(196, 154, 108, 0.15);
+            background: #FFFFFF;
         }
 
         .edit-form .form-group .form-control::placeholder {
-            color: #b0c8d6;
+            color: #b5a694;
         }
 
         .edit-form .form-group .form-control[readonly] {
-            background: #f0f4f8;
+            background: #f5efe6;
             cursor: not-allowed;
+            border-color: #d5c9b8;
         }
 
         /* Action Buttons */
@@ -261,14 +273,14 @@
             gap: 1rem;
             justify-content: flex-end;
             padding-top: 1.5rem;
-            border-top: 2px solid #f0f4f8;
+            border-top: 2px solid #e8dcc8;
             margin-top: 1rem;
         }
 
         .btn-cancel {
             background: transparent;
-            border: 2px solid #d0dee9;
-            color: #1a4b5e;
+            border: 2px solid #C49A6C;
+            color: #6B5544;
             padding: 0.6rem 2rem;
             border-radius: 50px;
             font-weight: 600;
@@ -280,16 +292,16 @@
         }
 
         .btn-cancel:hover {
-            background: #f0f4f8;
-            border-color: #b0c8d6;
+            background: #e8dcc8;
+            border-color: #8B6B4A;
             text-decoration: none;
-            color: #1a4b5e;
+            color: #4A3228;
         }
 
         .btn-save {
-            background: #1f6579;
+            background: linear-gradient(135deg, #8B6B4A, #A8825A);
             border: none;
-            color: white;
+            color: #FFFFFF;
             padding: 0.6rem 2.5rem;
             border-radius: 50px;
             font-weight: 600;
@@ -298,13 +310,14 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(139, 107, 74, 0.3);
         }
 
         .btn-save:hover {
-            background: #104c5e;
+            background: linear-gradient(135deg, #A8825A, #C49A6C);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(31, 101, 121, 0.3);
-            color: white;
+            box-shadow: 0 8px 25px rgba(139, 107, 74, 0.4);
+            color: #FFFFFF;
         }
 
         .btn-save i {
@@ -313,9 +326,9 @@
 
         /* Edit Profile Toggle Button */
         .btn-edit-toggle {
-            background: #1f6579;
+            background: linear-gradient(135deg, #8B6B4A, #A8825A);
             border: none;
-            color: white;
+            color: #FFFFFF;
             padding: 0.7rem 2rem;
             border-radius: 60px;
             font-weight: 600;
@@ -325,34 +338,35 @@
             gap: 10px;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 4px 8px rgba(26, 75, 94, 0.15);
-            border: 1px solid #317e94;
+            box-shadow: 0 4px 20px rgba(139, 107, 74, 0.35);
+            border: 1px solid #C49A6C;
         }
 
         .btn-edit-toggle:hover {
-            background: #104c5e;
+            background: linear-gradient(135deg, #A8825A, #C49A6C);
             transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(19, 65, 82, 0.2);
-            color: white;
+            box-shadow: 0 8px 30px rgba(139, 107, 74, 0.4);
+            color: #FFFFFF;
         }
 
         /* Footer */
         .footer-meta {
             margin-top: 2rem;
             padding: 1.2rem 2rem;
-            background: white;
+            background: #4A3228;
             border-radius: 16px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(74, 50, 40, 0.15);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             font-size: 0.85rem;
-            color: #3f6b7e;
+            color: #f5efe6;
+            border: 1px solid rgba(196, 154, 108, 0.15);
         }
 
         .footer-meta i {
-            color: #1f6579;
+            color: #C49A6C;
             margin-right: 6px;
         }
 
@@ -367,10 +381,11 @@
         }
 
         .footer-meta .time-lang span {
-            background: #f0f4f8;
+            background: rgba(255, 255, 255, 0.08);
             padding: 0.2rem 0.8rem;
             border-radius: 20px;
             font-weight: 500;
+            color: #f5efe6;
         }
 
         /* Toggle sections */
@@ -465,7 +480,7 @@
                 display: flex;
                 justify-content: space-between;
                 padding: 0.3rem 0;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             }
 
             .profile-header .user-stats .stat:last-child {
@@ -528,8 +543,8 @@
         <div class="breadcrumb-custom">
             <i class="fas fa-route"></i>
             <span class="path">
-                / <a href="{{ route('home') }}" class="text-decoration-none text-dark">Home</a>
-                / <a href="#" class="text-decoration-none text-dark">Profile</a>
+                / <a href="{{ route('home') }}" class="text-decoration-none" style="color: #8B6B4A;">Home</a>
+                / <a href="#" class="text-decoration-none" style="color: #8B6B4A;">Profile</a>
                 / <span>Edit Profile <span class="badge-active">Active</span></span>
             </span>
         </div>
@@ -580,25 +595,25 @@
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-user"></i> Full Name</strong>
-                                <p class="text-muted">{{ $user->name ?? 'Faiza Ahmed' }}</p>
+                                <p style="color: #4A3228; font-weight: 500;">{{ $user->name ?? 'Faiza Ahmed' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-envelope"></i> Email</strong>
-                                <p class="text-muted">{{ $user->email ?? 'faiza@example.com' }}</p>
+                                <p style="color: #4A3228; font-weight: 500;">{{ $user->email ?? 'faiza@example.com' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-user-tag"></i> Role</strong>
-                                <p class="text-muted">{{ $user->role ?? 'Student' }}</p>
+                                <p style="color: #4A3228; font-weight: 500;">{{ $user->role ?? 'Student' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-phone"></i> Phone</strong>
-                                <p class="text-muted">{{ $user->phone ?? '+92 300 1234567' }}</p>
+                                <p style="color: #4A3228; font-weight: 500;">{{ $user->phone ?? '+92 300 1234567' }}</p>
                             </div>
                         </div>
                     </div>
@@ -612,25 +627,25 @@
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-circle"></i> Account Status</strong>
-                                <p class="text-muted"><span class="badge bg-success">Active</span></p>
+                                <p style="color: #4A3228; font-weight: 500;"><span class="badge" style="background: #8B6B4A; color: #FFFFFF;">Active</span></p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-clock"></i> Last Login</strong>
-                                <p class="text-muted">10:40 PM, 7/20/2026</p>
+                                <p style="color: #4A3228; font-weight: 500;">10:40 PM, 7/20/2026</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-home"></i> Hostel</strong>
-                                <p class="text-muted">{{ $user->hostel ?? 'GCW Hostel' }}</p>
+                                <p style="color: #4A3228; font-weight: 500;">{{ $user->hostel ?? 'GCW Hostel' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="info-item">
                                 <strong><i class="fas fa-map-pin"></i> Location</strong>
-                                <p class="text-muted">{{ $user->location ?? 'Gujranwala, Pakistan' }}</p>
+                                <p style="color: #4A3228; font-weight: 500;">{{ $user->location ?? 'Gujranwala, Pakistan' }}</p>
                             </div>
                         </div>
                     </div>
@@ -645,7 +660,7 @@
 
                 <!-- ====== EDIT MODE ====== -->
                 <div id="editMode" class="edit-section">
-                    <div class="alert alert-info">
+                    <div class="alert alert-info" style="background: #e8dcc8; border: 1px solid #C49A6C; color: #4A3228;">
                         <i class="fas fa-info-circle"></i> You are now in edit mode. Make your changes and click "Save Changes".
                     </div>
 
@@ -811,7 +826,7 @@
                     editMode.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     
                     // Update button state
-                    editToggleBtn.textContent = 'Editing...';
+                    editToggleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Editing...';
                     editToggleBtn.disabled = true;
                     editToggleBtn.style.opacity = '0.6';
                 });
@@ -888,13 +903,26 @@
         
         .info-item {
             margin-bottom: 1rem;
+            padding: 0.8rem 1.2rem;
+            background: #FFFFFF;
+            border-radius: 12px;
+            border-left: 3px solid #C49A6C;
+            box-shadow: 0 2px 8px rgba(74, 50, 40, 0.06);
         }
         
         .info-item strong {
             display: block;
-            color: #1a4b5e;
-            font-size: 0.85rem;
+            color: #6B5544;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
             margin-bottom: 0.2rem;
+        }
+        
+        .info-item strong i {
+            color: #8B6B4A;
+            margin-right: 6px;
         }
         
         .info-item p {
