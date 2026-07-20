@@ -16,6 +16,27 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
+| Password Reset Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+Route::post('/forgot-password', function () {
+    return back()->with('status', 'Password reset link sent!');
+})->name('password.email');
+
+Route::get('/reset-password/{token}', function ($token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
+
+Route::post('/reset-password', function () {
+    return redirect()->route('login')->with('status', 'Password reset successfully!');
+})->name('password.update');
+
+/*
+|--------------------------------------------------------------------------
 | Authentication Routes (Login, Signup, Logout)
 |--------------------------------------------------------------------------
 */
@@ -63,26 +84,15 @@ Route::middleware('auth')->group(function () {
         // ============================================
         // User Management Routes (Full CRUD)
         // ============================================
-        // 1. CREATE - Must come before {id} routes
         Route::get('/users/create', [UserManagementController::class, 'create'])->name('users.create');
         Route::post('/users', [UserManagementController::class, 'store'])->name('users.store');
-        
-        // 2. INDEX
         Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
-        
-        // 3. READ, UPDATE, DELETE - These have {id} parameters
         Route::get('/users/{id}', [UserManagementController::class, 'show'])->name('users.show');
         Route::get('/users/{id}/edit', [UserManagementController::class, 'edit'])->name('users.edit');
         Route::put('/users/{id}', [UserManagementController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserManagementController::class, 'destroy'])->name('users.destroy');
-        
-        // 4. Status update
         Route::patch('/users/{id}/status', [UserManagementController::class, 'updateStatus'])->name('users.update-status');
-        
-        // 5. Export route
         Route::get('/users/export', [UserManagementController::class, 'export'])->name('users.export');
-        
-        // 6. Alias for user-management
         Route::get('/user-management', [UserManagementController::class, 'index'])->name('user_management');
 
         // ============================================
@@ -100,7 +110,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('by-room');
         });
 
-        // Direct routes for student-record
         Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
         Route::get('/student-records/create', [StudentController::class, 'create'])->name('student-records.create');
         Route::post('/student-records', [StudentController::class, 'store'])->name('student-records.store');
@@ -124,7 +133,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/search', [StaffController::class, 'search'])->name('search');
         });
 
-        // Direct routes for staff-record
         Route::get('/staff-record', [StaffController::class, 'index'])->name('staff-record');
         Route::get('/staff-record/create', [StaffController::class, 'create'])->name('staff-record.create');
         Route::post('/staff-record', [StaffController::class, 'store'])->name('staff-record.store');
@@ -133,7 +141,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/staff-record/{id}', [StaffController::class, 'update'])->name('staff-record.update');
         Route::delete('/staff-record/{id}', [StaffController::class, 'destroy'])->name('staff-record.destroy');
 
-        // Direct routes for staff_records
         Route::get('/staff_records', [StaffController::class, 'index'])->name('staff_records');
         Route::get('/staff_records/create', [StaffController::class, 'create'])->name('staff_records.create');
         Route::post('/staff_records', [StaffController::class, 'store'])->name('staff_records.store');
@@ -287,12 +294,3 @@ Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 Route::get('/rules', [PageController::class, 'rules'])->name('rules');
 Route::get('/booking', [PageController::class, 'booking'])->name('booking');
-
-/*
-|--------------------------------------------------------------------------
-| Fallback Route (Optional)
-|--------------------------------------------------------------------------
-*/
-// Route::fallback(function () {
-//     return redirect('/');
-// });
