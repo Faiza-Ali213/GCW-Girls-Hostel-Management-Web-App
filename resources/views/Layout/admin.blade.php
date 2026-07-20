@@ -620,7 +620,6 @@
                 <a href="{{ route('Complain_request') }}" class="nav-link-custom">
                     <span class="nav-icon-wrapper"><i class="bi bi-exclamation-triangle-fill"></i></span>
                     <span class="nav-text">Complaints</span>
-                    <span class="nav-badge">12</span>
                 </a>
             </li>
         </ul>
@@ -628,12 +627,14 @@
         <!-- Settings Section -->
         <div class="nav-section">System</div>
         <ul class="nav-list">
-            <li class="nav-item {{ request()->routeIs('user_management') ? 'active' : '' }}">
-                <a href="{{ route('user_management') }}" class="nav-link-custom">
-                    <span class="nav-icon-wrapper"><i class="bi bi-person-gear"></i></span>
-                    <span class="nav-text">User Management</span>
-                </a>
-            </li>
+           <li class="nav-item {{ request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('users.edit') || request()->routeIs('users.show') ? 'active' : '' }}">
+    <a href="{{ route('users.index') }}" class="nav-link-custom">
+        <span class="nav-icon-wrapper">
+            <i class="bi bi-people"></i>
+        </span>
+        <span class="nav-text">User Management</span>
+    </a>
+</li>
             <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
                 <a href="{{ route('settings') }}" class="nav-link-custom">
                     <span class="nav-icon-wrapper"><i class="bi bi-gear-fill"></i></span>

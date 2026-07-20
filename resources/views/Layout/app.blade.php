@@ -521,7 +521,7 @@
                 
                 <div class="d-flex align-items-center gap-3">
                     <!-- Book Now Button -->
-                    <a href="{{ route('booking') }}" class="btn btn-pill btn-book">Book Now ↗</a>
+                    <a href="{{ route('booking') }}" class="btn btn-pill btn-book">Book Now </a>
 
                     <!-- Auth Section -->
                     @auth
@@ -555,12 +555,6 @@
                                 @if(Route::has('profile.edit'))
                                     <a href="{{ route('profile.edit') }}" class="dropdown-item">
                                         <i class="bi bi-gear"></i> Settings
-                                    </a>
-                                @endif
-                                
-                                @if(Route::has('bookings'))
-                                    <a href="{{ route('bookings') }}" class="dropdown-item">
-                                        <i class="bi bi-calendar-check"></i> My Bookings
                                     </a>
                                 @endif
                                 
