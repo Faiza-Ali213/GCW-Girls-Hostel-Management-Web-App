@@ -273,11 +273,17 @@
             border-radius: 50px;
             font-weight: 600;
             transition: 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-cancel:hover {
             background: #f0f4f8;
             border-color: #b0c8d6;
+            text-decoration: none;
+            color: #1a4b5e;
         }
 
         .btn-save {
@@ -291,16 +297,43 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
         }
 
         .btn-save:hover {
             background: #104c5e;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(31, 101, 121, 0.3);
+            color: white;
         }
 
         .btn-save i {
             font-size: 1rem;
+        }
+
+        /* Edit Profile Toggle Button */
+        .btn-edit-toggle {
+            background: #1f6579;
+            border: none;
+            color: white;
+            padding: 0.7rem 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 8px rgba(26, 75, 94, 0.15);
+            border: 1px solid #317e94;
+        }
+
+        .btn-edit-toggle:hover {
+            background: #104c5e;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(19, 65, 82, 0.2);
+            color: white;
         }
 
         /* Footer */
@@ -338,6 +371,36 @@
             padding: 0.2rem 0.8rem;
             border-radius: 20px;
             font-weight: 500;
+        }
+
+        /* Toggle sections */
+        .edit-section {
+            display: none;
+            animation: slideDown 0.4s ease;
+        }
+
+        .edit-section.active {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* View Mode */
+        .view-mode {
+            display: block;
+        }
+
+        .view-mode.hidden {
+            display: none;
         }
 
         /* Responsive */
@@ -382,6 +445,11 @@
             .breadcrumb-custom {
                 flex-direction: column;
                 text-align: center;
+            }
+
+            .profile-header .user-stats {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
 
@@ -501,122 +569,203 @@
             <!-- Body -->
             <div class="profile-body">
 
-                <!-- Personal Information -->
-                <div class="section-title">
-                    <i class="fas fa-id-card"></i> Personal Information
-                </div>
+                <!-- ====== VIEW MODE ====== -->
+                <div id="viewMode" class="view-mode">
+                    <!-- Personal Information View -->
+                    <div class="section-title">
+                        <i class="fas fa-id-card"></i> Personal Information
+                    </div>
 
-                <form class="edit-form" id="editProfileForm" action="{{ route('profile.update') }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    
-                    <div class="row">
+                    <div class="row mb-4">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-user"></i> Full Name</label>
-                                <input type="text" class="form-control" name="name" value="{{ old('name', $user->name ?? 'Faiza Ahmed') }}" placeholder="Full Name" required>
+                            <div class="info-item">
+                                <strong><i class="fas fa-user"></i> Full Name</strong>
+                                <p class="text-muted">{{ $user->name ?? 'Faiza Ahmed' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-envelope"></i> Email Address</label>
-                                <input type="email" class="form-control" name="email" value="{{ old('email', $user->email ?? 'faiza@example.com') }}" placeholder="Email" required>
+                            <div class="info-item">
+                                <strong><i class="fas fa-envelope"></i> Email</strong>
+                                <p class="text-muted">{{ $user->email ?? 'faiza@example.com' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-user-tag"></i> Role</label>
-                                <select class="form-select" name="role">
-                                    <option value="student" {{ (old('role', $user->role ?? 'student') == 'student') ? 'selected' : '' }}>Student</option>
-                                    <option value="staff" {{ (old('role', $user->role ?? '') == 'staff') ? 'selected' : '' }}>Staff</option>
-                                    <option value="admin" {{ (old('role', $user->role ?? '') == 'admin') ? 'selected' : '' }}>Admin</option>
-                                    <option value="manager" {{ (old('role', $user->role ?? '') == 'manager') ? 'selected' : '' }}>Manager</option>
-                                </select>
+                            <div class="info-item">
+                                <strong><i class="fas fa-user-tag"></i> Role</strong>
+                                <p class="text-muted">{{ $user->role ?? 'Student' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-phone"></i> Phone Number</label>
-                                <input type="tel" class="form-control" name="phone" value="{{ old('phone', $user->phone ?? '+92 300 1234567') }}" placeholder="Phone">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-calendar-alt"></i> Date of Birth</label>
-                                <input type="date" class="form-control" name="dob" value="{{ old('dob', $user->dob ?? '2000-01-15') }}">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-venus-mars"></i> Gender</label>
-                                <select class="form-select" name="gender">
-                                    <option value="female" {{ (old('gender', $user->gender ?? 'female') == 'female') ? 'selected' : '' }}>Female</option>
-                                    <option value="male" {{ (old('gender', $user->gender ?? '') == 'male') ? 'selected' : '' }}>Male</option>
-                                    <option value="other" {{ (old('gender', $user->gender ?? '') == 'other') ? 'selected' : '' }}>Other</option>
-                                </select>
+                            <div class="info-item">
+                                <strong><i class="fas fa-phone"></i> Phone</strong>
+                                <p class="text-muted">{{ $user->phone ?? '+92 300 1234567' }}</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Account Information -->
+                    <!-- Account Information View -->
                     <div class="section-title mt-4">
                         <i class="fas fa-user-cog"></i> Account Information
                     </div>
 
-                    <div class="row">
+                    <div class="row mb-4">
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-circle"></i> Account Status</label>
-                                <select class="form-select" name="status">
-                                    <option value="active" {{ (old('status', $user->status ?? 'active') == 'active') ? 'selected' : '' }}>Active</option>
-                                    <option value="inactive" {{ (old('status', $user->status ?? '') == 'inactive') ? 'selected' : '' }}>Inactive</option>
-                                    <option value="suspended" {{ (old('status', $user->status ?? '') == 'suspended') ? 'selected' : '' }}>Suspended</option>
-                                    <option value="pending" {{ (old('status', $user->status ?? '') == 'pending') ? 'selected' : '' }}>Pending</option>
-                                </select>
+                            <div class="info-item">
+                                <strong><i class="fas fa-circle"></i> Account Status</strong>
+                                <p class="text-muted"><span class="badge bg-success">Active</span></p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-clock"></i> Last Login</label>
-                                <input type="text" class="form-control" value="{{ $user->last_login ?? '10:40 PM, 7/20/2026' }}" readonly>
+                            <div class="info-item">
+                                <strong><i class="fas fa-clock"></i> Last Login</strong>
+                                <p class="text-muted">10:40 PM, 7/20/2026</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-home"></i> Hostel</label>
-                                <input type="text" class="form-control" name="hostel" value="{{ old('hostel', $user->hostel ?? 'GCW Hostel') }}" placeholder="Hostel">
+                            <div class="info-item">
+                                <strong><i class="fas fa-home"></i> Hostel</strong>
+                                <p class="text-muted">{{ $user->hostel ?? 'GCW Hostel' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-map-pin"></i> Location</label>
-                                <input type="text" class="form-control" name="location" value="{{ old('location', $user->location ?? 'Gujranwala, Pakistan') }}" placeholder="Location">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-user-plus"></i> Member Since</label>
-                                <input type="text" class="form-control" value="{{ $user->created_at ?? 'January 2024' }}" readonly>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label><i class="fas fa-hashtag"></i> Student ID</label>
-                                <input type="text" class="form-control" value="{{ $user->student_id ?? 'GCW-2024-001' }}" readonly>
+                            <div class="info-item">
+                                <strong><i class="fas fa-map-pin"></i> Location</strong>
+                                <p class="text-muted">{{ $user->location ?? 'Gujranwala, Pakistan' }}</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Form Actions -->
-                    <div class="form-actions">
-                        <a href="{{ route('profile') }}" class="btn-cancel">
-                            <i class="fas fa-times"></i> Cancel
-                        </a>
-                        <button type="submit" class="btn-save">
-                            <i class="fas fa-save"></i> Save Changes
+                    <!-- Edit Button -->
+                    <div class="text-center mt-4">
+                        <button class="btn-edit-toggle" id="editToggleBtn">
+                            <i class="fas fa-user-edit"></i> Edit Profile
                         </button>
                     </div>
-                </form>
+                </div>
+
+                <!-- ====== EDIT MODE ====== -->
+                <div id="editMode" class="edit-section">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> You are now in edit mode. Make your changes and click "Save Changes".
+                    </div>
+
+                    <form class="edit-form" id="editProfileForm" action="{{ route('profile.update') }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        
+                        <!-- Personal Information -->
+                        <div class="section-title">
+                            <i class="fas fa-id-card"></i> Personal Information
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user"></i> Full Name</label>
+                                    <input type="text" class="form-control" name="name" value="{{ old('name', $user->name ?? 'Faiza Ahmed') }}" placeholder="Full Name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-envelope"></i> Email Address</label>
+                                    <input type="email" class="form-control" name="email" value="{{ old('email', $user->email ?? 'faiza@example.com') }}" placeholder="Email" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user-tag"></i> Role</label>
+                                    <select class="form-select" name="role">
+                                        <option value="student" {{ (old('role', $user->role ?? 'student') == 'student') ? 'selected' : '' }}>Student</option>
+                                        <option value="staff" {{ (old('role', $user->role ?? '') == 'staff') ? 'selected' : '' }}>Staff</option>
+                                        <option value="admin" {{ (old('role', $user->role ?? '') == 'admin') ? 'selected' : '' }}>Admin</option>
+                                        <option value="manager" {{ (old('role', $user->role ?? '') == 'manager') ? 'selected' : '' }}>Manager</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-phone"></i> Phone Number</label>
+                                    <input type="tel" class="form-control" name="phone" value="{{ old('phone', $user->phone ?? '+92 300 1234567') }}" placeholder="Phone">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-calendar-alt"></i> Date of Birth</label>
+                                    <input type="date" class="form-control" name="dob" value="{{ old('dob', $user->dob ?? '2000-01-15') }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-venus-mars"></i> Gender</label>
+                                    <select class="form-select" name="gender">
+                                        <option value="female" {{ (old('gender', $user->gender ?? 'female') == 'female') ? 'selected' : '' }}>Female</option>
+                                        <option value="male" {{ (old('gender', $user->gender ?? '') == 'male') ? 'selected' : '' }}>Male</option>
+                                        <option value="other" {{ (old('gender', $user->gender ?? '') == 'other') ? 'selected' : '' }}>Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Account Information -->
+                        <div class="section-title mt-4">
+                            <i class="fas fa-user-cog"></i> Account Information
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-circle"></i> Account Status</label>
+                                    <select class="form-select" name="status">
+                                        <option value="active" {{ (old('status', $user->status ?? 'active') == 'active') ? 'selected' : '' }}>Active</option>
+                                        <option value="inactive" {{ (old('status', $user->status ?? '') == 'inactive') ? 'selected' : '' }}>Inactive</option>
+                                        <option value="suspended" {{ (old('status', $user->status ?? '') == 'suspended') ? 'selected' : '' }}>Suspended</option>
+                                        <option value="pending" {{ (old('status', $user->status ?? '') == 'pending') ? 'selected' : '' }}>Pending</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-clock"></i> Last Login</label>
+                                    <input type="text" class="form-control" value="{{ $user->last_login ?? '10:40 PM, 7/20/2026' }}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-home"></i> Hostel</label>
+                                    <input type="text" class="form-control" name="hostel" value="{{ old('hostel', $user->hostel ?? 'GCW Hostel') }}" placeholder="Hostel">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-map-pin"></i> Location</label>
+                                    <input type="text" class="form-control" name="location" value="{{ old('location', $user->location ?? 'Gujranwala, Pakistan') }}" placeholder="Location">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-user-plus"></i> Member Since</label>
+                                    <input type="text" class="form-control" value="{{ $user->created_at ?? 'January 2024' }}" readonly>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label><i class="fas fa-hashtag"></i> Student ID</label>
+                                    <input type="text" class="form-control" value="{{ $user->student_id ?? 'GCW-2024-001' }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" id="cancelEditBtn">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn-save">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
             </div>
         </div>
@@ -643,27 +792,79 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const viewMode = document.getElementById('viewMode');
+            const editMode = document.getElementById('editMode');
+            const editToggleBtn = document.getElementById('editToggleBtn');
+            const cancelEditBtn = document.getElementById('cancelEditBtn');
             const form = document.getElementById('editProfileForm');
             
+            // Edit button - This is the fix!
+            if (editToggleBtn) {
+                editToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Show edit mode, hide view mode
+                    viewMode.classList.add('hidden');
+                    editMode.classList.add('active');
+                    
+                    // Scroll to edit form
+                    editMode.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    
+                    // Update button state
+                    editToggleBtn.textContent = 'Editing...';
+                    editToggleBtn.disabled = true;
+                    editToggleBtn.style.opacity = '0.6';
+                });
+            }
+            
+            // Cancel button
+            if (cancelEditBtn) {
+                cancelEditBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Show view mode, hide edit mode
+                    viewMode.classList.remove('hidden');
+                    editMode.classList.remove('active');
+                    
+                    // Reset button
+                    if (editToggleBtn) {
+                        editToggleBtn.innerHTML = '<i class="fas fa-user-edit"></i> Edit Profile';
+                        editToggleBtn.disabled = false;
+                        editToggleBtn.style.opacity = '1';
+                    }
+                    
+                    // Reset form (optional)
+                    // form.reset();
+                });
+            }
+            
             // Form validation
-            form.addEventListener('submit', function(e) {
-                const requiredFields = form.querySelectorAll('[required]');
-                let isValid = true;
-                
-                requiredFields.forEach(field => {
-                    if (!field.value.trim()) {
-                        field.classList.add('is-invalid');
-                        isValid = false;
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    const requiredFields = form.querySelectorAll('[required]');
+                    let isValid = true;
+                    
+                    requiredFields.forEach(field => {
+                        if (!field.value.trim()) {
+                            field.classList.add('is-invalid');
+                            isValid = false;
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+                    
+                    if (!isValid) {
+                        e.preventDefault();
+                        alert('Please fill in all required fields.');
                     } else {
-                        field.classList.remove('is-invalid');
+                        // Show loading state
+                        const submitBtn = form.querySelector('.btn-save');
+                        if (submitBtn) {
+                            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+                            submitBtn.disabled = true;
+                        }
                     }
                 });
-                
-                if (!isValid) {
-                    e.preventDefault();
-                    alert('Please fill in all required fields.');
-                }
-            });
+            }
             
             // Remove invalid class on input
             document.querySelectorAll('.form-control, .form-select').forEach(el => {
@@ -679,6 +880,26 @@
         .is-invalid {
             border-color: #dc3545 !important;
             box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.1) !important;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .info-item {
+            margin-bottom: 1rem;
+        }
+        
+        .info-item strong {
+            display: block;
+            color: #1a4b5e;
+            font-size: 0.85rem;
+            margin-bottom: 0.2rem;
+        }
+        
+        .info-item p {
+            margin: 0;
+            font-size: 1rem;
         }
     </style>
 
