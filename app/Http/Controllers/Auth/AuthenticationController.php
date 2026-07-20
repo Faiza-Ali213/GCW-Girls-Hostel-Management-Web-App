@@ -27,7 +27,18 @@ class AuthenticationController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard');
+            
+            // Get the authenticated user
+            $user = Auth::user();
+            
+            // Check if user is admin or warden
+            if ($user->isAdmin() || $user->isWarden()) {
+                // Redirect to dashboard for admin/warden
+                return redirect()->intended('/dashboard');
+            }
+            
+            // Redirect to homepage for regular users
+            return redirect()->intended('/');
         }
 
         return back()->withErrors([
@@ -57,19 +68,20 @@ class AuthenticationController extends Controller
                 ->withInput();
         }
 
-        // Create the user
+        // Create the user with default role 'user'
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user', // Default role for new users
+            'status' => 'active', // Default status
         ]);
 
         // Log the user in automatically
         Auth::login($user);
 
-        // Redirect to dashboard with success message
-        return redirect()->route('dashboard')
-            ->with('success', 'Account created successfully! Welcome to GCW Hostel.');
+        // Redirect to homepage with success message
+        return redirect('/')->with('success', 'Account created successfully! Welcome to GCW Hostel.');
     }
 
     // Handle logout
