@@ -35,6 +35,9 @@ class NotificationController extends Controller
             $query->where('type', $request->type);
         }
 
+        // Get total count before pagination
+        $totalCount = $query->count();
+        
         $notifications = $query->latest()->paginate(15);
         
         // Count unread for badge
@@ -43,7 +46,7 @@ class NotificationController extends Controller
             ->active()
             ->count();
 
-        return view('Pages.Admin.Notification', compact('notifications', 'unreadCount'));
+        return view('Pages.Admin.Notification', compact('notifications', 'unreadCount', 'totalCount'));
     }
 
     // Show create form

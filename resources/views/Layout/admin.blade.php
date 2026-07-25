@@ -368,6 +368,7 @@
             border-radius: 50%;
             border: 2px solid white;
             animation: pulse-dot 2s infinite;
+            display: {{ $unreadCount > 0 ? 'block' : 'none' }};
         }
 
         @keyframes pulse-dot {
@@ -444,18 +445,26 @@
             border-radius: 10px;
         }
 
+        /* Notification item as clickable link */
         .notification-item {
             display: flex;
             align-items: flex-start;
             gap: 14px;
             padding: 12px 20px;
             transition: all 0.2s ease;
-            cursor: pointer;
             border-bottom: 1px solid #f1f5f9;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
         }
 
         .notification-item:hover {
             background: var(--bg-light);
+            text-decoration: none;
+        }
+
+        .notification-item:last-child {
+            border-bottom: none;
         }
 
         .notification-item .notif-icon {
@@ -528,6 +537,24 @@
 
         .notification-item.read .notif-badge {
             background: transparent;
+        }
+
+        .notification-empty {
+            padding: 30px 20px;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        .notification-empty i {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+            color: #d1d5db;
+        }
+
+        .notification-empty p {
+            margin: 0;
+            font-size: 14px;
         }
 
         .notification-dropdown-footer {
@@ -826,6 +853,9 @@
                 <a href="{{ route('notification') }}" class="nav-link-custom">
                     <span class="nav-icon-wrapper"><i class="bi bi-bell-fill"></i></span>
                     <span class="nav-text">Notifications</span>
+                    @if($unreadCount > 0)
+                        <span class="nav-badge">{{ $unreadCount }}</span>
+                    @endif
                 </a>
             </li>
             <li class="nav-item {{ request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('users.edit') || request()->routeIs('users.show') ? 'active' : '' }}">
@@ -877,59 +907,39 @@
                     <span class="notification-dot"></span>
                 </button>
 
-                <!-- Notification Dropdown -->
+                <!-- Notification Dropdown - Real Data with Links -->
                 <div class="notification-dropdown" id="notificationDropdown">
                     <div class="notification-dropdown-header">
                         <h6>Notifications</h6>
-                        <a href="#" class="mark-all-read" id="markAllRead">Mark all as read</a>
+                        @if($unreadCount > 0)
+                            <a href="#" class="mark-all-read" id="markAllRead">Mark all as read</a>
+                        @endif
                     </div>
                     <div class="notification-list">
-                        <!-- Notification 1 -->
-                        <div class="notification-item unread">
-                            <div class="notif-icon primary">
-                                <i class="bi bi-person-plus"></i>
+                        @if($notifications->count() > 0)
+                            @foreach($notifications as $notification)
+                                <a href="{{ $notification->link ?? '#' }}" class="notification-item {{ !$notification->is_read ? 'unread' : '' }}" 
+                                   data-id="{{ $notification->id }}"
+                                   data-link="{{ $notification->link ?? '#' }}">
+                                    <div class="notif-icon {{ $notification->type }}">
+                                        <i class="{{ $notification->icon ?? ($notification->type == 'success' ? 'bi-check-circle' : ($notification->type == 'warning' ? 'bi-exclamation-triangle' : ($notification->type == 'error' ? 'bi-x-circle' : 'bi-info-circle'))) }}"></i>
+                                    </div>
+                                    <div class="notif-content">
+                                        <p class="notif-title">{{ $notification->title }}</p>
+                                        <p class="notif-text">{{ Str::limit($notification->message, 60) }}</p>
+                                        <span class="notif-time">{{ $notification->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    @if(!$notification->is_read)
+                                        <span class="notif-badge"></span>
+                                    @endif
+                                </a>
+                            @endforeach
+                        @else
+                            <div class="notification-empty">
+                                <i class="bi bi-bell-slash"></i>
+                                <p>No notifications</p>
                             </div>
-                            <div class="notif-content">
-                                <p class="notif-title">New student registered</p>
-                                <p class="notif-text">Aisha Khan has completed her registration for the hostel.</p>
-                                <span class="notif-time">2 minutes ago</span>
-                            </div>
-                            <span class="notif-badge"></span>
-                        </div>
-                        <!-- Notification 2 -->
-                        <div class="notification-item unread">
-                            <div class="notif-icon success">
-                                <i class="bi bi-check-circle"></i>
-                            </div>
-                            <div class="notif-content">
-                                <p class="notif-title">Payment received</p>
-                                <p class="notif-text">Fee payment of ₨ 15,000 received from Fatima Ahmed.</p>
-                                <span class="notif-time">15 minutes ago</span>
-                            </div>
-                            <span class="notif-badge"></span>
-                        </div>
-                        <!-- Notification 3 -->
-                        <div class="notification-item">
-                            <div class="notif-icon warning">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </div>
-                            <div class="notif-content">
-                                <p class="notif-title">Complaint escalated</p>
-                                <p class="notif-text">Complaint #C-2024-089 has been escalated to Warden.</p>
-                                <span class="notif-time">1 hour ago</span>
-                            </div>
-                        </div>
-                        <!-- Notification 4 -->
-                        <div class="notification-item">
-                            <div class="notif-icon danger">
-                                <i class="bi bi-clock-history"></i>
-                            </div>
-                            <div class="notif-content">
-                                <p class="notif-title">Room allocation pending</p>
-                                <p class="notif-text">3 students are waiting for room allocation approval.</p>
-                                <span class="notif-time">3 hours ago</span>
-                            </div>
-                        </div>
+                        @endif
                     </div>
                     <div class="notification-dropdown-footer">
                         <a href="{{ route('notification') }}" class="view-all-btn">
@@ -1027,41 +1037,117 @@
             e.stopPropagation();
         });
 
-        // Mark all as read
-        document.getElementById('markAllRead').addEventListener('click', function(e) {
-            e.preventDefault();
-            const unreadItems = document.querySelectorAll('.notification-item.unread');
-            unreadItems.forEach(item => {
-                item.classList.remove('unread');
-                const badge = item.querySelector('.notif-badge');
-                if (badge) badge.style.display = 'none';
-            });
-            // Hide the dot
-            document.querySelector('.notification-dot').style.display = 'none';
-            
-            Swal.fire({
-                icon: 'success',
-                title: 'All marked as read',
-                text: 'You have no unread notifications',
-                timer: 1500,
-                showConfirmButton: false,
-                toast: true,
-                position: 'top-end'
+        // Handle notification click - mark as read before navigating
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                // If it's unread, mark it as read
+                if (this.classList.contains('unread')) {
+                    e.preventDefault(); // Prevent navigation until AJAX completes
+                    
+                    const notificationId = this.dataset.id;
+                    const link = this.dataset.link;
+                    
+                    fetch(`/notifications/${notificationId}/mark-as-read`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Remove unread styling
+                            this.classList.remove('unread');
+                            const badge = this.querySelector('.notif-badge');
+                            if (badge) badge.remove();
+                            
+                            // Check if any unread remain
+                            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+                            if (unreadCount === 0) {
+                                document.querySelector('.notification-dot').style.display = 'none';
+                                const sidebarBadge = document.querySelector('.nav-link-custom .nav-badge');
+                                if (sidebarBadge) sidebarBadge.remove();
+                                const markAllBtn = document.getElementById('markAllRead');
+                                if (markAllBtn) markAllBtn.remove();
+                            }
+                            
+                            // Navigate to the link
+                            if (link && link !== '#') {
+                                window.location.href = link;
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Still navigate even if AJAX fails
+                        if (link && link !== '#') {
+                            window.location.href = link;
+                        }
+                    });
+                } else {
+                    // Already read, just navigate
+                    const link = this.dataset.link;
+                    if (link && link !== '#') {
+                        window.location.href = link;
+                    }
+                }
             });
         });
 
-        // Individual notification click - mark as read
-        document.querySelectorAll('.notification-item').forEach(item => {
-            item.addEventListener('click', function() {
-                this.classList.remove('unread');
-                const badge = this.querySelector('.notif-badge');
-                if (badge) badge.style.display = 'none';
-                
-                // Check if any unread remain
-                const unreadCount = document.querySelectorAll('.notification-item.unread').length;
-                if (unreadCount === 0) {
+        // Mark all as read - AJAX
+        document.getElementById('markAllRead')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            fetch('{{ route("notifications.mark-all-as-read") }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove unread badges from all items
+                    document.querySelectorAll('.notification-item.unread').forEach(item => {
+                        item.classList.remove('unread');
+                        const badge = item.querySelector('.notif-badge');
+                        if (badge) badge.remove();
+                    });
+                    // Hide the dot
                     document.querySelector('.notification-dot').style.display = 'none';
+                    // Update sidebar badge
+                    const sidebarBadge = document.querySelector('.nav-link-custom .nav-badge');
+                    if (sidebarBadge) sidebarBadge.remove();
+                    // Remove mark all read button
+                    const markAllBtn = document.getElementById('markAllRead');
+                    if (markAllBtn) markAllBtn.remove();
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'All marked as read',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        toast: true,
+                        position: 'top-end'
+                    });
                 }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to mark all as read',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    toast: true,
+                    position: 'top-end'
+                });
             });
         });
 
