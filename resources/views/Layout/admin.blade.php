@@ -694,8 +694,9 @@
                     <a href="{{ route('profile') }}" class="dropdown-item">
                         <i class="bi bi-person-circle"></i> My Profile
                     </a>
-                    <a href="{{ route('settings') }}" class="dropdown-item">
-                        <i class="bi bi-gear"></i> Account Settings
+                    <!-- "My Website" now navigates to the home page -->
+                    <a href="{{ route('home') }}" class="dropdown-item">
+                        <i class="bi bi-globe"></i> My Website
                     </a>
                     <div class="dropdown-divider"></div>
                     <button class="dropdown-item text-danger" onclick="confirmLogout(event)">
