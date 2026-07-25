@@ -168,27 +168,6 @@
             opacity: 0.8;
         }
 
-        .profile-stats {
-            display: flex;
-            gap: 30px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .profile-stat {
-            text-align: center;
-        }
-
-        .profile-stat-number {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .profile-stat-label {
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
-
         .profile-card {
             background: white;
             border-radius: 20px;
@@ -331,10 +310,6 @@
                 margin: 0 auto 15px;
             }
 
-            .profile-stats {
-                justify-content: center;
-            }
-
             .profile-name {
                 font-size: 1.5rem;
             }
@@ -368,9 +343,10 @@
 </head>
 <body>
 
+    <!-- Navbar - Only Admin User dropdown remains -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}">
+            <a class="navbar-brand" href="#">
                 <i class="fas fa-building"></i> GCW <span>Hostel</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -378,24 +354,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('home') }}">
-                            <i class="fas fa-home"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">
-                            <i class="fas fa-dashboard"></i> Dashboard
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('profile') }}">
-                            <i class="fas fa-user"></i> Profile
-                        </a>
-                    </li>
+                    <!-- HOME BUTTON REMOVED -->
+                    <!-- DASHBOARD BUTTON REMOVED -->
+                    <!-- PROFILE BUTTON REMOVED -->
+                    
+                    <!-- ONLY ADMIN USER DROPDOWN REMAINS -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-user-circle"></i> {{ Auth::user()->name ?? 'User' }}
+                            <i class="fas fa-user-circle"></i> {{ Auth::user()->name ?? 'Admin User' }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li>
@@ -449,6 +415,7 @@
                 </div>
             @endif
 
+            <!-- Profile Header -->
             <div class="profile-header">
                 <div class="row align-items-center">
                     <div class="col-md-3 text-center text-md-start">
@@ -468,23 +435,10 @@
                         </div>
                     </div>
                     <div class="col-md-6 text-center text-md-start">
-                        <h2 class="profile-name">{{ Auth::user()->name ?? 'User' }}</h2>
-                        <p class="profile-role">{{ Auth::user()->role ?? 'Student' }}</p>
-                        <p class="profile-email"><i class="fas fa-envelope"></i> {{ Auth::user()->email ?? 'No email' }}</p>
-                        <div class="profile-stats">
-                            <div class="profile-stat">
-                                <div class="profile-stat-number">{{ $totalStudents ?? 0 }}</div>
-                                <div class="profile-stat-label">Total Students</div>
-                            </div>
-                            <div class="profile-stat">
-                                <div class="profile-stat-number">{{ $totalRooms ?? 0 }}</div>
-                                <div class="profile-stat-label">Total Rooms</div>
-                            </div>
-                            <div class="profile-stat">
-                                <div class="profile-stat-number">{{ $totalStaff ?? 0 }}</div>
-                                <div class="profile-stat-label">Total Staff</div>
-                            </div>
-                        </div>
+                        <h2 class="profile-name">{{ Auth::user()->name ?? 'Admin User' }}</h2>
+                        <p class="profile-role">{{ Auth::user()->role ?? 'Admin' }}</p>
+                        <p class="profile-email"><i class="fas fa-envelope"></i> {{ Auth::user()->email ?? 'admin@example.com' }}</p>
+                        <!-- STATISTICS SECTION REMOVED -->
                     </div>
                     <div class="col-md-3 text-center text-md-end">
                         <a href="{{ route('profile.edit') }}" class="btn btn-light">
@@ -494,6 +448,7 @@
                 </div>
             </div>
 
+            <!-- Personal Information -->
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="profile-card">
@@ -502,19 +457,19 @@
                         </h5>
                         <div class="info-item">
                             <span class="info-label"><i class="fas fa-user"></i> Full Name</span>
-                            <span class="info-value">{{ Auth::user()->name ?? 'Not set' }}</span>
+                            <span class="info-value">{{ Auth::user()->name ?? 'Admin' }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label"><i class="fas fa-envelope"></i> Email</span>
-                            <span class="info-value">{{ Auth::user()->email ?? 'Not set' }}</span>
+                            <span class="info-value">{{ Auth::user()->email ?? 'admin@example.com' }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label"><i class="fas fa-id-badge"></i> Role</span>
-                            <span class="info-value">{{ Auth::user()->role ?? 'Student' }}</span>
+                            <span class="info-value">{{ Auth::user()->role ?? 'Admin' }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label"><i class="fas fa-phone"></i> Phone</span>
-                            <span class="info-value">{{ Auth::user()->phone ?? 'Not set' }}</span>
+                            <span class="info-value">{{ Auth::user()->phone ?? '0300-1234567' }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label"><i class="fas fa-calendar-alt"></i> Joined</span>
@@ -523,6 +478,7 @@
                     </div>
                 </div>
 
+                <!-- Account Information -->
                 <div class="col-lg-6">
                     <div class="profile-card">
                         <h5 class="profile-card-title">
@@ -554,6 +510,7 @@
                     </div>
                 </div>
 
+                <!-- Change Password -->
                 <div class="col-lg-12">
                     <div class="profile-card">
                         <h5 class="profile-card-title">
