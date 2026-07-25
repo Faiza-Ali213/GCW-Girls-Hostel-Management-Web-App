@@ -310,9 +310,9 @@
         </h4>
         <div class="sub-title">Update student fee payment details</div>
         @if(isset($feeRecord))
-        <div class="status-display {{ $feeRecord->fee_status }}">
-            <i class="fas fa-{{ $feeRecord->fee_status == 'paid' ? 'check-circle' : ($feeRecord->fee_status == 'unpaid' ? 'times-circle' : 'clock') }}"></i>
-            Current Status: {{ ucfirst($feeRecord->fee_status) }}
+        <div class="status-display {{ $feeRecord->fee_status ?? 'unpaid' }}">
+            <i class="fas fa-{{ ($feeRecord->fee_status ?? 'unpaid') == 'paid' ? 'check-circle' : (($feeRecord->fee_status ?? 'unpaid') == 'partial' ? 'clock' : 'times-circle') }}"></i>
+            Current Status: {{ ucfirst($feeRecord->fee_status ?? 'Unpaid') }}
         </div>
         @endif
     </div>
@@ -331,25 +331,21 @@
             <div class="info-value">#{{ $feeRecord->id }}</div>
         </div>
         <div>
-            <span class="info-label">Total Fee</span>
-            <div class="info-value">PKR {{ number_format($feeRecord->fee_amount, 2) }}</div>
+            <span class="info-label">Student</span>
+            <div class="info-value">{{ $feeRecord->student_name ?? 'N/A' }}</div>
         </div>
         <div>
-            <span class="info-label">Paid Amount</span>
-            <div class="info-value paid">PKR {{ number_format($feeRecord->paid_amount, 2) }}</div>
-        </div>
-        <div>
-            <span class="info-label">Pending Amount</span>
-            <div class="info-value pending">PKR {{ number_format($feeRecord->pending_amount, 2) }}</div>
+            <span class="info-label">Room</span>
+            <div class="info-value">{{ $feeRecord->room_no ?? 'N/A' }}</div>
         </div>
         <div>
             <span class="info-label">Created</span>
-            <div class="info-value">{{ $feeRecord->created_at->format('d M Y') }}</div>
+            <div class="info-value">{{ isset($feeRecord->created_at) ? $feeRecord->created_at->format('d M Y') : 'N/A' }}</div>
         </div>
     </div>
     @endif
 
-    <form id="feeForm" action="{{ route('fee-records.update', $feeRecord->id ?? 0) }}" method="POST">
+    <form id="feeForm" action="{{ route('fee-record.update', $feeRecord->id ?? 0) }}" method="POST">
         @csrf
         @method('PUT')
         
@@ -425,7 +421,7 @@
             <div class="form-group">
                 <label for="payment_date">Payment Date</label>
                 <input type="date" class="form-control @error('payment_date') is-invalid @enderror" 
-                       id="payment_date" name="payment_date" value="{{ old('payment_date', $feeRecord->payment_date ?? '') }}">
+                       id="payment_date" name="payment_date" value="{{ old('payment_date', isset($feeRecord->payment_date) ? date('Y-m-d', strtotime($feeRecord->payment_date)) : '') }}">
                 @error('payment_date')
                     <span class="invalid-feedback">{{ $message }}</span>
                 @enderror
