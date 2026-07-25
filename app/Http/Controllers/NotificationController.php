@@ -40,7 +40,7 @@ class NotificationController extends Controller
             ->active()
             ->count();
 
-        return view('notifications.index', compact('notifications', 'unreadCount'));
+        return view('Pages.Admin.Notification', compact('notifications', 'unreadCount'));
     }
 
     // Show create form

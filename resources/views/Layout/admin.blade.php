@@ -332,7 +332,7 @@
             gap: 20px;
         }
 
-        /* Notification Icon */
+        /* Notification Icon & Dropdown */
         .notification-wrapper {
             position: relative;
         }
@@ -373,6 +373,188 @@
         @keyframes pulse-dot {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.3); }
+        }
+
+        /* Notification Dropdown */
+        .notification-dropdown {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: -10px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+            width: 380px;
+            max-height: 480px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px) scale(0.96);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--sidebar-border);
+            overflow: hidden;
+            z-index: 1001;
+        }
+
+        .notification-dropdown.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .notification-dropdown-header {
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid var(--sidebar-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-dropdown-header h6 {
+            font-weight: 600;
+            color: var(--gcw-dark);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        .notification-dropdown-header .mark-all-read {
+            font-size: 12px;
+            color: var(--gcw-primary);
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .notification-dropdown-header .mark-all-read:hover {
+            text-decoration: underline;
+        }
+
+        .notification-list {
+            max-height: 320px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+
+        .notification-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .notification-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .notification-list::-webkit-scrollbar-thumb {
+            background: var(--gcw-primary-light);
+            border-radius: 10px;
+        }
+
+        .notification-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 12px 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .notification-item:hover {
+            background: var(--bg-light);
+        }
+
+        .notification-item .notif-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 16px;
+        }
+
+        .notification-item .notif-icon.primary {
+            background: #EEF2FF;
+            color: var(--gcw-primary);
+        }
+
+        .notification-item .notif-icon.success {
+            background: #ECFDF5;
+            color: var(--gcw-green);
+        }
+
+        .notification-item .notif-icon.warning {
+            background: #FFFBEB;
+            color: #F59E0B;
+        }
+
+        .notification-item .notif-icon.danger {
+            background: #FEF2F2;
+            color: var(--gcw-secondary);
+        }
+
+        .notification-item .notif-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notification-item .notif-content .notif-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gcw-dark);
+            margin: 0 0 2px;
+        }
+
+        .notification-item .notif-content .notif-text {
+            font-size: 13px;
+            color: var(--sidebar-text);
+            margin: 0 0 4px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .notification-item .notif-content .notif-time {
+            font-size: 11px;
+            color: #94A3B8;
+        }
+
+        .notification-item .notif-badge {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gcw-primary);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        .notification-item.read .notif-badge {
+            background: transparent;
+        }
+
+        .notification-dropdown-footer {
+            padding: 12px 20px;
+            border-top: 1px solid var(--sidebar-border);
+            text-align: center;
+        }
+
+        .notification-dropdown-footer .view-all-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gcw-primary);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .notification-dropdown-footer .view-all-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .notification-dropdown-footer .view-all-btn i {
+            font-size: 14px;
         }
 
         /* Profile Dropdown */
@@ -524,6 +706,10 @@
             .profile-btn {
                 padding: 4px;
             }
+            .notification-dropdown {
+                width: 340px;
+                right: -70px;
+            }
         }
 
         /* ========== OVERLAY ========== */
@@ -556,6 +742,14 @@
             border-bottom: 1px solid var(--sidebar-border);
             border-radius: 12px 12px 0 0 !important;
             padding: 1rem 1.25rem;
+        }
+
+        /* Unread notification styling */
+        .notification-item.unread {
+            background: #F8FAFF;
+        }
+        .notification-item.unread .notif-title {
+            font-weight: 600;
         }
     </style>
 </head>
@@ -627,14 +821,21 @@
         <!-- Settings Section -->
         <div class="nav-section">System</div>
         <ul class="nav-list">
-           <li class="nav-item {{ request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('users.edit') || request()->routeIs('users.show') ? 'active' : '' }}">
-    <a href="{{ route('users.index') }}" class="nav-link-custom">
-        <span class="nav-icon-wrapper">
-            <i class="bi bi-people"></i>
-        </span>
-        <span class="nav-text">User Management</span>
-    </a>
-</li>
+            <!-- Notification Page Link -->
+            <li class="nav-item {{ request()->routeIs('notification') || request()->routeIs('notifications.index') ? 'active' : '' }}">
+                <a href="{{ route('notification') }}" class="nav-link-custom">
+                    <span class="nav-icon-wrapper"><i class="bi bi-bell-fill"></i></span>
+                    <span class="nav-text">Notifications</span>
+                </a>
+            </li>
+            <li class="nav-item {{ request()->routeIs('users.index') || request()->routeIs('users.create') || request()->routeIs('users.edit') || request()->routeIs('users.show') ? 'active' : '' }}">
+                <a href="{{ route('users.index') }}" class="nav-link-custom">
+                    <span class="nav-icon-wrapper">
+                        <i class="bi bi-people"></i>
+                    </span>
+                    <span class="nav-text">User Management</span>
+                </a>
+            </li>
             <li class="nav-item {{ request()->routeIs('settings') ? 'active' : '' }}">
                 <a href="{{ route('settings') }}" class="nav-link-custom">
                     <span class="nav-icon-wrapper"><i class="bi bi-gear-fill"></i></span>
@@ -675,6 +876,67 @@
                     <i class="bi bi-bell"></i>
                     <span class="notification-dot"></span>
                 </button>
+
+                <!-- Notification Dropdown -->
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="notification-dropdown-header">
+                        <h6>Notifications</h6>
+                        <a href="#" class="mark-all-read" id="markAllRead">Mark all as read</a>
+                    </div>
+                    <div class="notification-list">
+                        <!-- Notification 1 -->
+                        <div class="notification-item unread">
+                            <div class="notif-icon primary">
+                                <i class="bi bi-person-plus"></i>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-title">New student registered</p>
+                                <p class="notif-text">Aisha Khan has completed her registration for the hostel.</p>
+                                <span class="notif-time">2 minutes ago</span>
+                            </div>
+                            <span class="notif-badge"></span>
+                        </div>
+                        <!-- Notification 2 -->
+                        <div class="notification-item unread">
+                            <div class="notif-icon success">
+                                <i class="bi bi-check-circle"></i>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-title">Payment received</p>
+                                <p class="notif-text">Fee payment of ₨ 15,000 received from Fatima Ahmed.</p>
+                                <span class="notif-time">15 minutes ago</span>
+                            </div>
+                            <span class="notif-badge"></span>
+                        </div>
+                        <!-- Notification 3 -->
+                        <div class="notification-item">
+                            <div class="notif-icon warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-title">Complaint escalated</p>
+                                <p class="notif-text">Complaint #C-2024-089 has been escalated to Warden.</p>
+                                <span class="notif-time">1 hour ago</span>
+                            </div>
+                        </div>
+                        <!-- Notification 4 -->
+                        <div class="notification-item">
+                            <div class="notif-icon danger">
+                                <i class="bi bi-clock-history"></i>
+                            </div>
+                            <div class="notif-content">
+                                <p class="notif-title">Room allocation pending</p>
+                                <p class="notif-text">3 students are waiting for room allocation approval.</p>
+                                <span class="notif-time">3 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-dropdown-footer">
+                        <a href="{{ route('notification') }}" class="view-all-btn">
+                            <i class="bi bi-eye"></i> View All Notifications
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- Profile -->
@@ -694,7 +956,6 @@
                     <a href="{{ route('profile') }}" class="dropdown-item">
                         <i class="bi bi-person-circle"></i> My Profile
                     </a>
-                    <!-- "My Website" now navigates to the home page -->
                     <a href="{{ route('home') }}" class="dropdown-item">
                         <i class="bi bi-globe"></i> My Website
                     </a>
@@ -735,6 +996,8 @@
         profileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             profileDropdown.classList.toggle('show');
+            // Close notification dropdown when opening profile
+            document.getElementById('notificationDropdown').classList.remove('show');
         });
 
         document.addEventListener('click', () => {
@@ -745,16 +1008,60 @@
             e.stopPropagation();
         });
 
-        // Notification Click
-        document.getElementById('notificationBtn').addEventListener('click', function() {
+        // Notification Dropdown
+        const notificationBtn = document.getElementById('notificationBtn');
+        const notificationDropdown = document.getElementById('notificationDropdown');
+
+        notificationBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle('show');
+            // Close profile dropdown when opening notifications
+            document.getElementById('profileDropdown').classList.remove('show');
+        });
+
+        document.addEventListener('click', () => {
+            notificationDropdown.classList.remove('show');
+        });
+
+        notificationDropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Mark all as read
+        document.getElementById('markAllRead').addEventListener('click', function(e) {
+            e.preventDefault();
+            const unreadItems = document.querySelectorAll('.notification-item.unread');
+            unreadItems.forEach(item => {
+                item.classList.remove('unread');
+                const badge = item.querySelector('.notif-badge');
+                if (badge) badge.style.display = 'none';
+            });
+            // Hide the dot
+            document.querySelector('.notification-dot').style.display = 'none';
+            
             Swal.fire({
-                icon: 'info',
-                title: 'Notifications',
-                text: 'You have 3 unread notifications',
-                confirmButtonColor: '#4F46E5',
-                confirmButtonText: 'View All',
-                showCancelButton: true,
-                cancelButtonText: 'Dismiss'
+                icon: 'success',
+                title: 'All marked as read',
+                text: 'You have no unread notifications',
+                timer: 1500,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        });
+
+        // Individual notification click - mark as read
+        document.querySelectorAll('.notification-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.remove('unread');
+                const badge = this.querySelector('.notif-badge');
+                if (badge) badge.style.display = 'none';
+                
+                // Check if any unread remain
+                const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+                if (unreadCount === 0) {
+                    document.querySelector('.notification-dot').style.display = 'none';
+                }
             });
         });
 
