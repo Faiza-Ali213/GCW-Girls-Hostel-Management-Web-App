@@ -1,196 +1,207 @@
-@extends('Layout.admin') {{-- Or your main layout --}}
+@extends('Layout.admin') {{-- Your main layout with sidebar --}}
 
 @section('page_title', 'Settings')
 @section('page_subtitle', 'Configure system preferences')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <!-- General Settings -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-sliders2 me-2"></i>General Settings</h5>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Site Name</label>
-                            <input type="text" class="form-control" value="GCW Hostel Management">
+<div class="container-fluid px-4 py-3">
+    <!-- page header -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+        <div>
+            <h4 class="mb-0 fw-bold" style="color: #0b1a33; letter-spacing: -0.02em;">
+                <i class="bi bi-gear-fill me-2" style="color: #4f46e5;"></i>Settings
+            </h4>
+            <p class="text-muted mt-1" style="font-size: 0.9rem;">Configure system preferences</p>
+        </div>
+    </div>
+
+    <!-- Single form for all settings -->
+    <form>
+        <!-- General Settings - Row 1 -->
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-sliders2"></i> General Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Site Name</label>
+                                <input type="text" class="form-control" value="GCW Hostel Management" placeholder="Enter site name" />
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Site Description</label>
+                                <textarea class="form-control" rows="3" placeholder="Short description">Government College Women Hostel Management System</textarea>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Site Description</label>
-                            <textarea class="form-control" rows="2">Government College Women Hostel Management System</textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Time Zone</label>
-                            <select class="form-select">
-                                <option>UTC</option>
-                                <option selected>Asia/Karachi</option>
-                                <option>Asia/Dubai</option>
-                                <option>America/New_York</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2-circle me-1"></i> Save Changes
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Email Settings -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-envelope me-2"></i>Email Settings</h5>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Mail Driver</label>
-                            <select class="form-select">
-                                <option selected>SMTP</option>
-                                <option>Mailgun</option>
-                                <option>Sendmail</option>
-                                <option>Log</option>
-                            </select>
+        <!-- Notification Settings - Row 2 -->
+        <div class="row">
+            <div class="col-12 mb-4">
+                <div class="settings-card">
+                    <div class="card-header">
+                        <h5><i class="bi bi-bell"></i> Notification Settings</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="pushNotif" checked />
+                                    <label class="form-check-label" for="pushNotif">
+                                        Push Notification
+                                        <small class="d-block text-muted">Enable browser and in-app push notifications</small>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">SMTP Host</label>
-                            <input type="text" class="form-control" value="smtp.gmail.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">SMTP Port</label>
-                            <input type="text" class="form-control" value="587">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">SMTP Username</label>
-                            <input type="text" class="form-control" value="admin@example.com">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">SMTP Password</label>
-                            <input type="password" class="form-control" value="password123">
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2-circle me-1"></i> Save Changes
-                        </button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Security Settings -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-shield-lock me-2"></i>Security Settings</h5>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="twoFactor" checked>
-                                <label class="form-check-label fw-semibold" for="twoFactor">Two-Factor Authentication</label>
-                            </div>
-                            <small class="text-muted">Require 2FA for all admin users</small>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="sessionTimeout" checked>
-                                <label class="form-check-label fw-semibold" for="sessionTimeout">Session Timeout</label>
-                            </div>
-                            <small class="text-muted">Auto-logout after 30 minutes of inactivity</small>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Password Policy</label>
-                            <select class="form-select">
-                                <option>Standard (8 characters)</option>
-                                <option selected>Strong (12 characters, symbols)</option>
-                                <option>Very Strong (16 characters, symbols)</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2-circle me-1"></i> Save Changes
-                        </button>
-                    </form>
+        <!-- Single Save Button for all settings -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        <i class="bi bi-check2-circle me-2"></i> Save All Settings
+                    </button>
                 </div>
             </div>
         </div>
+    </form>
 
-        <!-- Notification Settings -->
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0"><i class="bi bi-bell me-2"></i>Notification Settings</h5>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="emailNotif" checked>
-                                <label class="form-check-label fw-semibold" for="emailNotif">Email Notifications</label>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="smsNotif">
-                                <label class="form-check-label fw-semibold" for="smsNotif">SMS Notifications</label>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="pushNotif" checked>
-                                <label class="form-check-label fw-semibold" for="pushNotif">Push Notifications</label>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Notification Frequency</label>
-                            <select class="form-select">
-                                <option>Real-time</option>
-                                <option selected>Daily Digest</option>
-                                <option>Weekly Digest</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-check2-circle me-1"></i> Save Changes
-                        </button>
-                    </form>
-                </div>
-            </div>
+    <!-- Footer -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <hr class="opacity-25" />
+            <p class="text-muted" style="font-size: 0.75rem; letter-spacing: 0.01em;">
+                <i class="bi bi-dot"></i> Last updated: today at 14:32 · All settings are stored securely.
+            </p>
         </div>
     </div>
 </div>
 
 <style>
-    .card {
+    .settings-card {
         border: none;
-        border-radius: 12px;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+        transition: all 0.15s ease;
+        height: 100%;
     }
-    .card-header {
-        border-bottom: 1px solid #f0f0f0;
-        border-radius: 12px 12px 0 0 !important;
-        padding: 1rem 1.25rem;
+    .settings-card .card-header {
+        background: transparent;
+        border-bottom: 1px solid #eef2f6;
+        padding: 1.25rem 1.5rem;
+        border-radius: 20px 20px 0 0 !important;
+    }
+    .settings-card .card-header h5 {
+        font-weight: 600;
+        font-size: 1.05rem;
+        letter-spacing: -0.01em;
+        color: #0b1a33;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .settings-card .card-header h5 i {
+        color: #4f46e5;
+        font-size: 1.25rem;
+    }
+    .settings-card .card-body {
+        padding: 1.75rem 1.5rem 2rem;
     }
     .form-label {
-        font-size: 13px;
-        color: #495057;
+        font-weight: 500;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: #475569;
+        margin-bottom: 0.3rem;
     }
     .form-control, .form-select {
-        border-radius: 8px;
-        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.95rem;
+        background: #fafcff;
+        transition: 0.2s;
     }
     .form-control:focus, .form-select:focus {
-        border-color: #6C63FF;
-        box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.15);
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+        background: #ffffff;
+    }
+    .form-control::placeholder {
+        color: #a0afbe;
+        font-weight: 400;
     }
     .form-switch .form-check-input {
-        width: 2.5rem;
-        height: 1.3rem;
+        width: 2.75rem;
+        height: 1.5rem;
+        border-radius: 30px;
+        border: 1px solid #d0d8e3;
+        background-color: #e9edf3;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+        transition: 0.2s;
     }
     .form-switch .form-check-input:checked {
-        background-color: #6C63FF;
-        border-color: #6C63FF;
+        background-color: #4f46e5;
+        border-color: #4f46e5;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23ffffff'/%3e%3c/svg%3e");
+    }
+    .form-switch .form-check-label {
+        font-weight: 500;
+        color: #1e293b;
+        margin-left: 0.5rem;
+        font-size: 0.95rem;
+    }
+    .form-check .form-check-input {
+        margin-top: 0.1rem;
+    }
+    .form-check .form-check-label small {
+        display: block;
+        font-weight: 400;
+        color: #64748b;
+        font-size: 0.8rem;
+        margin-top: 0.1rem;
+    }
+    .btn-primary {
+        background: #4f46e5;
+        border: none;
+        border-radius: 40px;
+        padding: 0.7rem 2.5rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+        transition: 0.2s;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+    }
+    .btn-primary:hover {
+        background: #4338ca;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+    }
+    .btn-primary i {
+        margin-right: 0.4rem;
+    }
+    .badge-soft {
+        background: #eef2ff;
+        color: #4f46e5;
+        font-weight: 500;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.7rem;
+        border-radius: 30px;
+    }
+    .mt-1-5 {
+        margin-top: 1.5rem;
     }
 </style>
 @endsection
