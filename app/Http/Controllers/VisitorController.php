@@ -4,8 +4,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitor;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class VisitorController extends Controller
 {
@@ -69,10 +71,14 @@ class VisitorController extends Controller
             'id_card_number' => 'nullable|string|max:50',
             'purpose_of_visit' => 'required|string|max:255',
             'room_no' => 'nullable|string|max:50',
+            'student_id' => 'nullable|exists:students,id',
             'student_name' => 'nullable|string|max:255',
             'student_room' => 'nullable|string|max:50',
             'check_in_time' => 'nullable|date',
+            'expected_checkout' => 'nullable|date|after:check_in_time',
             'remarks' => 'nullable|string',
+            'who_to_meet' => 'nullable|string|max:255',
+            'vehicle_number' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -82,7 +88,8 @@ class VisitorController extends Controller
         }
 
         try {
-            $visitor = Visitor::create([
+            // Prepare visitor data
+            $visitorData = [
                 'visitor_name' => $request->visitor_name,
                 'phone_number' => $request->phone_number,
                 'email' => $request->email,
@@ -91,13 +98,35 @@ class VisitorController extends Controller
                 'room_no' => $request->room_no,
                 'student_name' => $request->student_name,
                 'student_room' => $request->student_room,
+                'student_id' => $request->student_id,
                 'check_in_time' => $request->check_in_time ?? now(),
+                'expected_checkout' => $request->expected_checkout,
                 'status' => 'active',
                 'remarks' => $request->remarks,
-            ]);
+                'who_to_meet' => $request->who_to_meet,
+                'vehicle_number' => $request->vehicle_number,
+                'checked_in_by' => Auth::id(),
+            ];
+
+            // If student_id is provided, fetch student details
+            if ($request->filled('student_id')) {
+                $student = Student::find($request->student_id);
+                if ($student) {
+                    $visitorData['student_name'] = $student->name;
+                    $visitorData['student_room'] = $student->room_number ?? $visitorData['student_room'];
+                }
+            }
+
+            // Create visitor
+            $visitor = Visitor::create($visitorData);
+
+            // Send notification - Fixed: Check if class exists
+            if (class_exists('App\Http\Controllers\NotificationController')) {
+                \App\Http\Controllers\NotificationController::notifyVisitorAdded($visitor);
+            }
 
             return redirect()->route('vistors_records')
-                ->with('success', 'Visitor checked in successfully!');
+                ->with('success', 'Visitor "' . $visitor->visitor_name . '" checked in successfully!');
 
         } catch (\Exception $e) {
             return redirect()->back()
@@ -148,8 +177,10 @@ class VisitorController extends Controller
             'room_no' => 'nullable|string|max:50',
             'student_name' => 'nullable|string|max:255',
             'student_room' => 'nullable|string|max:50',
-            'status' => 'required|in:active,checked_out',
+            'status' => 'required|in:active,checked_out,pending',
             'remarks' => 'nullable|string',
+            'who_to_meet' => 'nullable|string|max:255',
+            'vehicle_number' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -160,6 +191,7 @@ class VisitorController extends Controller
 
         try {
             $visitor = Visitor::findOrFail($id);
+            $oldStatus = $visitor->status;
             
             $updateData = [
                 'visitor_name' => $request->visitor_name,
@@ -172,14 +204,24 @@ class VisitorController extends Controller
                 'student_room' => $request->student_room,
                 'status' => $request->status,
                 'remarks' => $request->remarks,
+                'who_to_meet' => $request->who_to_meet,
+                'vehicle_number' => $request->vehicle_number,
             ];
 
             // If status is checked_out and checkout time is not set
             if ($request->status == 'checked_out' && $visitor->check_out_time == null) {
                 $updateData['check_out_time'] = now();
+                $updateData['checked_out_by'] = Auth::id();
             }
 
             $visitor->update($updateData);
+
+            // Send notification for checkout
+            if ($request->status == 'checked_out' && $oldStatus != 'checked_out') {
+                if (class_exists('App\Http\Controllers\NotificationController')) {
+                    \App\Http\Controllers\NotificationController::notifyVisitorCheckedOut($visitor);
+                }
+            }
 
             return redirect()->route('vistors_records')
                 ->with('success', 'Visitor record updated successfully!');
@@ -241,8 +283,14 @@ class VisitorController extends Controller
             $visitor->update([
                 'status' => 'active',
                 'check_in_time' => now(),
-                'check_out_time' => null
+                'check_out_time' => null,
+                'checked_in_by' => Auth::id(),
             ]);
+
+            // Send notification for check-in
+            if (class_exists('App\Http\Controllers\NotificationController')) {
+                \App\Http\Controllers\NotificationController::notifyVisitorAdded($visitor);
+            }
 
             return response()->json([
                 'success' => true,
@@ -275,8 +323,14 @@ class VisitorController extends Controller
 
             $visitor->update([
                 'status' => 'checked_out',
-                'check_out_time' => now()
+                'check_out_time' => now(),
+                'checked_out_by' => Auth::id(),
             ]);
+
+            // Send notification for checkout
+            if (class_exists('App\Http\Controllers\NotificationController')) {
+                \App\Http\Controllers\NotificationController::notifyVisitorCheckedOut($visitor);
+            }
 
             return response()->json([
                 'success' => true,

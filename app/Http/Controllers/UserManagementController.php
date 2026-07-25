@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
 class UserManagementController extends Controller
@@ -62,22 +64,60 @@ class UserManagementController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
             'role' => 'required|in:admin,warden,user',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:500',
             'status' => 'required|in:active,inactive',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
 
-        User::create($validated);
+        try {
+            // Prepare user data
+            $userData = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'status' => $request->status,
+                'email_verified_at' => now(), // Auto-verify email
+            ];
 
-        return redirect()->route('users.index')
-                         ->with('success', 'User created successfully!');
+            // Handle profile photo upload if provided
+            if ($request->hasFile('profile_photo')) {
+                $photo = $request->file('profile_photo');
+                $filename = time() . '_' . $photo->getClientOriginalName();
+                $path = $photo->storeAs('profile_photos', $filename, 'public');
+                $userData['profile_photo'] = $path;
+            }
+
+            // Create user
+            $user = User::create($userData);
+
+            // Send notification - Fixed: Use fully qualified namespace
+            if (class_exists('App\Http\Controllers\NotificationController')) {
+                \App\Http\Controllers\NotificationController::notifyUserCreated($user);
+            }
+
+            return redirect()->route('users.index')
+                ->with('success', 'User "' . $user->name . '" created successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to create user: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     /**
@@ -122,7 +162,21 @@ class UserManagementController extends Controller
             $validated['password'] = Hash::make($request->password);
         }
 
+        // Store old values for notification comparison
+        $oldStatus = $user->status;
+        $oldRole = $user->role;
+
         $user->update($validated);
+
+        // Send notification for status change
+        if ($user->wasChanged('status') && class_exists('App\Http\Controllers\NotificationController')) {
+            \App\Http\Controllers\NotificationController::notifyUserStatusChanged($user);
+        }
+
+        // Send notification for role change
+        if ($user->wasChanged('role') && class_exists('App\Http\Controllers\NotificationController')) {
+            \App\Http\Controllers\NotificationController::notifyUserRoleChanged($user);
+        }
 
         return redirect()->route('users.index')
                          ->with('success', 'User updated successfully!');
@@ -166,6 +220,11 @@ class UserManagementController extends Controller
             ]);
 
             $user->update(['status' => $request->status]);
+
+            // Send notification for status change
+            if (class_exists('App\Http\Controllers\NotificationController')) {
+                \App\Http\Controllers\NotificationController::notifyUserStatusChanged($user);
+            }
 
             if ($request->ajax()) {
                 return response()->json([

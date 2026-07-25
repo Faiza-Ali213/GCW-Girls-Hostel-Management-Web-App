@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\User;
+use App\Models\Visitor;
+use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -209,6 +212,213 @@ class NotificationController extends Controller
                 ->forUser(Auth::id())
                 ->active()
                 ->count()
+        ]);
+    }
+
+    // ============================================
+    // USER NOTIFICATIONS
+    // ============================================
+
+    /**
+     * Create notification for new user registration
+     */
+    public static function notifyUserCreated(User $user)
+    {
+        $roleLabels = [
+            'admin' => 'Administrator',
+            'warden' => 'Warden',
+            'user' => 'User'
+        ];
+        $roleLabel = $roleLabels[$user->role] ?? ucfirst($user->role);
+        
+        Notification::create([
+            'title' => 'New User Registered',
+            'message' => "A new user '{$user->name}' has been registered as '{$roleLabel}'",
+            'type' => 'success',
+            'icon' => 'bi-person-plus',
+            'link' => route('users.show', $user->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    /**
+     * Create notification for user status change
+     */
+    public static function notifyUserStatusChanged(User $user)
+    {
+        $statusLabel = ucfirst($user->status);
+        
+        Notification::create([
+            'title' => 'User Status Updated',
+            'message' => "User '{$user->name}' status has been changed to '{$statusLabel}'",
+            'type' => $user->status == 'active' ? 'success' : 'warning',
+            'icon' => $user->status == 'active' ? 'bi-person-check' : 'bi-person-x',
+            'link' => route('users.show', $user->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    /**
+     * Create notification for user role change
+     */
+    public static function notifyUserRoleChanged(User $user)
+    {
+        $roleLabels = [
+            'admin' => 'Administrator',
+            'warden' => 'Warden',
+            'user' => 'User'
+        ];
+        $roleLabel = $roleLabels[$user->role] ?? ucfirst($user->role);
+        
+        Notification::create([
+            'title' => 'User Role Updated',
+            'message' => "User '{$user->name}' role has been changed to '{$roleLabel}'",
+            'type' => 'info',
+            'icon' => 'bi-person-badge',
+            'link' => route('users.show', $user->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    // ============================================
+    // VISITOR NOTIFICATIONS
+    // ============================================
+
+    /**
+     * Create notification for new visitor
+     */
+    public static function notifyVisitorAdded(Visitor $visitor)
+    {
+        $message = "New visitor '{$visitor->visitor_name}' has checked in";
+        
+        if ($visitor->student_name) {
+            $message .= " to meet '{$visitor->student_name}'";
+        }
+        
+        if ($visitor->purpose_of_visit) {
+            $message .= " (Purpose: {$visitor->purpose_of_visit})";
+        }
+
+        Notification::create([
+            'title' => 'New Visitor Arrived',
+            'message' => $message,
+            'type' => 'info',
+            'icon' => 'bi-person-check',
+            'link' => route('visitor.show', $visitor->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(3),
+        ]);
+    }
+
+    /**
+     * Create notification for visitor checkout
+     */
+    public static function notifyVisitorCheckedOut(Visitor $visitor)
+    {
+        $duration = 'N/A';
+        if ($visitor->check_in_time && $visitor->check_out_time) {
+            $duration = $visitor->check_in_time->diffForHumans($visitor->check_out_time);
+        } elseif ($visitor->check_in_time) {
+            $duration = $visitor->check_in_time->diffForHumans(now());
+        }
+        
+        Notification::create([
+            'title' => 'Visitor Checked Out',
+            'message' => "Visitor '{$visitor->visitor_name}' has checked out. Duration: {$duration}",
+            'type' => 'info',
+            'icon' => 'bi-person-check',
+            'link' => route('visitor.show', $visitor->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(3),
+        ]);
+    }
+
+    // ============================================
+    // COMPLAINT NOTIFICATIONS
+    // ============================================
+
+    /**
+     * Create notification for new complaint
+     */
+    public static function notifyComplaintSubmitted(Complaint $complaint)
+    {
+        $studentName = $complaint->student ? $complaint->student->name : $complaint->student_name;
+        $priorityLabels = [
+            'low' => 'Low',
+            'medium' => 'Medium',
+            'high' => 'High'
+        ];
+        $priorityLabel = $priorityLabels[$complaint->priority] ?? ucfirst($complaint->priority);
+        
+        Notification::create([
+            'title' => 'New Complaint Submitted',
+            'message' => "Complaint #{$complaint->id} submitted by '{$studentName}' with {$priorityLabel} priority",
+            'type' => $complaint->priority == 'high' ? 'warning' : 'info',
+            'icon' => $complaint->priority == 'high' ? 'bi-exclamation-triangle' : 'bi-file-earmark-text',
+            'link' => route('complaints.show', $complaint->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    /**
+     * Create notification for complaint status update
+     */
+    public static function notifyComplaintUpdated(Complaint $complaint)
+    {
+        $statusLabels = [
+            'pending' => 'Pending Review',
+            'processing' => 'In Progress',
+            'resolved' => 'Resolved',
+            'rejected' => 'Rejected'
+        ];
+        
+        $statusLabel = $statusLabels[$complaint->status] ?? ucfirst($complaint->status);
+        $studentName = $complaint->student ? $complaint->student->name : $complaint->student_name;
+        
+        $type = 'info';
+        $icon = 'bi-arrow-repeat';
+        
+        if ($complaint->status == 'resolved') {
+            $type = 'success';
+            $icon = 'bi-check-circle';
+        } elseif ($complaint->status == 'rejected') {
+            $type = 'error';
+            $icon = 'bi-x-circle';
+        }
+        
+        Notification::create([
+            'title' => 'Complaint Status Updated',
+            'message' => "Complaint #{$complaint->id} from '{$studentName}' is now '{$statusLabel}'",
+            'type' => $type,
+            'icon' => $icon,
+            'link' => route('complaints.show', $complaint->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    // ============================================
+    // GENERIC NOTIFICATION HELPER
+    // ============================================
+
+    /**
+     * Create a custom notification
+     */
+    public static function createNotification($title, $message, $type = 'info', $icon = null, $link = null, $userId = null, $expiresAt = null)
+    {
+        return Notification::create([
+            'title' => $title,
+            'message' => $message,
+            'type' => $type,
+            'icon' => $icon,
+            'link' => $link,
+            'user_id' => $userId,
+            'is_global' => is_null($userId),
+            'expires_at' => $expiresAt ?? now()->addDays(7),
         ]);
     }
 }

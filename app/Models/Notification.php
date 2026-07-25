@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Notification extends Model
 {
@@ -15,24 +15,30 @@ class Notification extends Model
         'type',
         'icon',
         'link',
-        'is_read',
-        'read_at',
         'user_id',
         'is_global',
-        'expires_at'
+        'is_read',
+        'read_at',
+        'expires_at',
+        'is_active'
     ];
 
     protected $casts = [
-        'is_read' => 'boolean',
         'is_global' => 'boolean',
+        'is_read' => 'boolean',
+        'is_active' => 'boolean',
         'read_at' => 'datetime',
         'expires_at' => 'datetime',
     ];
 
-    // Relationship with User (if using authentication)
-    public function user()
+    // Scope for active notifications
+    public function scopeActive($query)
     {
-        return $this->belongsTo(User::class);
+        return $query->where('is_active', true)
+            ->where(function($q) {
+                $q->whereNull('expires_at')
+                  ->orWhere('expires_at', '>', now());
+            });
     }
 
     // Scope for unread notifications
@@ -47,27 +53,16 @@ class Notification extends Model
         return $query->where('is_read', true);
     }
 
-    // Scope for global notifications
-    public function scopeGlobal($query)
-    {
-        return $query->where('is_global', true);
-    }
-
-    // Scope for user-specific notifications
+    // Scope for specific user
     public function scopeForUser($query, $userId)
     {
-        return $query->where('user_id', $userId)->orWhere('is_global', true);
-    }
-
-    // Scope for active (not expired) notifications
-    public function scopeActive($query)
-    {
-        return $query->where(function($q) {
-            $q->whereNull('expires_at')->orWhere('expires_at', '>', now());
+        return $query->where(function($q) use ($userId) {
+            $q->where('is_global', true)
+              ->orWhere('user_id', $userId);
         });
     }
 
-    // Mark as read
+    // Mark notification as read
     public function markAsRead()
     {
         $this->update([
@@ -76,7 +71,7 @@ class Notification extends Model
         ]);
     }
 
-    // Mark as unread
+    // Mark notification as unread
     public function markAsUnread()
     {
         $this->update([
@@ -85,29 +80,9 @@ class Notification extends Model
         ]);
     }
 
-    // Get notification type badge class
-    public function getTypeBadgeClass()
+    // Get the user who owns this notification
+    public function user()
     {
-        return match($this->type) {
-            'success' => 'success',
-            'warning' => 'warning',
-            'error' => 'danger',
-            default => 'info'
-        };
-    }
-
-    // Get icon based on type
-    public function getIcon()
-    {
-        if ($this->icon) {
-            return $this->icon;
-        }
-
-        return match($this->type) {
-            'success' => 'bi-check-circle-fill',
-            'warning' => 'bi-exclamation-triangle-fill',
-            'error' => 'bi-x-circle-fill',
-            default => 'bi-info-circle-fill'
-        };
+        return $this->belongsTo(User::class);
     }
 }

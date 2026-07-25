@@ -49,12 +49,46 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-12">
+                            <!-- Push Notification -->
+                            <div class="col-md-6 mb-3">
                                 <div class="form-check form-switch">
                                     <input class="form-check-input" type="checkbox" id="pushNotif" checked />
                                     <label class="form-check-label" for="pushNotif">
                                         Push Notification
                                         <small class="d-block text-muted">Enable browser and in-app push notifications</small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Visitor Notification -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="visitorNotif" checked />
+                                    <label class="form-check-label" for="visitorNotif">
+                                        Visitor Notification
+                                        <small class="d-block text-muted">Get alerts when visitors check-in or check-out</small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- User Notification -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="userNotif" />
+                                    <label class="form-check-label" for="userNotif">
+                                        User Notification
+                                        <small class="d-block text-muted">Receive alerts for new user registrations and account activities</small>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Complaint Notification -->
+                            <div class="col-md-6 mb-3">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="complaintNotif" checked />
+                                    <label class="form-check-label" for="complaintNotif">
+                                        Complaint Notification
+                                        <small class="d-block text-muted">Get notified when new complaints are submitted or updated</small>
                                     </label>
                                 </div>
                             </div>

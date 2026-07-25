@@ -244,26 +244,26 @@ Route::middleware('auth')->group(function () {
 
         // ============================================
         // Notification Management
-        // ============================================
-        Route::prefix('notifications')->name('notifications.')->group(function () {
-            Route::get('/', [NotificationController::class, 'index'])->name('index');
-            Route::get('/create', [NotificationController::class, 'create'])->name('create');
-            Route::post('/', [NotificationController::class, 'store'])->name('store');
-            Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
-            Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
-            Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
-            Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
-            Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
-            Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
-            Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
-            Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
-            Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
-            Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
-        });
+      Route::prefix('notifications')->name('notifications.')->group(function () {
+    Route::get('/', [NotificationController::class, 'index'])->name('index');
+    Route::get('/create', [NotificationController::class, 'create'])->name('create');
+    Route::post('/', [NotificationController::class, 'store'])->name('store');
+    Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
+    Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
+    Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
+    Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+    Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
+    Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
+    Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
+    Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
+    Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
+    Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
+});
 
-        Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
-        Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
-        Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');
+// Keep existing route aliases
+Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
+Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
+Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');
 
         // ============================================
         // Settings Route
