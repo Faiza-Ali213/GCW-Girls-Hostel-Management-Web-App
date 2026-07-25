@@ -343,7 +343,7 @@
 </head>
 <body>
 
-    <!-- Navbar - Only Admin User dropdown remains -->
+    <!-- Navbar - Only Admin User dropdown -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -354,11 +354,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- HOME BUTTON REMOVED -->
-                    <!-- DASHBOARD BUTTON REMOVED -->
-                    <!-- PROFILE BUTTON REMOVED -->
-                    
-                    <!-- ONLY ADMIN USER DROPDOWN REMAINS -->
+                    <!-- ONLY ADMIN USER DROPDOWN -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user-circle"></i> {{ Auth::user()->name ?? 'Admin User' }}
@@ -438,7 +434,6 @@
                         <h2 class="profile-name">{{ Auth::user()->name ?? 'Admin User' }}</h2>
                         <p class="profile-role">{{ Auth::user()->role ?? 'Admin' }}</p>
                         <p class="profile-email"><i class="fas fa-envelope"></i> {{ Auth::user()->email ?? 'admin@example.com' }}</p>
-                        <!-- STATISTICS SECTION REMOVED -->
                     </div>
                     <div class="col-md-3 text-center text-md-end">
                         <a href="{{ route('profile.edit') }}" class="btn btn-light">
@@ -448,7 +443,7 @@
                 </div>
             </div>
 
-            <!-- Personal Information -->
+            <!-- Personal Information & Account Information -->
             <div class="row g-4">
                 <div class="col-lg-6">
                     <div class="profile-card">
@@ -478,7 +473,7 @@
                     </div>
                 </div>
 
-                <!-- Account Information -->
+                <!-- Account Information - EDIT BUTTON REMOVED -->
                 <div class="col-lg-6">
                     <div class="profile-card">
                         <h5 class="profile-card-title">
@@ -502,11 +497,7 @@
                             <span class="info-label"><i class="fas fa-map-marker-alt"></i> Location</span>
                             <span class="info-value">Gujranwala, Pakistan</span>
                         </div>
-                        <div class="mt-3">
-                            <a href="{{ route('profile.edit') }}" class="btn-save w-100">
-                                <i class="fas fa-edit"></i> Edit Profile
-                            </a>
-                        </div>
+                        <!-- EDIT PROFILE BUTTON REMOVED FROM HERE -->
                     </div>
                 </div>
 
