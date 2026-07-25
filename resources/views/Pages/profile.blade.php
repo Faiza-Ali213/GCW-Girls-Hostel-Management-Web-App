@@ -222,64 +222,6 @@
             margin-right: 8px;
         }
 
-        .form-group-custom {
-            margin-bottom: 20px;
-        }
-
-        .form-group-custom label {
-            font-weight: 600;
-            color: #2d3748;
-            font-size: 0.9rem;
-            margin-bottom: 6px;
-        }
-
-        .form-group-custom label i {
-            color: #1A365D;
-            margin-right: 8px;
-        }
-
-        .form-group-custom .form-control {
-            border-radius: 12px;
-            padding: 12px 16px;
-            border: 2px solid #e2e8f0;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background: #f8fafc;
-        }
-
-        .form-group-custom .form-control:focus {
-            border-color: #1A365D;
-            box-shadow: 0 0 0 4px rgba(26, 54, 93, 0.1);
-            background: white;
-        }
-
-        .form-group-custom .form-control:disabled {
-            background: #f1f5f9;
-            cursor: not-allowed;
-        }
-
-        .btn-save {
-            background: #1A365D;
-            color: white;
-            padding: 12px 35px;
-            border-radius: 12px;
-            font-weight: 600;
-            border: none;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .btn-save:hover {
-            background: #2c4a7a;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(26, 54, 93, 0.2);
-            color: white;
-        }
-
-        .btn-save i {
-            margin-right: 8px;
-        }
-
         .alert-custom {
             border-radius: 12px;
             padding: 15px 20px;
@@ -473,7 +415,7 @@
                     </div>
                 </div>
 
-                <!-- Account Information - EDIT BUTTON REMOVED -->
+                <!-- Account Information -->
                 <div class="col-lg-6">
                     <div class="profile-card">
                         <h5 class="profile-card-title">
@@ -497,43 +439,6 @@
                             <span class="info-label"><i class="fas fa-map-marker-alt"></i> Location</span>
                             <span class="info-value">Gujranwala, Pakistan</span>
                         </div>
-                        <!-- EDIT PROFILE BUTTON REMOVED FROM HERE -->
-                    </div>
-                </div>
-
-                <!-- Change Password -->
-                <div class="col-lg-12">
-                    <div class="profile-card">
-                        <h5 class="profile-card-title">
-                            <i class="fas fa-key"></i> Change Password
-                        </h5>
-                        <form action="{{ route('profile.update-password') }}" method="POST">
-                            @csrf
-                            @method('PUT')
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group-custom">
-                                        <label><i class="fas fa-lock"></i> Current Password</label>
-                                        <input type="password" class="form-control" name="current_password" placeholder="Enter current password" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group-custom">
-                                        <label><i class="fas fa-key"></i> New Password</label>
-                                        <input type="password" class="form-control" name="new_password" placeholder="Enter new password" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group-custom">
-                                        <label><i class="fas fa-check-circle"></i> Confirm Password</label>
-                                        <input type="password" class="form-control" name="new_password_confirmation" placeholder="Confirm new password" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn-save">
-                                <i class="fas fa-save"></i> Update Password
-                            </button>
-                        </form>
                     </div>
                 </div>
             </div>
