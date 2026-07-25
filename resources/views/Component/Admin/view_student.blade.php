@@ -1,12 +1,12 @@
 @extends('Layout.admin')
 
-@section('page_title', 'View User')
-@section('page_subtitle', 'User details and information')
+@section('page_title', 'View Student')
+@section('page_subtitle', 'Student details and information')
 
 @section('content')
 <style>
 /* ============================================
-   PROFESSIONAL VIEW USER PAGE
+   PROFESSIONAL VIEW STUDENT PAGE
    ============================================ */
 
 /* Page Container */
@@ -151,16 +151,6 @@
     color: #4338CA;
 }
 
-.badge-role.warden {
-    background: #FFFBEB;
-    color: #92400E;
-}
-
-.badge-role.user {
-    background: #ECFDF5;
-    color: #065F46;
-}
-
 .badge-status {
     background: #ECFDF5;
     color: #065F46;
@@ -169,6 +159,16 @@
 .badge-status.inactive {
     background: #FEF2F2;
     color: #991B1B;
+}
+
+.badge-status.graduated {
+    background: #EEF2FF;
+    color: #4F46E5;
+}
+
+.badge-status.left {
+    background: #FEF3C7;
+    color: #92400E;
 }
 
 /* Info Grid */
@@ -222,6 +222,9 @@
     font-weight: 600;
     font-size: 14px;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
 }
 
 .btn-secondary {
@@ -233,6 +236,7 @@
 .btn-secondary:hover {
     background: #E2E8F0;
     color: #0F172A;
+    text-decoration: none;
 }
 
 .btn-primary {
@@ -246,6 +250,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 .btn-warning {
@@ -259,6 +264,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 .btn-danger {
@@ -272,6 +278,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     color: #FFFFFF;
+    text-decoration: none;
 }
 
 /* Responsive */
@@ -342,9 +349,9 @@
 <div class="view-user-page">
     <!-- Back Button -->
     <div class="back-button-wrapper">
-        <a href="{{ route('users.index') }}" class="back-button">
+        <a href="{{ route('student-records') }}" class="back-button">
             <i class="bi bi-arrow-left"></i>
-            Back to User Management
+            Back to Student Records
         </a>
     </div>
 
@@ -356,8 +363,8 @@
                 <i class="bi bi-person-circle"></i>
             </div>
             <div>
-                <h4 class="header-title">User Profile</h4>
-                <p class="header-subtitle">View user details and information</p>
+                <h4 class="header-title">Student Profile</h4>
+                <p class="header-subtitle">View student details and information</p>
             </div>
         </div>
 
@@ -365,22 +372,28 @@
         <div class="profile-card-body">
             <!-- Profile Header -->
             <div class="profile-header">
-                <img src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}" class="profile-avatar">
+                @if(isset($student->profile_picture) && $student->profile_picture)
+                    <img src="{{ asset('storage/' . $student->profile_picture) }}" alt="{{ $student->student_name }}" class="profile-avatar">
+                @else
+                    <div class="profile-avatar" style="display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#4338CA,#4F46E5);color:#fff;font-size:40px;font-weight:700;">
+                        {{ isset($student->student_name) ? strtoupper(substr($student->student_name, 0, 1)) : 'S' }}
+                    </div>
+                @endif
                 <div class="profile-name-section">
-                    <h2 class="profile-name">{{ $user->name }}</h2>
-                    <p class="profile-email">{{ $user->email }}</p>
+                    <h2 class="profile-name">{{ $student->student_name ?? 'N/A' }}</h2>
+                    <p class="profile-email">{{ $student->email ?? 'No email provided' }}</p>
                     <div class="profile-badges">
-                        <span class="badge-custom badge-role {{ $user->role }}">
-                            <i class="bi bi-{{ $user->role === 'admin' ? 'shield-lock' : ($user->role === 'warden' ? 'shield' : 'person') }}"></i>
-                            {{ ucfirst($user->role) }}
+                        <span class="badge-custom badge-role">
+                            <i class="bi bi-person"></i>
+                            Student
                         </span>
-                        <span class="badge-custom badge-status {{ $user->status }}">
-                            <span class="status-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ $user->status === 'active' ? '#10B981' : '#EF4444' }};margin-right:4px;"></span>
-                            {{ ucfirst($user->status) }}
+                        <span class="badge-custom badge-status {{ $student->hostel_status ?? 'active' }}">
+                            <span class="status-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ ($student->hostel_status ?? 'active') === 'active' ? '#10B981' : (($student->hostel_status ?? 'active') === 'graduated' ? '#4F46E5' : (($student->hostel_status ?? 'active') === 'left' ? '#F59E0B' : '#EF4444')) }};margin-right:4px;"></span>
+                            {{ ucfirst($student->hostel_status ?? 'Active') }}
                         </span>
-                        @if($user->isOnline())
-                            <span class="badge-custom" style="background:#D1FAE5;color:#065F46;">
-                                <i class="bi bi-circle-fill" style="font-size:8px;color:#10B981;"></i> Online
+                        @if(isset($student->room_number) && $student->room_number)
+                            <span class="badge-custom" style="background:#E0F2FE;color:#0EA5E9;">
+                                <i class="bi bi-door-open"></i> Room {{ $student->room_number }}
                             </span>
                         @endif
                     </div>
@@ -390,52 +403,82 @@
             <!-- Information Grid -->
             <div class="info-grid">
                 <div class="info-item">
+                    <span class="info-label"><i class="bi bi-person"></i> Student Name</span>
+                    <span class="info-value">{{ $student->student_name ?? 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="bi bi-person-fill"></i> Father's Name</span>
+                    <span class="info-value">{{ $student->father_name ?? 'N/A' }}</span>
+                </div>
+                <div class="info-item">
                     <span class="info-label"><i class="bi bi-envelope"></i> Email Address</span>
-                    <span class="info-value">{{ $user->email }}</span>
+                    <span class="info-value">{{ $student->email ?? 'Not provided' }}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label"><i class="bi bi-phone"></i> Phone Number</span>
-                    <span class="info-value">{{ $user->phone ?? 'Not provided' }}</span>
+                    <span class="info-value">{{ $student->phone_number ?? 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="bi bi-credit-card"></i> CNIC</span>
+                    <span class="info-value">{{ $student->cnic_number ?? 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="bi bi-person-badge"></i> Gender</span>
+                    <span class="info-value">{{ isset($student->gender) ? ucfirst($student->gender) : 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="bi bi-calendar"></i> Date of Birth</span>
+                    <span class="info-value">{{ isset($student->date_of_birth) ? date('d M Y', strtotime($student->date_of_birth)) : 'N/A' }}</span>
                 </div>
                 <div class="info-item">
                     <span class="info-label"><i class="bi bi-geo-alt"></i> Address</span>
-                    <span class="info-value">{{ $user->address ?? 'Not provided' }}</span>
+                    <span class="info-value">{{ $student->address ?? 'N/A' }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label"><i class="bi bi-tag"></i> Role</span>
-                    <span class="info-value">{{ ucfirst($user->role) }}</span>
+                    <span class="info-label"><i class="bi bi-house"></i> Room Number</span>
+                    <span class="info-value">{{ $student->room_number ?? 'Not Allocated' }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label"><i class="bi bi-toggle-on"></i> Status</span>
-                    <span class="info-value">{{ ucfirst($user->status) }}</span>
+                    <span class="info-label"><i class="bi bi-calendar-check"></i> Admission Date</span>
+                    <span class="info-value">{{ isset($student->admission_date) ? date('d M Y', strtotime($student->admission_date)) : 'N/A' }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label"><i class="bi bi-clock-history"></i> Last Login</span>
-                    <span class="info-value">{{ $user->last_login ? $user->last_login->format('F d, Y H:i A') : 'Never' }}</span>
+                    <span class="info-label"><i class="bi bi-telephone"></i> Guardian Contact</span>
+                    <span class="info-value">{{ $student->guardian_contact ?? 'N/A' }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label"><i class="bi bi-calendar-plus"></i> Member Since</span>
-                    <span class="info-value">{{ $user->created_at->format('F d, Y') }}</span>
+                    <span class="info-label"><i class="bi bi-exclamation-triangle"></i> Emergency Contact</span>
+                    <span class="info-value">{{ $student->emergency_contact ?? 'N/A' }}</span>
+                </div>
+                <div class="info-item" style="grid-column: 1 / -1;">
+                    <span class="info-label"><i class="bi bi-heart"></i> Medical Conditions</span>
+                    <span class="info-value">{{ $student->medical_conditions ?? 'None' }}</span>
+                </div>
+                <div class="info-item" style="grid-column: 1 / -1;">
+                    <span class="info-label"><i class="bi bi-sticky"></i> Remarks</span>
+                    <span class="info-value">{{ $student->remarks ?? 'No remarks' }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label"><i class="bi bi-calendar-check"></i> Last Updated</span>
-                    <span class="info-value">{{ $user->updated_at->format('F d, Y H:i A') }}</span>
+                    <span class="info-label"><i class="bi bi-clock-history"></i> Registered On</span>
+                    <span class="info-value">{{ isset($student->created_at) ? date('F d, Y', strtotime($student->created_at)) : 'N/A' }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="bi bi-calendar-plus"></i> Last Updated</span>
+                    <span class="info-value">{{ isset($student->updated_at) ? date('F d, Y H:i A', strtotime($student->updated_at)) : 'N/A' }}</span>
                 </div>
             </div>
 
             <!-- Action Buttons -->
             <div class="profile-actions">
-                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">
-                    <i class="bi bi-pencil me-2"></i> Edit User
+                <a href="{{ route('student.edit', $student->id) }}" class="btn btn-warning">
+                    <i class="bi bi-pencil me-2"></i> Edit Student
                 </a>
-                <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                <a href="{{ route('student-records') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left me-2"></i> Back to List
                 </a>
-                @if($user->id !== auth()->id())
-                    <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $user->id }}, '{{ $user->name }}')">
-                        <i class="bi bi-trash3 me-2"></i> Delete User
-                    </button>
-                @endif
+                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $student->id }}, '{{ addslashes($student->student_name) }}')">
+                    <i class="bi bi-trash3 me-2"></i> Delete Student
+                </button>
             </div>
         </div>
     </div>
@@ -448,11 +491,42 @@
 </form>
 
 <script>
-function confirmDelete(userId, userName) {
-    if (confirm(`Are you sure you want to delete user "${userName}"? This action cannot be undone.`)) {
-        document.getElementById('deleteForm').action = `/users/${userId}`;
-        document.getElementById('deleteForm').submit();
-    }
+function confirmDelete(studentId, studentName) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to delete '" + studentName + "'. This action cannot be undone!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Create form dynamically to avoid route concatenation issues
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/student/' + studentId;
+            
+            // Add CSRF token
+            var csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = '{{ csrf_token() }}';
+            form.appendChild(csrfInput);
+            
+            // Add DELETE method
+            var methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+            form.appendChild(methodInput);
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
 </script>
 @endsection
