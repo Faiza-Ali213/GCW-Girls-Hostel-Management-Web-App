@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="image-panel">
-        <img src="{{ asset('Assert/Hero.png') }}" 
+        <img src="{{ asset('Assert/Hero1.jpg') }}" 
              alt="Dental Procedure" 
              class="animate-right">
     </div>
