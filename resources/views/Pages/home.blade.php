@@ -13,7 +13,7 @@
     </div>
 
     <div class="hero-image">
-        <img src="{{ asset('Assert\Hero.png') }}" alt="Hostel Interior">
+        <img src="{{ asset('Assert\Hero2.jpg') }}" alt="Hostel Interior">
     </div>
 </section>
 @include('Component.spilt')

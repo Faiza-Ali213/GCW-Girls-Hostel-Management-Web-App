@@ -13,13 +13,13 @@
 
         <div class="gallery-grid">
             <div class="gallery-item item-1 reveal-left">
-                <img src="{{ asset('Assert/Hero.png') }}" alt="Hostel Exterior">
+                <img src="{{ asset('Assert/gallery1.jpg') }}" alt="Hostel Exterior">
             </div>
             <div class="gallery-item item-2 reveal-down">
                 <img src="{{ asset('Assert/spilt-image2.png') }}" alt="Hostel Common Area">
             </div>
             <div class="gallery-item item-3 reveal-right">
-                <img src="{{ asset('Assert/room1.jpeg') }}" alt="Hostel Room">
+                <img src="{{ asset('Assert/room2.jpg') }}" alt="Hostel Room">
             </div>
             <div class="gallery-item item-4 reveal-up">
                 <img src="{{ asset('Assert/image.png') }}" alt="Dining Hall">
