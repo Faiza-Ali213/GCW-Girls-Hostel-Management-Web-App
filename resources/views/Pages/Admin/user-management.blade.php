@@ -6,11 +6,8 @@
 @section('content')
 <style>
 /* ============================================
-   PREMIUM USER MANAGEMENT STYLES
+   USER MANAGEMENT - BLUE THEME
    ============================================ */
-
-/* Import Google Font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 .user-management-wrapper {
     font-family: 'Inter', sans-serif;
@@ -38,14 +35,14 @@
 }
 
 .title-gradient {
-    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .title-badge {
-    background: linear-gradient(135deg, #10B981, #34D399);
+    background: linear-gradient(135deg, #4F46E5, #4338CA);
     color: white;
     font-size: 10px;
     font-weight: 700;
@@ -64,7 +61,7 @@
 }
 
 .btn-primary-modern {
-    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
     color: white;
     border: none;
     padding: 12px 28px;
@@ -73,12 +70,17 @@
     font-size: 14px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-primary-modern:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(79, 70, 229, 0.4);
     color: white;
+    text-decoration: none;
 }
 
 /* ============================================
@@ -124,7 +126,7 @@
     opacity: 1;
 }
 
-.stat-item.stat-total::before { background: linear-gradient(90deg, #4F46E5, #7C3AED); }
+.stat-item.stat-total::before { background: linear-gradient(90deg, #4F46E5, #4338CA); }
 .stat-item.stat-active::before { background: linear-gradient(90deg, #10B981, #34D399); }
 .stat-item.stat-inactive::before { background: linear-gradient(90deg, #EF4444, #F87171); }
 .stat-item.stat-admin::before { background: linear-gradient(90deg, #3B82F6, #60A5FA); }
@@ -352,7 +354,7 @@
 }
 
 .search-btn {
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    background: linear-gradient(135deg, #4F46E5, #4338CA);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -444,11 +446,11 @@
 
 .table-modern thead th {
     padding: 14px 16px;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    color: #94A3B8;
+    color: #64748B;
     background: #FAFBFC;
     border-bottom: 2px solid #F1F5F9;
     white-space: nowrap;
@@ -738,7 +740,7 @@
 }
 
 .pagination-links-modern .page-item.active .page-link {
-    background: linear-gradient(135deg, #4F46E5, #7C3AED);
+    background: linear-gradient(135deg, #4F46E5, #4338CA);
     color: white;
     box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
 }

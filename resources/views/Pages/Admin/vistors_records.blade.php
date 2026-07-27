@@ -2,54 +2,60 @@
 
 @section('content')
 <style>
+    /* ============================================ */
+    /* VISITOR RECORDS - BLUE THEME */
+    /* ============================================ */
+    
     /* Page Header */
     .page-header {
         background: white;
-        border-radius: 12px;
-        padding: 18px 24px;
-        margin-bottom: 25px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        border-radius: 16px;
+        padding: 22px 28px;
+        margin-bottom: 28px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        border: 1px solid #f0f2f5;
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
-        border-bottom: 2px solid #f0f0f0;
     }
     .page-header h4 {
         margin: 0;
-        font-weight: 600;
-        color: #1a1a1a;
+        font-weight: 700;
+        color: #0b1a33;
         display: flex;
         align-items: center;
         gap: 10px;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
     }
     .page-header h4 i {
-        color: #0B2E33;
+        color: #4F46E5;
     }
     .page-header .sub-title {
-        color: #888;
-        font-size: 0.85rem;
+        color: #94a3b8;
+        font-size: 0.9rem;
         margin-top: 2px;
         font-weight: 400;
     }
     .btn-add {
-        background: #0B2E33;
-        color: white;
+        background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+        color: white !important;
         border: none;
-        padding: 8px 20px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.2s ease;
+        padding: 10px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        font-size: 0.85rem;
+        gap: 8px;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
     }
     .btn-add:hover {
-        background: #1a4a52;
-        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
+        color: white !important;
         text-decoration: none;
     }
 
@@ -57,52 +63,67 @@
     .stat-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-bottom: 24px;
+        gap: 18px;
+        margin-bottom: 28px;
     }
     .stat-card {
         background: white;
-        border-radius: 10px;
-        padding: 16px 20px;
-        border: 1px solid #f0f0f0;
-        transition: all 0.2s ease;
+        border-radius: 14px;
+        padding: 20px 24px;
+        border: 1px solid #f0f2f5;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        position: relative;
+        overflow: hidden;
     }
     .stat-card:hover {
-        border-color: #0B2E33;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        border-color: #4F46E5;
     }
     .stat-card .stat-number {
-        font-size: 1.6rem;
+        font-size: 2rem;
         font-weight: 700;
-        color: #1a1a1a;
+        color: #0b1a33;
         line-height: 1.2;
+        letter-spacing: -0.3px;
     }
     .stat-card .stat-label {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        color: #999;
-        font-weight: 500;
+        color: #94a3b8;
+        font-weight: 600;
         margin-top: 2px;
     }
     .stat-card .stat-number.active {
-        color: #2e7d32;
+        color: #10B981;
     }
     .stat-card .stat-number.today {
-        color: #0B2E33;
+        color: #4F46E5;
+    }
+    .stat-card .stat-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 2.8rem;
+        opacity: 0.06;
+        color: #4F46E5;
     }
 
     /* Search and Filter */
     .filter-section {
         background: white;
-        border-radius: 10px;
-        padding: 12px 18px;
-        margin-bottom: 20px;
-        border: 1px solid #f0f0f0;
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        border: 1px solid #f0f2f5;
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
         align-items: center;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     }
     .search-box {
         flex: 1;
@@ -111,68 +132,75 @@
     }
     .search-box i {
         position: absolute;
-        left: 12px;
+        left: 14px;
         top: 50%;
         transform: translateY(-50%);
-        color: #bbb;
+        color: #94a3b8;
     }
     .search-box input {
         width: 100%;
-        padding: 8px 14px 8px 38px;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
+        padding: 9px 16px 9px 42px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
         font-size: 0.9rem;
         transition: all 0.2s ease;
-        background: #fafafa;
+        background: #fafbfc;
+        color: #0b1a33;
     }
     .search-box input:focus {
         outline: none;
-        border-color: #0B2E33;
+        border-color: #4F46E5;
         background: white;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
     }
     .filter-select {
-        padding: 8px 14px;
-        border: 1px solid #e0e0e0;
-        border-radius: 6px;
+        padding: 9px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
         font-size: 0.9rem;
-        background: #fafafa;
-        min-width: 140px;
+        background: #fafbfc;
+        min-width: 150px;
         transition: all 0.2s ease;
+        color: #0b1a33;
+        cursor: pointer;
     }
     .filter-select:focus {
         outline: none;
-        border-color: #0B2E33;
+        border-color: #4F46E5;
         background: white;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
     }
 
     /* Table */
     .table-wrapper {
         background: white;
-        border-radius: 10px;
-        border: 1px solid #f0f0f0;
+        border-radius: 16px;
+        border: 1px solid #f0f2f5;
         overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     }
     .table-wrapper thead {
-        background: #f8f9fa;
+        background: #f8fafc;
+        border-bottom: 2px solid #eef2f6;
     }
     .table-wrapper thead th {
-        padding: 12px 16px;
-        font-size: 0.75rem;
+        padding: 14px 20px;
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        color: #888;
-        font-weight: 600;
-        border-bottom: 2px solid #f0f0f0;
+        color: #64748b;
+        font-weight: 700;
+        border-bottom: none;
     }
     .table-wrapper tbody td {
-        padding: 10px 16px;
+        padding: 12px 20px;
         vertical-align: middle;
-        border-bottom: 1px solid #f5f5f5;
+        border-bottom: 1px solid #f1f3f5;
         font-size: 0.9rem;
-        color: #333;
+        color: #0b1a33;
     }
     .table-wrapper tbody tr:hover {
-        background: #fafbfc;
+        background: #f8faff;
     }
     .table-wrapper tbody tr:last-child td {
         border-bottom: none;
@@ -182,20 +210,20 @@
     .badge-status {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
-        padding: 3px 12px;
+        gap: 5px;
+        padding: 4px 14px;
         border-radius: 20px;
         font-size: 0.7rem;
         font-weight: 600;
         text-transform: uppercase;
     }
     .badge-status.active {
-        background: #e8f5e9;
-        color: #2e7d32;
+        background: #ECFDF5;
+        color: #10B981;
     }
     .badge-status.checked_out {
-        background: #f5f5f5;
-        color: #888;
+        background: #F1F5F9;
+        color: #64748b;
     }
     .badge-status i {
         font-size: 0.6rem;
@@ -203,12 +231,12 @@
 
     .badge-room {
         display: inline-block;
-        padding: 2px 10px;
-        background: #f5f5f5;
-        border-radius: 4px;
-        font-size: 12px;
-        color: #333;
-        font-weight: 500;
+        padding: 3px 12px;
+        background: #EEF2FF;
+        color: #4F46E5;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        font-weight: 600;
     }
 
     /* Action Buttons */
@@ -224,10 +252,10 @@
         justify-content: center;
         width: 34px;
         height: 34px;
-        border-radius: 6px;
-        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
         background: #ffffff;
-        color: #555;
+        color: #64748b;
         font-size: 14px;
         transition: all 0.2s ease;
         text-decoration: none;
@@ -241,26 +269,24 @@
         color: inherit;
     }
     .action-btn:hover {
-        background: #f5f5f5;
-        border-color: #0B2E33;
-        color: #0B2E33;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         text-decoration: none;
-        transform: scale(1.05);
     }
     .action-btn.view:hover {
-        border-color: #0B2E33;
-        color: #0B2E33;
-        background: #e8f0f1;
+        border-color: #4F46E5;
+        color: #4F46E5;
+        background: #EEF2FF;
     }
     .action-btn.edit:hover {
-        border-color: #f57c00;
-        color: #f57c00;
-        background: #fff3e0;
+        border-color: #F59E0B;
+        color: #F59E0B;
+        background: #FFFBEB;
     }
     .action-btn.delete:hover {
-        border-color: #dc3545;
-        color: #dc3545;
-        background: #fbe9eb;
+        border-color: #EF4444;
+        color: #EF4444;
+        background: #FEF2F2;
     }
 
     /* Delete Form Styles */
@@ -271,88 +297,103 @@
     }
     .delete-form .action-btn {
         background: #ffffff;
-        border: 1px solid #e0e0e0;
-        color: #555;
+        border: 1px solid #e2e8f0;
+        color: #64748b;
     }
     .delete-form .action-btn:hover {
-        border-color: #dc3545;
-        color: #dc3545;
-        background: #fbe9eb;
+        border-color: #EF4444;
+        color: #EF4444;
+        background: #FEF2F2;
     }
 
     /* Pagination */
     .pagination-wrapper {
-        padding: 14px 18px;
-        border-top: 1px solid #f0f0f0;
+        padding: 15px 20px;
+        border-top: 1px solid #f1f3f5;
     }
     .pagination-wrapper .pagination {
         margin: 0;
         justify-content: flex-end;
     }
     .pagination-wrapper .page-item.active .page-link {
-        background: #0B2E33;
-        border-color: #0B2E33;
+        background: #4F46E5;
+        border-color: #4F46E5;
         color: white;
+        border-radius: 8px;
     }
     .pagination-wrapper .page-link {
-        color: #333;
+        color: #4F46E5;
         border: none;
         padding: 6px 14px;
-        border-radius: 4px;
+        border-radius: 8px;
         margin: 0 2px;
+        font-weight: 600;
+        transition: all 0.2s ease;
     }
     .pagination-wrapper .page-link:hover {
-        background: #f5f5f5;
+        background: #EEF2FF;
+        color: #4F46E5;
+        border-radius: 8px;
     }
 
     /* Empty State */
     .empty-state {
         text-align: center;
-        padding: 40px 20px;
+        padding: 50px 20px;
     }
     .empty-state i {
-        font-size: 3rem;
-        color: #ddd;
+        font-size: 3.5rem;
+        color: #d1d5db;
         margin-bottom: 15px;
+        display: block;
     }
     .empty-state h5 {
-        color: #888;
+        color: #0b1a33;
+        font-weight: 600;
         margin-bottom: 4px;
-        font-weight: 500;
     }
     .empty-state p {
-        color: #aaa;
+        color: #94a3b8;
     }
 
     /* Footer */
     .footer-info {
         text-align: center;
-        color: #999;
+        color: #94a3b8;
         font-size: 0.8rem;
         margin-top: 15px;
     }
 
     /* Alert Messages */
     .alert {
-        padding: 12px 20px;
-        border-radius: 8px;
+        padding: 15px 20px;
+        border-radius: 12px;
         margin-bottom: 16px;
         display: flex;
         align-items: center;
         gap: 10px;
+        border: none;
     }
     .alert-success {
-        background: #e8f5e9;
-        color: #2e7d32;
-        border: 1px solid #c8e6c9;
+        background: #ECFDF5;
+        color: #065F46;
+        border-left: 4px solid #10B981;
     }
     .alert-danger {
-        background: #fbe9eb;
-        color: #c62828;
-        border: 1px solid #f5c6cb;
+        background: #FEF2F2;
+        color: #991B1B;
+        border-left: 4px solid #EF4444;
     }
     .alert i {
         font-size: 1.2rem;
+    }
+    .alert .close {
+        margin-left: auto;
+        color: inherit;
+        opacity: 0.5;
+    }
+    .alert .close:hover {
+        opacity: 1;
     }
 
     /* Responsive */
@@ -381,6 +422,9 @@
         .stat-grid {
             grid-template-columns: 1fr 1fr;
         }
+        .stat-card .stat-number {
+            font-size: 1.5rem;
+        }
     }
     @media (max-width: 576px) {
         .stat-grid {
@@ -388,10 +432,13 @@
             gap: 10px;
         }
         .stat-card {
-            padding: 12px 14px;
+            padding: 14px 16px;
         }
         .stat-card .stat-number {
             font-size: 1.3rem;
+        }
+        .stat-card .stat-icon {
+            font-size: 2rem;
         }
         .table-wrapper {
             overflow-x: auto;
@@ -449,14 +496,17 @@
 <!-- Statistics -->
 <div class="stat-grid">
     <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-users"></i></div>
         <div class="stat-number">{{ $totalVisitors ?? 0 }}</div>
         <div class="stat-label">Total Visitors</div>
     </div>
     <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-user-check"></i></div>
         <div class="stat-number active">{{ $totalActive ?? 0 }}</div>
         <div class="stat-label">Active Visitors</div>
     </div>
     <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
         <div class="stat-number today">{{ $todayVisitors ?? 0 }}</div>
         <div class="stat-label">Today's Visitors</div>
     </div>
@@ -496,13 +546,13 @@
                 <td>{{ $visitors->firstItem() + $index }}</td>
                 <td>
                     <div style="display:flex;align-items:center;gap:8px;">
-                        <div style="width:30px;height:30px;border-radius:50%;background:#0B2E33;color:white;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;flex-shrink:0;">
+                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#4338CA);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">
                             {{ substr($visitor->visitor_name, 0, 2) }}
                         </div>
                         <div>
-                            <div style="font-weight:500;color:#1a1a1a;">{{ $visitor->visitor_name }}</div>
+                            <div style="font-weight:600;color:#0b1a33;">{{ $visitor->visitor_name }}</div>
                             @if($visitor->student_name)
-                                <small style="color:#999;font-size:0.75rem;">
+                                <small style="color:#94a3b8;font-size:0.75rem;">
                                     <i class="fas fa-user-graduate"></i> {{ $visitor->student_name }}
                                 </small>
                             @endif
@@ -511,9 +561,9 @@
                 </td>
                 <td>{{ $visitor->phone_number }}</td>
                 <td>
-                    <span style="font-size:0.85rem;">{{ $visitor->purpose_of_visit }}</span>
+                    <span style="font-size:0.85rem;color:#0b1a33;">{{ $visitor->purpose_of_visit }}</span>
                     @if($visitor->student_name)
-                        <br><small style="color:#999;font-size:0.7rem;">
+                        <br><small style="color:#94a3b8;font-size:0.7rem;">
                             <i class="fas fa-user"></i> {{ $visitor->student_name }}
                         </small>
                     @endif
@@ -522,12 +572,12 @@
                     @if($visitor->room_no)
                         <span class="badge-room">{{ $visitor->room_no }}</span>
                     @else
-                        <span style="color:#bbb;">-</span>
+                        <span style="color:#94a3b8;">-</span>
                     @endif
                 </td>
                 <td>
-                    <div style="font-size:0.85rem;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('d M Y') : 'N/A' }}</div>
-                    <small style="color:#999;font-size:0.7rem;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('h:i A') : '' }}</small>
+                    <div style="font-size:0.85rem;color:#0b1a33;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('d M Y') : 'N/A' }}</div>
+                    <small style="color:#94a3b8;font-size:0.7rem;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('h:i A') : '' }}</small>
                 </td>
                 <td>
                     <span class="badge-status {{ $visitor->status }}">

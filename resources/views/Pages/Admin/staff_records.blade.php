@@ -3,8 +3,9 @@
 @section('content')
 <div class="staff-container">
     
+    <!-- Page Header -->
     <div class="page-header-section">
-        <h2>Staff Management</h2>
+        <h2><i class="bi bi-person-badge me-2" style="color: #4F46E5;"></i>Staff Management</h2>
         <p class="text-muted">Overview of hostel employees and their duties.</p>
     </div>
 
@@ -94,7 +95,7 @@
                         </td>
                         <td><span class="role-badge">{{ $member->role }}</span></td>
                         <td>{{ $member->phone }}</td>
-                        <td>{{ $member->duty_shift }}</td>
+                        <td>{{ $member->duty_shift ?? 'N/A' }}</td>
                         <td>
                             <span class="status-badge status-{{ $member->status }}">
                                 {{ ucfirst($member->status) }}
@@ -156,347 +157,500 @@
 </div>
 
 <style>
-    /* Page Header */
-    .page-header-section {
-        margin-bottom: 25px;
-    }
-    .page-header-section h2 {
-        font-weight: 700;
-        color: #2c3e50;
-        margin-bottom: 5px;
-        font-size: 1.8rem;
-    }
-    .page-header-section .text-muted {
-        font-size: 0.95rem;
-        color: #6c757d;
-    }
+/* ============================================ */
+/* STAFF MANAGEMENT - BLUE THEME */
+/* ============================================ */
 
-    /* Statistics Cards */
-    .stat-card {
-        background: white;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        transition: all 0.3s ease;
-        border-left: 4px solid;
-        position: relative;
-        overflow: hidden;
-    }
-    .stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-    }
-    .stat-card .stat-icon {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 2.5rem;
-        opacity: 0.15;
-    }
-    .stat-card .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-    .stat-card .stat-label {
-        color: #6c757d;
-        font-size: 0.9rem;
-        font-weight: 500;
-    }
-    .stat-card.total-staff { border-left-color: #667eea; }
-    .stat-card.active-staff { border-left-color: #28a745; }
-    .stat-card.inactive-staff { border-left-color: #dc3545; }
+.staff-container {
+    padding: 20px 0;
+}
 
-    /* Search & Action Row */
+/* Page Header */
+.page-header-section {
+    margin-bottom: 25px;
+}
+
+.page-header-section h2 {
+    font-weight: 700;
+    color: #0b1a33;
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+.page-header-section h2 i {
+    color: #4F46E5;
+}
+
+.page-header-section .text-muted {
+    font-size: 0.95rem;
+    color: #6c757d;
+}
+
+/* Statistics Cards */
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    border-top: 4px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.stat-card .stat-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2.8rem;
+    opacity: 0.06;
+}
+
+.stat-card .stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+    color: #0b1a33;
+}
+
+.stat-card .stat-label {
+    color: #94a3b8;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-card.total-staff { 
+    border-top-color: #4F46E5; 
+}
+.stat-card.total-staff .stat-icon { 
+    color: #4F46E5; 
+}
+
+.stat-card.active-staff { 
+    border-top-color: #10B981; 
+}
+.stat-card.active-staff .stat-icon { 
+    color: #10B981; 
+}
+
+.stat-card.inactive-staff { 
+    border-top-color: #EF4444; 
+}
+.stat-card.inactive-staff .stat-icon { 
+    color: #EF4444; 
+}
+
+/* Search & Action Row */
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.search-container {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 0 15px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.search-container:focus-within {
+    border-color: #4F46E5;
+    box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+}
+
+.search-container i {
+    color: #94a3b8;
+    margin-right: 10px;
+    font-size: 1.1rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 8px;
+}
+
+.staff-search {
+    border: none;
+    padding: 12px 0;
+    flex: 1;
+    outline: none;
+    background: transparent;
+    font-size: 0.95rem;
+    color: #0b1a33;
+}
+
+.staff-search::placeholder {
+    color: #adb5bd;
+}
+
+.btn-search {
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+    color: white;
+    border: none;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-search:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+.btn-clear {
+    background: #f1f3f5;
+    color: #6c757d;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-clear:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.btn-add-staff {
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+    color: white;
+    border: none;
+    padding: 11px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
+}
+
+.btn-add-staff:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
+    color: white;
+}
+
+/* Staff Table */
+.staff-table-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    overflow: hidden;
+    border: 1px solid #f0f2f5;
+}
+
+.staff-table {
+    margin-bottom: 0;
+}
+
+.staff-table thead {
+    background: #f8fafc;
+}
+
+.staff-table thead th {
+    border: none;
+    padding: 14px 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    color: #64748b;
+    border-bottom: 2px solid #eef2f6;
+}
+
+.staff-table tbody td {
+    padding: 14px 20px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f3f5;
+}
+
+.staff-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.staff-table tbody tr:hover {
+    background: #f8faff;
+}
+
+/* Avatar Placeholder */
+.avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    text-transform: uppercase;
+}
+
+/* Role Badge */
+.role-badge {
+    background: #EEF2FF;
+    color: #4F46E5;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+}
+
+.status-active {
+    background: #ECFDF5;
+    color: #10B981;
+}
+
+.status-inactive {
+    background: #FEF2F2;
+    color: #EF4444;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.action-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    background: transparent;
+    color: inherit;
+}
+
+.action-btn i {
+    font-size: 1rem;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.view-btn {
+    background: #EEF2FF;
+    color: #4F46E5;
+}
+
+.view-btn:hover {
+    background: #4F46E5;
+    color: white;
+}
+
+.edit-btn {
+    background: #FFFBEB;
+    color: #F59E0B;
+}
+
+.edit-btn:hover {
+    background: #F59E0B;
+    color: white;
+}
+
+.delete-btn {
+    background: #FEF2F2;
+    color: #EF4444;
+}
+
+.delete-btn:hover {
+    background: #EF4444;
+    color: white;
+}
+
+/* Pagination */
+.pagination-container {
+    padding: 15px 20px;
+    border-top: 1px solid #f1f3f5;
+}
+
+.pagination-container .pagination {
+    margin: 0;
+    justify-content: flex-end;
+}
+
+.pagination-container .page-item.active .page-link {
+    background: #4F46E5;
+    border-color: #4F46E5;
+    color: white;
+    border-radius: 8px;
+}
+
+.pagination-container .page-link {
+    color: #4F46E5;
+    border-radius: 8px;
+    margin: 0 3px;
+    border: none;
+    padding: 6px 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.pagination-container .page-link:hover {
+    background: #EEF2FF;
+    color: #4F46E5;
+    border-radius: 8px;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.empty-state i {
+    font-size: 3.5rem;
+    color: #d1d5db;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.empty-state h5 {
+    color: #0b1a33;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.empty-state p {
+    color: #94a3b8;
+    margin-bottom: 15px;
+}
+
+.empty-state .btn-primary {
+    background: linear-gradient(135deg, #4F46E5, #4338CA);
+    border: none;
+    padding: 10px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.empty-state .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.3);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
     .action-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 20px;
+        flex-direction: column;
+        align-items: stretch;
     }
-
+    
     .search-container {
-        flex: 1;
-        min-width: 350px;
-        display: flex;
-        align-items: center;
-        background: white;
-        border-radius: 12px;
-        padding: 6px 15px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        border: 2px solid #e9ecef;
-        transition: all 0.3s ease;
+        min-width: auto;
     }
-    .search-container:focus-within {
-        border-color: #667eea;
-        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .search-container i {
-        color: #adb5bd;
-        margin-right: 10px;
-        font-size: 1.1rem;
-    }
-
+    
     .search-form {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        gap: 8px;
+        flex-wrap: wrap;
     }
-
-    .staff-search {
-        border: none;
-        padding: 10px 0;
+    
+    .btn-search, .btn-clear {
         flex: 1;
-        outline: none;
-        background: transparent;
-        font-size: 0.95rem;
-        color: #2c3e50;
+        justify-content: center;
     }
-    .staff-search::placeholder {
-        color: #adb5bd;
-    }
-
-    .btn-search {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 6px 16px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .btn-search:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-        color: white;
-    }
-
-    .btn-clear {
-        background: #f1f3f5;
-        color: #6c757d;
-        border: none;
-        padding: 6px 14px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 0.85rem;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .btn-clear:hover {
-        background: #e9ecef;
-        color: #495057;
-    }
-
+    
     .btn-add-staff {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.95rem;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    .btn-add-staff:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        color: white;
-    }
-
-    /* Staff Table */
-    .staff-table-card {
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        overflow: hidden;
-    }
-    .staff-table {
-        margin-bottom: 0;
-    }
-    .staff-table thead {
-        background: #f8f9fa;
-    }
-    .staff-table thead th {
-        border: none;
-        padding: 14px 18px;
-        font-weight: 700;
-        text-transform: uppercase;
-        font-size: 0.7rem;
-        letter-spacing: 0.5px;
-        color: #495057;
-    }
-    .staff-table tbody td {
-        padding: 12px 18px;
-        vertical-align: middle;
-        border-bottom: 1px solid #f1f3f5;
-    }
-    .staff-table tbody tr:last-child td {
-        border-bottom: none;
-    }
-    .staff-table tbody tr:hover {
-        background: #f8f9fa;
-    }
-
-    /* Avatar Placeholder */
-    .avatar-placeholder {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        font-weight: 700;
-        font-size: 0.9rem;
-        flex-shrink: 0;
-        text-transform: uppercase;
     }
-
-    /* Role Badge */
-    .role-badge {
-        background: #e8eaf6;
-        color: #3949ab;
-        padding: 4px 12px;
-        border-radius: 12px;
-        font-size: 0.8rem;
-        font-weight: 600;
-        display: inline-block;
-    }
-
-    /* Status Badges */
-    .status-badge {
-        padding: 5px 14px;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        display: inline-block;
-    }
-    .status-active { background: #d4edda; color: #155724; }
-    .status-inactive { background: #f8d7da; color: #721c24; }
-
-    /* Action Buttons */
+    
     .action-buttons {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
+        flex-wrap: wrap;
     }
+    
+    .staff-table thead th,
+    .staff-table tbody td {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+    }
+}
 
-    .action-btn {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        border: none;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        cursor: pointer;
-        font-size: 0.9rem;
+@media (max-width: 576px) {
+    .staff-container {
+        padding: 10px 0;
     }
-    .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    
+    .page-header-section h2 {
+        font-size: 1.4rem;
     }
-
-    .view-btn {
-        background: #e3f2fd;
-        color: #1976d2;
+    
+    .stat-card .stat-number {
+        font-size: 1.5rem;
     }
-    .view-btn:hover {
-        background: #1976d2;
-        color: white;
+    
+    .stat-card .stat-icon {
+        font-size: 2rem;
     }
-
-    .edit-btn {
-        background: #fff3e0;
-        color: #f57c00;
+    
+    .btn-add-staff {
+        font-size: 0.85rem;
+        padding: 9px 18px;
     }
-    .edit-btn:hover {
-        background: #f57c00;
-        color: white;
-    }
-
-    .delete-btn {
-        background: #fbe9e7;
-        color: #d32f2f;
-    }
-    .delete-btn:hover {
-        background: #d32f2f;
-        color: white;
-    }
-
-    /* Pagination */
-    .pagination-container {
-        padding: 15px 20px;
-        border-top: 1px solid #e9ecef;
-    }
-
-    /* Empty State */
-    .empty-state {
-        text-align: center;
-        padding: 50px 20px;
-    }
-    .empty-state i {
-        font-size: 4rem;
-        color: #dee2e6;
-        margin-bottom: 20px;
-    }
-    .empty-state h5 {
-        color: #6c757d;
-        margin-bottom: 10px;
-    }
-    .empty-state p {
-        color: #adb5bd;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .action-row {
-            flex-direction: column;
-            align-items: stretch;
-        }
-        .search-container {
-            min-width: auto;
-        }
-        .search-form {
-            flex-wrap: wrap;
-        }
-        .btn-search, .btn-clear {
-            flex: 1;
-            justify-content: center;
-        }
-        .btn-add-staff {
-            justify-content: center;
-        }
-        .action-buttons {
-            flex-wrap: wrap;
-        }
-    }
+}
 </style>
 
 @endsection
