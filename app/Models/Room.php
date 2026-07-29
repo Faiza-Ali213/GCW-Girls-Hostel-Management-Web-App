@@ -17,15 +17,7 @@ class Room extends Model
         'floor',
         'block',
         'status',
-        'description',
-        'amenities',
-        'rent_per_month',
         'notes',
-    ];
-
-    protected $casts = [
-        'amenities' => 'array',
-        'rent_per_month' => 'decimal:2',
     ];
 
     /**
@@ -85,19 +77,6 @@ class Room extends Model
             return 0;
         }
         return round(($this->current_occupancy / $this->capacity) * 100, 2);
-    }
-
-    /**
-     * Get status badge color.
-     */
-    public function getStatusBadgeAttribute()
-    {
-        $statuses = [
-            'available' => 'success',
-            'full' => 'danger',
-            'maintenance' => 'warning',
-        ];
-        return $statuses[$this->status] ?? 'secondary';
     }
 
     /**

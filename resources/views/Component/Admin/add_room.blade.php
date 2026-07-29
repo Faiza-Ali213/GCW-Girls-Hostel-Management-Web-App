@@ -1,302 +1,231 @@
-<!-- resources/views/Component/Admin/add_room.blade.php -->
 @extends('Layout.admin')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0">
-                        <i class="bi bi-door-open-fill text-primary me-2"></i>Add Room Allocation
-                    </h3>
-                    <div>
-                        <a href="{{ route('room-allocation.index') }}" class="btn btn-info btn-sm">
-                            <i class="bi bi-eye me-1"></i> View All
-                        </a>
-                        <a href="{{ route('room-allocation.index') }}" class="btn btn-secondary btn-sm">
-                            <i class="bi bi-arrow-left me-1"></i> Back
-                        </a>
-                    </div>
+<style>
+    .room-form-container {
+        max-width: 700px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        border: 1px solid #f0f2f5;
+    }
+    .room-form-container h4 {
+        color: #0b1a33;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+    .room-form-container .sub-title {
+        color: #94a3b8;
+        font-size: 0.95rem;
+        margin-bottom: 25px;
+    }
+    .form-label {
+        font-weight: 600;
+        color: #0b1a33;
+        font-size: 0.9rem;
+    }
+    .form-control {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        transition: all 0.2s ease;
+    }
+    .form-control:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
+    }
+    .form-control.is-invalid {
+        border-color: #EF4444;
+    }
+    .invalid-feedback {
+        font-size: 0.8rem;
+        color: #EF4444;
+        margin-top: 4px;
+    }
+    .btn-submit {
+        background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+        color: white !important;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        width: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
+    }
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
+        color: white !important;
+    }
+    .btn-cancel {
+        background: #f1f3f5;
+        color: #495057 !important;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    .btn-cancel:hover {
+        background: #e9ecef;
+        color: #2c3e50 !important;
+        text-decoration: none;
+    }
+    .form-section {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin-bottom: 20px;
+        border: 1px solid #eef2f6;
+    }
+    .form-section .section-title {
+        font-weight: 600;
+        color: #0b1a33;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+    .form-section .section-title i {
+        color: #4F46E5;
+        margin-right: 8px;
+    }
+    .text-muted small {
+        font-size: 0.8rem;
+    }
+    .required-star {
+        color: #EF4444;
+        margin-left: 2px;
+    }
+
+    @media (max-width: 768px) {
+        .room-form-container {
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="room-form-container">
+    <div>
+        <h4><i class="fas fa-door-open text-primary"></i> Add New Room</h4>
+        <div class="sub-title">Fill in the room details to add a new room to the hostel</div>
+    </div>
+
+    <form action="{{ route('room-allocation.store') }}" method="POST" id="addRoomForm">
+        @csrf
+
+        <!-- Basic Information -->
+        <div class="form-section">
+            <div class="section-title">
+                <i class="fas fa-info-circle"></i> Basic Information
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="room_number" class="form-label">Room Number <span class="required-star">*</span></label>
+                    <input type="text" class="form-control @error('room_number') is-invalid @enderror" 
+                           id="room_number" name="room_number" 
+                           placeholder="e.g., 101, A-201" 
+                           value="{{ old('room_number') }}" required>
+                    @error('room_number')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="card-body">
-                    @if(session('success'))
-                        <div class="alert alert-success alert-dismissible fade show">
-                            {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
+                <div class="col-md-6 mb-3">
+                    <label for="room_type" class="form-label">Room Type <span class="required-star">*</span></label>
+                    <select class="form-control @error('room_type') is-invalid @enderror" id="room_type" name="room_type" required>
+                        <option value="">Select Room Type</option>
+                        <option value="double" {{ old('room_type') == 'double' ? 'selected' : '' }}>Double (2 Beds)</option>
+                        <option value="triple" {{ old('room_type') == 'triple' ? 'selected' : '' }}>Triple (3 Beds)</option>
+                        <option value="quad" {{ old('room_type') == 'quad' ? 'selected' : '' }}>Quad (4 Beds)</option>
+                    </select>
+                    @error('room_type')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
 
-                    @if(session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show">
-                            {{ session('error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        </div>
-                    @endif
-
-                    @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul class="mb-0">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-
-                    <form action="{{ route('room-allocation.store') }}" method="POST">
-                        @csrf
-
-                        <!-- Row 1: Student and Room Selection -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="bi bi-person-fill text-primary me-1"></i> Select Student <span class="text-danger">*</span>
-                                    </label>
-                                    <select name="student_id" id="student_id" class="form-select" required>
-                                        <option value="">-- Select Student --</option>
-                                        @forelse($students ?? [] as $student)
-                                            <option value="{{ $student->id }}" 
-                                                    {{ old('student_id') == $student->id ? 'selected' : '' }}
-                                                    data-phone="{{ $student->phone_number ?? 'N/A' }}"
-                                                    data-email="{{ $student->email ?? 'N/A' }}">
-                                                {{ $student->student_name }} 
-                                                @if($student->phone_number) 
-                                                    ({{ $student->phone_number }})
-                                                @endif
-                                            </option>
-                                        @empty
-                                            <option value="">No students available</option>
-                                        @endforelse
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="bi bi-door-open-fill text-success me-1"></i> Select Room <span class="text-danger">*</span>
-                                    </label>
-                                    <select name="room_id" id="room_id" class="form-select" required>
-                                        <option value="">-- Select Room --</option>
-                                        @forelse($rooms ?? [] as $room)
-                                            <option value="{{ $room->id }}" 
-                                                    {{ old('room_id') == $room->id ? 'selected' : '' }}
-                                                    data-available="{{ $room->available_beds ?? 0 }}"
-                                                    data-type="{{ $room->room_type ?? 'Standard' }}">
-                                                Room {{ $room->room_number }} 
-                                                @if(isset($room->available_beds))
-                                                    ({{ $room->available_beds }} beds available)
-                                                @endif
-                                            </option>
-                                        @empty
-                                            <option value="">No rooms available</option>
-                                        @endforelse
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row 2: Date -->
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="bi bi-calendar-date-fill text-info me-1"></i> Allocation Date <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="date" name="allocation_date" class="form-control" 
-                                           value="{{ old('allocation_date', date('Y-m-d')) }}" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row 3: Preview Sections -->
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="bi bi-person-vcard-fill text-primary me-1"></i> Student Details
-                                    </label>
-                                    <div id="studentDetails" class="border rounded p-3 bg-light">
-                                        <p class="text-muted mb-0">Select a student to view details</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="bi bi-building-fill text-success me-1"></i> Room Details
-                                    </label>
-                                    <div id="roomDetails" class="border rounded p-3 bg-light">
-                                        <p class="text-muted mb-0">Select a room to view details</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row 4: Summary -->
-                        <div class="row mt-3">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label class="form-label fw-bold">
-                                        <i class="bi bi-clipboard-check-fill text-warning me-1"></i> Allocation Summary
-                                    </label>
-                                    <div id="allocationSummary" class="border rounded p-3 bg-success bg-opacity-10">
-                                        <p class="text-muted mb-0">Select both student and room to continue</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row 5: Buttons -->
-                        <div class="row mt-4">
-                            <div class="col-12">
-                                <button type="submit" class="btn btn-primary px-4" id="submitBtn">
-                                    <i class="bi bi-check-circle me-2"></i> Allocate Room
-                                </button>
-                                <button type="reset" class="btn btn-secondary px-4">
-                                    <i class="bi bi-arrow-counterclockwise me-2"></i> Reset
-                                </button>
-                                <a href="{{ route('room-allocation.index') }}" class="btn btn-outline-secondary px-4">
-                                    <i class="bi bi-x-circle me-2"></i> Cancel
-                                </a>
-                            </div>
-                        </div>
-                    </form>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="block" class="form-label">Block <span class="required-star">*</span></label>
+                    <select class="form-control @error('block') is-invalid @enderror" id="block" name="block" required>
+                        <option value="">Select Block</option>
+                        <option value="A" {{ old('block') == 'A' ? 'selected' : '' }}>Block A</option>
+                        <option value="B" {{ old('block') == 'B' ? 'selected' : '' }}>Block B</option>
+                        <option value="C" {{ old('block') == 'C' ? 'selected' : '' }}>Block C</option>
+                        <option value="D" {{ old('block') == 'D' ? 'selected' : '' }}>Block D</option>
+                    </select>
+                    @error('block')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="floor" class="form-label">Floor <span class="required-star">*</span></label>
+                    <select class="form-control @error('floor') is-invalid @enderror" id="floor" name="floor" required>
+                        <option value="">Select Floor</option>
+                        <option value="Ground" {{ old('floor') == 'Ground' ? 'selected' : '' }}>Ground Floor</option>
+                        <option value="1" {{ old('floor') == '1' ? 'selected' : '' }}>1st Floor</option>
+                        <option value="2" {{ old('floor') == '2' ? 'selected' : '' }}>2nd Floor</option>
+                        <option value="3" {{ old('floor') == '3' ? 'selected' : '' }}>3rd Floor</option>
+                        <option value="4" {{ old('floor') == '4' ? 'selected' : '' }}>4th Floor</option>
+                        <option value="5" {{ old('floor') == '5' ? 'selected' : '' }}>5th Floor</option>
+                    </select>
+                    @error('floor')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
         </div>
-    </div>
+
+        <!-- Additional Notes -->
+        <div class="form-section">
+            <div class="section-title">
+                <i class="fas fa-sticky-note"></i> Additional Notes
+            </div>
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea class="form-control @error('notes') is-invalid @enderror" 
+                          id="notes" name="notes" rows="3" 
+                          placeholder="Any additional notes about this room...">{{ old('notes') }}</textarea>
+                @error('notes')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="row mt-3">
+            <div class="col-md-6 mb-2">
+                <button type="submit" class="btn-submit">
+                    <i class="fas fa-save"></i> Add Room
+                </button>
+            </div>
+            <div class="col-md-6 mb-2">
+                <a href="{{ route('room-allocation.index') }}" class="btn-cancel">
+                    <i class="fas fa-arrow-left"></i> Cancel & Go Back
+                </a>
+            </div>
+        </div>
+    </form>
 </div>
+
+@endsection
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const studentSelect = document.getElementById('student_id');
-        const roomSelect = document.getElementById('room_id');
-        const studentDetails = document.getElementById('studentDetails');
-        const roomDetails = document.getElementById('roomDetails');
-        const allocationSummary = document.getElementById('allocationSummary');
-        const submitBtn = document.getElementById('submitBtn');
+$(document).ready(function() {
+    console.log('✅ Add Room page loaded successfully');
 
-        function updateStudentDetails() {
-            const opt = studentSelect.options[studentSelect.selectedIndex];
-            if (studentSelect.value) {
-                const name = opt.text.split(' (')[0];
-                const phone = opt.dataset.phone || 'N/A';
-                const email = opt.dataset.email || 'N/A';
-                studentDetails.innerHTML = `
-                    <div class="d-flex align-items-center">
-                        <div class="me-3"><i class="bi bi-person-circle fs-2 text-primary"></i></div>
-                        <div>
-                            <strong>${name}</strong><br>
-                            <small><i class="bi bi-telephone me-1"></i> ${phone}</small>
-                            ${email !== 'N/A' ? `<br><small><i class="bi bi-envelope me-1"></i> ${email}</small>` : ''}
-                            <br><span class="badge bg-success mt-1">Selected</span>
-                        </div>
-                    </div>
-                `;
-            } else {
-                studentDetails.innerHTML = `<p class="text-muted mb-0">Select a student to view details</p>`;
-            }
-            updateSummary();
-        }
-
-        function updateRoomDetails() {
-            const opt = roomSelect.options[roomSelect.selectedIndex];
-            if (roomSelect.value) {
-                const roomNum = opt.text.split(' (')[0].replace('Room ', '');
-                const avail = opt.dataset.available || '0';
-                const type = opt.dataset.type || 'Standard';
-                const status = avail > 0 ? '<span class="badge bg-success">Available</span>' : '<span class="badge bg-danger">Full</span>';
-                roomDetails.innerHTML = `
-                    <div class="d-flex align-items-center">
-                        <div class="me-3"><i class="bi bi-building fs-2 text-success"></i></div>
-                        <div>
-                            <strong>Room ${roomNum}</strong><br>
-                            <small><i class="bi bi-tag me-1"></i> Type: ${type}</small><br>
-                            <small><i class="bi bi-bed me-1"></i> Available: ${avail} beds</small>
-                            <br>${status}
-                        </div>
-                    </div>
-                `;
-            } else {
-                roomDetails.innerHTML = `<p class="text-muted mb-0">Select a room to view details</p>`;
-            }
-            updateSummary();
-        }
-
-        function updateSummary() {
-            const sid = studentSelect.value;
-            const rid = roomSelect.value;
-            
-            if (sid && rid) {
-                const sName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
-                const rNum = roomSelect.options[roomSelect.selectedIndex].text.split(' (')[0].replace('Room ', '');
-                allocationSummary.innerHTML = `
-                    <div class="d-flex align-items-center">
-                        <div class="me-3"><i class="bi bi-check-circle-fill fs-2 text-success"></i></div>
-                        <div>
-                            <strong class="text-success">Ready to Allocate</strong><br>
-                            <small><strong>${sName}</strong> → Room <strong>${rNum}</strong></small>
-                            <br><span class="badge bg-primary mt-1">Ready</span>
-                        </div>
-                    </div>
-                `;
-                submitBtn.disabled = false;
-            } else {
-                let msg = 'Select both student and room to continue';
-                if (sid && !rid) msg = 'Please select a room';
-                else if (!sid && rid) msg = 'Please select a student';
-                allocationSummary.innerHTML = `<p class="text-muted mb-0"><i class="bi bi-info-circle"></i> ${msg}</p>`;
-                submitBtn.disabled = true;
-            }
-        }
-
-        studentSelect.addEventListener('change', function() {
-            updateStudentDetails();
-            updateSummary();
-        });
-
-        roomSelect.addEventListener('change', function() {
-            updateRoomDetails();
-            updateSummary();
-        });
-
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if (!studentSelect.value || !roomSelect.value) {
-                e.preventDefault();
-                alert('Please select both a student and a room.');
-                return false;
-            }
-            const sName = studentSelect.options[studentSelect.selectedIndex].text.split(' (')[0];
-            const rNum = roomSelect.options[roomSelect.selectedIndex].text.split(' (')[0].replace('Room ', '');
-            return confirm(`Allocate ${sName} to Room ${rNum}?`);
-        });
-
-        // Initial load
-        updateStudentDetails();
-        updateRoomDetails();
-        updateSummary();
+    // Auto-capitalize room number
+    $('#room_number').on('blur', function() {
+        $(this).val($(this).val().toUpperCase());
     });
+});
 </script>
 @endpush
-
-@push('styles')
-<style>
-    .form-group { margin-bottom: 1.5rem; }
-    #studentDetails, #roomDetails, #allocationSummary {
-        min-height: 70px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-    }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-    @media (max-width: 768px) {
-        .card-header { flex-direction: column; gap: 10px; }
-        .card-header .btn { width: 100%; }
-    }
-</style>
-@endpush
-@endsection

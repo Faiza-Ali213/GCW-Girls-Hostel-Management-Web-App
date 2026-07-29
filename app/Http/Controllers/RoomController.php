@@ -74,14 +74,9 @@ class RoomController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'room_number' => 'required|string|max:50|unique:rooms',
-            'room_type' => 'nullable|string|max:50',
-            'capacity' => 'required|integer|min:1',
-            'floor' => 'nullable|string|max:50',
-            'block' => 'nullable|string|max:50',
-            'status' => 'nullable|in:available,full,maintenance',
-            'description' => 'nullable|string',
-            'amenities' => 'nullable|array',
-            'rent_per_month' => 'nullable|numeric|min:0',
+            'room_type' => 'required|string|in:double,triple,quad',
+            'block' => 'required|string|max:50',
+            'floor' => 'required|string|max:50',
             'notes' => 'nullable|string',
         ]);
 
@@ -92,22 +87,28 @@ class RoomController extends Controller
         }
 
         try {
+            // Auto-set capacity based on room type
+            $capacityMap = [
+                'double' => 2,
+                'triple' => 3,
+                'quad' => 4,
+            ];
+            
+            $capacity = $capacityMap[$request->room_type] ?? 2;
+
             $room = Room::create([
                 'room_number' => $request->room_number,
                 'room_type' => $request->room_type,
-                'capacity' => $request->capacity,
+                'capacity' => $capacity,
                 'current_occupancy' => 0,
-                'floor' => $request->floor,
                 'block' => $request->block,
-                'status' => $request->status ?? 'available',
-                'description' => $request->description,
-                'amenities' => $request->amenities,
-                'rent_per_month' => $request->rent_per_month,
+                'floor' => $request->floor,
+                'status' => 'available',
                 'notes' => $request->notes,
             ]);
 
-            return redirect()->route('room-allocation')
-                ->with('success', 'Room ' . $room->room_number . ' created successfully!');
+            return redirect()->route('room-allocation.index')
+                ->with('success', 'Room ' . $room->room_number . ' created successfully! (Capacity: ' . $capacity . ' beds)');
 
         } catch (\Exception $e) {
             return redirect()->back()
@@ -125,7 +126,7 @@ class RoomController extends Controller
             $room = Room::with('students')->findOrFail($id);
             return view('Component.Admin.view_room', compact('room'));
         } catch (\Exception $e) {
-            return redirect()->route('room-allocation')
+            return redirect()->route('room-allocation.index')
                 ->with('error', 'Room not found');
         }
     }
@@ -139,7 +140,7 @@ class RoomController extends Controller
             $room = Room::findOrFail($id);
             return view('Component.Admin.edit_room', compact('room'));
         } catch (\Exception $e) {
-            return redirect()->route('room-allocation')
+            return redirect()->route('room-allocation.index')
                 ->with('error', 'Room not found');
         }
     }
@@ -156,9 +157,6 @@ class RoomController extends Controller
             'floor' => 'nullable|string|max:50',
             'block' => 'nullable|string|max:50',
             'status' => 'nullable|in:available,full,maintenance',
-            'description' => 'nullable|string',
-            'amenities' => 'nullable|array',
-            'rent_per_month' => 'nullable|numeric|min:0',
             'notes' => 'nullable|string',
         ]);
 
@@ -185,13 +183,10 @@ class RoomController extends Controller
                 'floor' => $request->floor,
                 'block' => $request->block,
                 'status' => $request->status ?? 'available',
-                'description' => $request->description,
-                'amenities' => $request->amenities,
-                'rent_per_month' => $request->rent_per_month,
                 'notes' => $request->notes,
             ]);
 
-            return redirect()->route('room-allocation')
+            return redirect()->route('room-allocation.index')
                 ->with('success', 'Room ' . $room->room_number . ' updated successfully!');
 
         } catch (\Exception $e) {
@@ -211,18 +206,18 @@ class RoomController extends Controller
             
             // Check if room has students
             if ($room->current_occupancy > 0) {
-                return redirect()->route('room-allocation')
+                return redirect()->route('room-allocation.index')
                     ->with('error', 'Cannot delete room with ' . $room->current_occupancy . ' students assigned. Please remove all students first.');
             }
 
             $roomNumber = $room->room_number;
             $room->delete();
 
-            return redirect()->route('room-allocation')
+            return redirect()->route('room-allocation.index')
                 ->with('success', 'Room ' . $roomNumber . ' deleted successfully!');
 
         } catch (\Exception $e) {
-            return redirect()->route('room-allocation')
+            return redirect()->route('room-allocation.index')
                 ->with('error', 'Failed to delete room: ' . $e->getMessage());
         }
     }
