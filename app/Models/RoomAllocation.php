@@ -9,41 +9,60 @@ class RoomAllocation extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     */
     protected $fillable = [
         'student_id',
-        'student_name',
-        'room_number',
-        'block',
-        'status',          // active, inactive, pending
-        'allocation_date',
-        'deallocation_date',
-        'remarks',
+        'room_id',
+        'allocated_at',
+        'allocated_by',
+        'status', // active, inactive, completed, cancelled
+        'check_in_date',
+        'check_out_date',
+        'notes',
     ];
 
-    /**
-     * The attributes that should be cast.
-     */
     protected $casts = [
-        'allocation_date' => 'date',
-        'deallocation_date' => 'date',
+        'allocated_at' => 'datetime',
+        'check_in_date' => 'date',
+        'check_out_date' => 'date',
     ];
 
     /**
-     * Relationship with Student (if Student model exists)
+     * Get the student for this allocation.
      */
     public function student()
     {
-        return $this->belongsTo(Student::class, 'student_id');
+        return $this->belongsTo(Student::class);
     }
 
     /**
-     * Relationship with Room
+     * Get the room for this allocation.
      */
     public function room()
     {
-        return $this->belongsTo(Room::class, 'room_number', 'room_number');
+        return $this->belongsTo(Room::class);
+    }
+
+    /**
+     * Get the user who allocated this room.
+     */
+    public function allocatedBy()
+    {
+        return $this->belongsTo(User::class, 'allocated_by');
+    }
+
+    /**
+     * Scope for active allocations.
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    /**
+     * Scope for completed allocations.
+     */
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'completed');
     }
 }

@@ -190,36 +190,22 @@ Route::middleware('auth')->group(function () {
         Route::get('/complaint-record', [ComplaintController::class, 'index'])->name('complaint-record');
 
         // ============================================
-        // Room Allocation
-        // ============================================
-        Route::prefix('room_allocation')->name('room_allocation.')->group(function () {
-            Route::get('/', [RoomAllocationController::class, 'index'])->name('index');
-            Route::get('/create', [RoomAllocationController::class, 'create'])->name('create');
-            Route::post('/', [RoomAllocationController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [RoomAllocationController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [RoomAllocationController::class, 'update'])->name('update');
-            Route::delete('/{id}', [RoomAllocationController::class, 'destroy'])->name('destroy');
-            Route::delete('/{id}/deallocate', [RoomAllocationController::class, 'deallocate'])->name('deallocate');
-            Route::get('/search', [RoomAllocationController::class, 'search'])->name('search');
-            Route::get('/available-students', [RoomAllocationController::class, 'getAvailableStudents'])->name('available-students');
-            Route::get('/room-data', [RoomAllocationController::class, 'getRoomData'])->name('room-data');
-        });
-
-        Route::get('/room_allocation', [RoomAllocationController::class, 'index'])->name('room_allocation');
-        Route::resource('room-allocation', RoomAllocationController::class);
-        Route::get('/room-allocation-details', [RoomAllocationController::class, 'index'])->name('room_allocation_details');
-        Route::get('/room-allocation-record', [RoomAllocationController::class, 'index'])->name('room-allocation-record');
-
-        // ============================================
         // Room Management
         // ============================================
-        Route::prefix('admin/rooms')->name('admin.rooms.')->group(function () {
+        Route::prefix('room-allocation')->name('room-allocation.')->group(function () {
             Route::get('/', [RoomController::class, 'index'])->name('index');
+            Route::get('/create', [RoomController::class, 'create'])->name('create');
             Route::post('/', [RoomController::class, 'store'])->name('store');
+            Route::get('/{id}', [RoomController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [RoomController::class, 'edit'])->name('edit');
             Route::put('/{id}', [RoomController::class, 'update'])->name('update');
             Route::delete('/{id}', [RoomController::class, 'destroy'])->name('destroy');
+            Route::get('/available', [RoomController::class, 'getAvailableRooms'])->name('available');
+            Route::patch('/{id}/status', [RoomController::class, 'updateStatus'])->name('update-status');
+            Route::get('/details/{id}', [RoomController::class, 'getRoomDetails'])->name('details');
         });
 
+        Route::get('/room_allocation', [RoomController::class, 'index'])->name('room_allocation');
         Route::get('/room-record', [RoomController::class, 'index'])->name('room-record');
 
         // ============================================
@@ -235,6 +221,11 @@ Route::middleware('auth')->group(function () {
             Route::delete('/{id}', [FeeRecordController::class, 'destroy'])->name('destroy');
             Route::patch('/{id}/status', [FeeRecordController::class, 'updateStatus'])->name('update-status');
             Route::get('/summary', [FeeRecordController::class, 'getSummary'])->name('summary');
+            
+            // Fee Payment Routes
+            Route::get('/{id}/pay', [FeeRecordController::class, 'pay'])->name('pay');
+            Route::post('/{id}/process-payment', [FeeRecordController::class, 'processPayment'])->name('process-payment');
+            Route::get('/{id}/receipt', [FeeRecordController::class, 'receipt'])->name('receipt');
         });
 
         Route::get('/fee_record', [FeeRecordController::class, 'index'])->name('fee_record');
@@ -242,32 +233,30 @@ Route::middleware('auth')->group(function () {
         Route::get('/fee-record-list', [FeeRecordController::class, 'index'])->name('fee-record-list');
         Route::post('/fee-records', [FeeRecordController::class, 'store'])->name('fee-records.store');
         Route::get('/fee-record/sync', [FeeRecordController::class, 'syncAllStudents'])->name('fee_record.sync');
-        Route::get('/fee-record/{id}/pay', [FeeRecordController::class, 'pay'])->name('fee-record.pay');
-        Route::post('/fee-record/{id}/process-payment', [FeeRecordController::class, 'processPayment'])->name('fee-record.process-payment');
-        Route::get('/fee-record/{id}/receipt', [FeeRecordController::class, 'receipt'])->name('fee-record.receipt');
 
         // ============================================
         // Notification Management
-      Route::prefix('notifications')->name('notifications.')->group(function () {
-    Route::get('/', [NotificationController::class, 'index'])->name('index');
-    Route::get('/create', [NotificationController::class, 'create'])->name('create');
-    Route::post('/', [NotificationController::class, 'store'])->name('store');
-    Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
-    Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
-    Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
-    Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
-    Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
-    Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
-    Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
-    Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
-    Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
-    Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
-});
+        // ============================================
+        Route::prefix('notifications')->name('notifications.')->group(function () {
+            Route::get('/', [NotificationController::class, 'index'])->name('index');
+            Route::get('/create', [NotificationController::class, 'create'])->name('create');
+            Route::post('/', [NotificationController::class, 'store'])->name('store');
+            Route::get('/{notification}', [NotificationController::class, 'show'])->name('show');
+            Route::get('/{notification}/edit', [NotificationController::class, 'edit'])->name('edit');
+            Route::put('/{notification}', [NotificationController::class, 'update'])->name('update');
+            Route::delete('/{notification}', [NotificationController::class, 'destroy'])->name('destroy');
+            Route::post('/{notification}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('mark-as-read');
+            Route::post('/{notification}/mark-as-unread', [NotificationController::class, 'markAsUnread'])->name('mark-as-unread');
+            Route::post('/mark-all-as-read', [NotificationController::class, 'markAllAsRead'])->name('mark-all-as-read');
+            Route::delete('/clear-all', [NotificationController::class, 'clearAll'])->name('clear-all');
+            Route::get('/unread-count', [NotificationController::class, 'getUnreadCount'])->name('unread-count');
+            Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
+        });
 
-// Keep existing route aliases
-Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
-Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
-Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');
+        // Keep existing route aliases
+        Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
+        Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
+        Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');
 
         // ============================================
         // Settings Route
