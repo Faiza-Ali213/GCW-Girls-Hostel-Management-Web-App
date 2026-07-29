@@ -29,19 +29,11 @@ class Room extends Model
     }
 
     /**
-     * Get the room allocations for this room.
+     * Get active students in this room.
      */
-    public function allocations()
+    public function activeStudents()
     {
-        return $this->hasMany(RoomAllocation::class);
-    }
-
-    /**
-     * Get active allocations for this room.
-     */
-    public function activeAllocations()
-    {
-        return $this->allocations()->where('status', 'active');
+        return $this->students()->where('hostel_status', 'active');
     }
 
     /**
@@ -69,14 +61,29 @@ class Room extends Model
     }
 
     /**
-     * Get occupancy percentage.
+     * Increment occupancy when student is assigned.
      */
-    public function occupancyPercentage()
+    public function incrementOccupancy()
     {
-        if ($this->capacity == 0) {
-            return 0;
+        $this->current_occupancy++;
+        if ($this->current_occupancy >= $this->capacity) {
+            $this->status = 'full';
         }
-        return round(($this->current_occupancy / $this->capacity) * 100, 2);
+        $this->save();
+        return $this;
+    }
+
+    /**
+     * Decrement occupancy when student is removed.
+     */
+    public function decrementOccupancy()
+    {
+        $this->current_occupancy--;
+        if ($this->current_occupancy < $this->capacity) {
+            $this->status = 'available';
+        }
+        $this->save();
+        return $this;
     }
 
     /**
@@ -112,28 +119,21 @@ class Room extends Model
     }
 
     /**
-     * Increment occupancy when student is assigned.
+     * Scope for rooms by type.
      */
-    public function incrementOccupancy()
+    public function scopeByType($query, $type)
     {
-        $this->current_occupancy++;
-        if ($this->current_occupancy >= $this->capacity) {
-            $this->status = 'full';
-        }
-        $this->save();
-        return $this;
+        return $query->where('room_type', $type);
     }
 
     /**
-     * Decrement occupancy when student is removed.
+     * Get occupancy percentage.
      */
-    public function decrementOccupancy()
+    public function occupancyPercentage()
     {
-        $this->current_occupancy--;
-        if ($this->current_occupancy < $this->capacity) {
-            $this->status = 'available';
+        if ($this->capacity == 0) {
+            return 0;
         }
-        $this->save();
-        return $this;
+        return round(($this->current_occupancy / $this->capacity) * 100, 2);
     }
 }

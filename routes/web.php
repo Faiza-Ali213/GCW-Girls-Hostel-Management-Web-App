@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/by-room/{roomNumber}', [StudentController::class, 'getByRoom'])->name('by-room');
         });
 
+        // Student Records routes (aliases)
         Route::get('/student-records', [StudentController::class, 'index'])->name('student-records');
         Route::get('/student-records/create', [StudentController::class, 'create'])->name('student-records.create');
         Route::post('/student-records', [StudentController::class, 'store'])->name('student-records.store');
@@ -117,6 +118,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/student-records/{id}/edit', [StudentController::class, 'edit'])->name('student-records.edit');
         Route::put('/student-records/{id}', [StudentController::class, 'update'])->name('student-records.update');
         Route::delete('/student-records/{id}', [StudentController::class, 'destroy'])->name('student-records.destroy');
+        
+        // AJAX route for getting rooms by type (for add student page)
+        Route::get('/student/get-rooms-by-type', [StudentController::class, 'getRoomsByType'])->name('student.getRoomsByType');
+        Route::get('/student/validate-room', [StudentController::class, 'validateRoom'])->name('student.validateRoom');
 
         // ============================================
         // Staff Management
@@ -205,6 +210,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/details/{id}', [RoomController::class, 'getRoomDetails'])->name('details');
         });
 
+        // Room Management aliases
         Route::get('/room_allocation', [RoomController::class, 'index'])->name('room_allocation');
         Route::get('/room-record', [RoomController::class, 'index'])->name('room-record');
 
@@ -228,6 +234,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/receipt', [FeeRecordController::class, 'receipt'])->name('receipt');
         });
 
+        // Fee Record aliases
         Route::get('/fee_record', [FeeRecordController::class, 'index'])->name('fee_record');
         Route::get('/fee-records', [FeeRecordController::class, 'index'])->name('fee-records.index');
         Route::get('/fee-record-list', [FeeRecordController::class, 'index'])->name('fee-record-list');
@@ -253,7 +260,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/latest', [NotificationController::class, 'getLatest'])->name('latest');
         });
 
-        // Keep existing route aliases
+        // Notification aliases
         Route::get('/Notification', [NotificationController::class, 'index'])->name('Notification');
         Route::get('/notification', [NotificationController::class, 'index'])->name('notification');
         Route::get('/notification-list', [NotificationController::class, 'index'])->name('notification-list');

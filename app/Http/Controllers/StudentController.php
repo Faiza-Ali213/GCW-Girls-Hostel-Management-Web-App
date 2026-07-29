@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use App\Models\Room;
 
 class StudentController extends Controller
 {
@@ -13,7 +16,7 @@ class StudentController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Student::query();
+        $query = Student::query()->with('room');
 
         // Search functionality
         if ($request->has('search') && !empty($request->search)) {
@@ -56,6 +59,8 @@ class StudentController extends Controller
             'address' => 'required|string',
             'email' => 'nullable|email|max:255|unique:students',
             'room_number' => 'nullable|string|max:50',
+            'room_id' => 'nullable|exists:rooms,id',
+            'room_type' => 'nullable|string|in:double,triple,quad',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:male,female,other',
             'hostel_status' => 'nullable|in:active,inactive,graduated,left',
@@ -73,6 +78,53 @@ class StudentController extends Controller
             $validated['profile_picture'] = $path;
         }
 
+        // If room_id is provided, validate and assign room
+        if ($request->filled('room_id')) {
+            $room = Room::find($request->room_id);
+            
+            if ($room) {
+                // Check if room has available beds
+                if (!$room->hasAvailableBeds()) {
+                    return redirect()->back()
+                        ->with('error', 'Room ' . $room->room_number . ' is already full.')
+                        ->withInput();
+                }
+                
+                // Assign room to student
+                $validated['room_id'] = $room->id;
+                $validated['room_number'] = $room->room_number;
+                $validated['room_type'] = $room->room_type;
+                
+                // Increment room occupancy
+                $room->incrementOccupancy();
+            }
+        } else {
+            // If room_number is provided but room_id is not, validate and find room
+            if ($request->filled('room_number')) {
+                $room = Room::where('room_number', $request->room_number)->first();
+                
+                if (!$room) {
+                    return redirect()->back()
+                        ->with('error', 'Room number ' . $request->room_number . ' does not exist in the system.')
+                        ->withInput();
+                }
+                
+                // Check if room has available beds
+                if (!$room->hasAvailableBeds()) {
+                    return redirect()->back()
+                        ->with('error', 'Room ' . $request->room_number . ' is already full.')
+                        ->withInput();
+                }
+                
+                // Assign room to student
+                $validated['room_id'] = $room->id;
+                $validated['room_type'] = $room->room_type;
+                
+                // Increment room occupancy
+                $room->incrementOccupancy();
+            }
+        }
+
         Student::create($validated);
 
         return redirect()->route('student-records')
@@ -84,8 +136,75 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::with('room')->findOrFail($id);
         return view('Component.Admin.view_student', ['student' => $student]);
+    }
+
+    /**
+     * Get rooms by room type for dropdown (AJAX).
+     */
+    public function getRoomsByType(Request $request)
+    {
+        $roomType = $request->room_type;
+        
+        if (empty($roomType)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room type is required'
+            ], 400);
+        }
+        
+        // Get rooms with available beds
+        $rooms = Room::where('room_type', $roomType)
+                      ->where('status', 'available')
+                      ->where('current_occupancy', '<', 'capacity')
+                      ->orderBy('room_number')
+                      ->get(['id', 'room_number', 'block', 'floor', 'capacity', 'current_occupancy']);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $rooms
+        ]);
+    }
+
+    /**
+     * Validate room availability (AJAX).
+     */
+    public function validateRoom(Request $request)
+    {
+        $roomNumber = $request->room_number;
+        
+        if (empty($roomNumber)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room number is required'
+            ], 400);
+        }
+        
+        // Find room by room number
+        $room = Room::where('room_number', $roomNumber)->first();
+        
+        if (!$room) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room ' . $roomNumber . ' does not exist in the system.'
+            ]);
+        }
+        
+        // Check if room has available beds
+        if ($room->current_occupancy >= $room->capacity) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Room is full',
+                'data' => $room
+            ]);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Room is available',
+            'data' => $room
+        ]);
     }
 
     /**
@@ -93,8 +212,15 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        $student = Student::findOrFail($id);
-        return view('Component.Admin.edit_student', compact('student'));
+        $student = Student::with('room')->findOrFail($id);
+        
+        // Get all rooms with available beds for dropdown
+        $rooms = Room::where('status', 'available')
+                      ->where('current_occupancy', '<', 'capacity')
+                      ->orderBy('room_number')
+                      ->get();
+        
+        return view('Component.Admin.edit_student', compact('student', 'rooms'));
     }
 
     /**
@@ -112,6 +238,8 @@ class StudentController extends Controller
             'address' => 'sometimes|required|string',
             'email' => 'nullable|email|max:255|unique:students,email,' . $id,
             'room_number' => 'nullable|string|max:50',
+            'room_id' => 'nullable|exists:rooms,id',
+            'room_type' => 'nullable|string|in:double,triple,quad',
             'date_of_birth' => 'nullable|date',
             'gender' => 'nullable|in:male,female,other',
             'hostel_status' => 'nullable|in:active,inactive,graduated,left',
@@ -133,6 +261,58 @@ class StudentController extends Controller
             $validated['profile_picture'] = $path;
         }
 
+        // Handle room change - Remove from old room
+        if ($request->filled('room_id') && $request->room_id != $student->room_id) {
+            // Remove from old room
+            if ($student->room_id) {
+                $oldRoom = Room::find($student->room_id);
+                if ($oldRoom) {
+                    $oldRoom->decrementOccupancy();
+                }
+            }
+            
+            // Assign to new room
+            $newRoom = Room::find($request->room_id);
+            if ($newRoom && $newRoom->hasAvailableBeds()) {
+                $validated['room_id'] = $newRoom->id;
+                $validated['room_number'] = $newRoom->room_number;
+                $validated['room_type'] = $newRoom->room_type;
+                $newRoom->incrementOccupancy();
+            } else {
+                return redirect()->back()
+                    ->with('error', 'Selected room is not available or full.')
+                    ->withInput();
+            }
+        } elseif ($request->filled('room_number') && $request->room_number != $student->room_number) {
+            // Fallback: Find room by room_number
+            $newRoom = Room::where('room_number', $request->room_number)->first();
+            if ($newRoom && $newRoom->hasAvailableBeds()) {
+                // Remove from old room
+                if ($student->room_id) {
+                    $oldRoom = Room::find($student->room_id);
+                    if ($oldRoom) {
+                        $oldRoom->decrementOccupancy();
+                    }
+                }
+                
+                $validated['room_id'] = $newRoom->id;
+                $validated['room_type'] = $newRoom->room_type;
+                $newRoom->incrementOccupancy();
+            } else {
+                return redirect()->back()
+                    ->with('error', 'Room ' . $request->room_number . ' is not available or full.')
+                    ->withInput();
+            }
+        } elseif (empty($request->room_number) && empty($request->room_id) && $student->room_id) {
+            // Room removed - free up the room
+            $oldRoom = Room::find($student->room_id);
+            if ($oldRoom) {
+                $oldRoom->decrementOccupancy();
+            }
+            $validated['room_id'] = null;
+            $validated['room_type'] = null;
+        }
+
         $student->update($validated);
 
         return redirect()->route('student-records')
@@ -147,6 +327,14 @@ class StudentController extends Controller
         try {
             $student = Student::findOrFail($id);
             
+            // Remove from room if assigned
+            if ($student->room_id) {
+                $room = Room::find($student->room_id);
+                if ($room) {
+                    $room->decrementOccupancy();
+                }
+            }
+            
             // Delete profile picture if exists
             if ($student->profile_picture) {
                 Storage::disk('public')->delete($student->profile_picture);
@@ -154,7 +342,6 @@ class StudentController extends Controller
             
             $student->delete();
 
-            // Redirect with success message
             return redirect()->route('student-records')
                              ->with('success', 'Student "' . $student->student_name . '" deleted successfully!');
 

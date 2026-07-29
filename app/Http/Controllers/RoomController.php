@@ -118,7 +118,7 @@ class RoomController extends Controller
     }
 
     /**
-     * Display the specified room.
+     * Display the specified room with students.
      */
     public function show($id)
     {
@@ -137,7 +137,7 @@ class RoomController extends Controller
     public function edit($id)
     {
         try {
-            $room = Room::findOrFail($id);
+            $room = Room::with('students')->findOrFail($id);
             return view('Component.Admin.edit_room', compact('room'));
         } catch (\Exception $e) {
             return redirect()->route('room-allocation.index')
@@ -147,16 +147,16 @@ class RoomController extends Controller
 
     /**
      * Update the specified room.
+     * Auto-sets capacity based on room type like store method.
      */
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
             'room_number' => 'required|string|max:50|unique:rooms,room_number,' . $id,
-            'room_type' => 'nullable|string|max:50',
-            'capacity' => 'required|integer|min:1',
-            'floor' => 'nullable|string|max:50',
-            'block' => 'nullable|string|max:50',
-            'status' => 'nullable|in:available,full,maintenance',
+            'room_type' => 'required|string|in:double,triple,quad',
+            'block' => 'required|string|max:50',
+            'floor' => 'required|string|max:50',
+            'status' => 'required|in:available,full,maintenance',
             'notes' => 'nullable|string',
         ]);
 
@@ -169,25 +169,34 @@ class RoomController extends Controller
         try {
             $room = Room::findOrFail($id);
             
+            // Auto-set capacity based on room type (same as store method)
+            $capacityMap = [
+                'double' => 2,
+                'triple' => 3,
+                'quad' => 4,
+            ];
+            
+            $capacity = $capacityMap[$request->room_type] ?? 2;
+            
             // Check if capacity is less than current occupancy
-            if ($request->capacity < $room->current_occupancy) {
+            if ($capacity < $room->current_occupancy) {
                 return redirect()->back()
-                    ->with('error', 'Capacity cannot be less than current occupancy (' . $room->current_occupancy . ' students)')
+                    ->with('error', 'Cannot change room type to ' . $request->room_type . ' (Capacity: ' . $capacity . ') because current occupancy is ' . $room->current_occupancy . ' students.')
                     ->withInput();
             }
 
             $room->update([
                 'room_number' => $request->room_number,
                 'room_type' => $request->room_type,
-                'capacity' => $request->capacity,
-                'floor' => $request->floor,
+                'capacity' => $capacity, // Auto-set capacity based on room type
                 'block' => $request->block,
-                'status' => $request->status ?? 'available',
+                'floor' => $request->floor,
+                'status' => $request->status,
                 'notes' => $request->notes,
             ]);
 
             return redirect()->route('room-allocation.index')
-                ->with('success', 'Room ' . $room->room_number . ' updated successfully!');
+                ->with('success', 'Room ' . $room->room_number . ' updated successfully! (Capacity: ' . $capacity . ' beds)');
 
         } catch (\Exception $e) {
             return redirect()->back()
@@ -253,6 +262,34 @@ class RoomController extends Controller
         }
         
         $rooms = $query->get();
+        
+        return response()->json([
+            'success' => true,
+            'data' => $rooms
+        ]);
+    }
+
+    /**
+     * Get rooms by type for dropdown (AJAX).
+     * This is used by StudentController for room selection.
+     */
+    public function getRoomsByType(Request $request)
+    {
+        $roomType = $request->room_type;
+        
+        if (empty($roomType)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Room type is required'
+            ], 400);
+        }
+        
+        // Get rooms with available beds
+        $rooms = Room::where('room_type', $roomType)
+                      ->where('status', 'available')
+                      ->where('current_occupancy', '<', 'capacity')
+                      ->orderBy('room_number')
+                      ->get(['id', 'room_number', 'block', 'floor', 'capacity', 'current_occupancy']);
         
         return response()->json([
             'success' => true,

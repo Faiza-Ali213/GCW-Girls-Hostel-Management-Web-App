@@ -1,7 +1,177 @@
 @extends('Layout.admin')
 
 @section('content')
-<link rel="stylesheet" href="{{ asset('css/add_student.css') }}">
+<style>
+    /* Page Header */
+    .page-header-section {
+        margin-bottom: 25px;
+    }
+    .page-header-section h2 {
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
+    .page-header-section .text-muted {
+        font-size: 0.95rem;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    /* Form Sections */
+    .form-section {
+        margin-bottom: 30px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .form-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .section-title {
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .section-title i {
+        color: #667eea;
+    }
+
+    /* Form Inputs */
+    .custom-input {
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+    }
+    .custom-input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+    }
+    .custom-input.is-invalid {
+        border-color: #dc3545;
+    }
+    .custom-input.is-valid {
+        border-color: #10B981;
+        background-color: #ECFDF5;
+    }
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 0.9rem;
+    }
+    .text-danger {
+        color: #dc3545;
+    }
+    .text-success {
+        color: #10B981;
+    }
+    .text-warning {
+        color: #F59E0B;
+    }
+
+    /* Room Status Display */
+    .room-status {
+        padding: 8px 12px;
+        border-radius: 8px;
+        margin-top: 5px;
+        font-weight: 500;
+        font-size: 0.9rem;
+    }
+    .room-status.available {
+        background: #ECFDF5;
+        color: #10B981;
+        border: 1px solid #10B981;
+    }
+    .room-status.full {
+        background: #FEF2F2;
+        color: #EF4444;
+        border: 1px solid #EF4444;
+    }
+    .room-status.not-found {
+        background: #FFFBEB;
+        color: #F59E0B;
+        border: 1px solid #F59E0B;
+    }
+    .room-status.loading {
+        background: #EFF6FF;
+        color: #3B82F6;
+        border: 1px solid #3B82F6;
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f3f5;
+        margin-top: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 10px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: none;
+    }
+
+    .btn-save {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    .btn-save:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        color: white;
+    }
+    .btn-save:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    .btn-cancel {
+        background: #f1f3f5;
+        color: #6c757d;
+    }
+    .btn-cancel:hover {
+        background: #e9ecef;
+        color: #495057;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-card {
+            padding: 20px 15px;
+        }
+        .form-actions {
+            flex-direction: column;
+        }
+        .form-actions .btn {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
 
 <div class="student-container">
     
@@ -60,10 +230,10 @@
                         @enderror
                     </div>
                     <div class="col-md-6">
-                        <label class="form-label">Date of Birth</label>
-                        <input type="date" name="date_of_birth" class="form-control custom-input @error('date_of_birth') is-invalid @enderror" 
-                               value="{{ old('date_of_birth') }}">
-                        @error('date_of_birth')
+                        <label class="form-label">Admission Date <span class="text-danger">*</span></label>
+                        <input type="date" name="admission_date" class="form-control custom-input @error('admission_date') is-invalid @enderror" 
+                               value="{{ old('admission_date') }}" required>
+                        @error('admission_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -85,8 +255,14 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="form-label">Room Number</label>
-                        <input type="text" name="room_number" class="form-control custom-input @error('room_number') is-invalid @enderror" 
-                               placeholder="e.g., 101-A" value="{{ old('room_number') }}">
+                        <input type="text" name="room_number" 
+                               class="form-control custom-input @error('room_number') is-invalid @enderror" 
+                               id="room_number" 
+                               placeholder="Enter room number (e.g., 101)" 
+                               value="{{ old('room_number') }}">
+                        <div id="roomStatus" class="room-status loading" style="display:none;">
+                            <i class="bi bi-hourglass-split"></i> Checking room availability...
+                        </div>
                         @error('room_number')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -100,25 +276,6 @@
                             <option value="left" {{ old('hostel_status') == 'left' ? 'selected' : '' }}>Left</option>
                         </select>
                         @error('hostel_status')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Gender</label>
-                        <select name="gender" class="form-control custom-input @error('gender') is-invalid @enderror">
-                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
-                        </select>
-                        @error('gender')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Admission Date</label>
-                        <input type="date" name="admission_date" class="form-control custom-input @error('admission_date') is-invalid @enderror" 
-                               value="{{ old('admission_date') }}">
-                        @error('admission_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -195,132 +352,178 @@
     </div>
 </div>
 
-<style>
-    /* Page Header */
-    .page-header-section {
-        margin-bottom: 25px;
-    }
-    .page-header-section h2 {
-        font-weight: 700;
-        color: #2c3e50;
-        margin-bottom: 5px;
-    }
-    .page-header-section .text-muted {
-        font-size: 0.95rem;
-    }
-
-    /* Form Card */
-    .form-card {
-        background: white;
-        border-radius: 15px;
-        padding: 30px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    /* Form Sections */
-    .form-section {
-        margin-bottom: 30px;
-        padding-bottom: 25px;
-        border-bottom: 1px solid #e9ecef;
-    }
-    .form-section:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    .section-title {
-        font-weight: 600;
-        color: #2c3e50;
-        margin-bottom: 20px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .section-title i {
-        color: #667eea;
-    }
-
-    /* Form Inputs */
-    .custom-input {
-        border: 2px solid #e9ecef;
-        border-radius: 10px;
-        padding: 12px 15px;
-        transition: all 0.3s ease;
-        font-size: 0.95rem;
-    }
-    .custom-input:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
-    }
-    .custom-input.is-invalid {
-        border-color: #dc3545;
-    }
-    .form-label {
-        font-weight: 600;
-        color: #495057;
-        margin-bottom: 8px;
-        font-size: 0.9rem;
-    }
-    .text-danger {
-        color: #dc3545;
-    }
-
-    /* Form Actions */
-    .form-actions {
-        display: flex;
-        justify-content: flex-end;
-        gap: 12px;
-        padding-top: 20px;
-        border-top: 2px solid #f1f3f5;
-        margin-top: 10px;
-        flex-wrap: wrap;
-    }
-
-    .btn {
-        padding: 10px 30px;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: none;
-    }
-
-    .btn-save {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-    .btn-save:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        color: white;
-    }
-
-    .btn-cancel {
-        background: #f1f3f5;
-        color: #6c757d;
-    }
-    .btn-cancel:hover {
-        background: #e9ecef;
-        color: #495057;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-        .form-card {
-            padding: 20px 15px;
-        }
-        .form-actions {
-            flex-direction: column;
-        }
-        .form-actions .btn {
-            width: 100%;
-            justify-content: center;
-        }
-    }
-</style>
-
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    console.log('✅ Add Student page loaded');
+
+    var roomValidationTimer = null;
+    var roomValid = false;
+    var roomData = null;
+
+    // Auto-capitalize student name
+    $('input[name="student_name"]').on('blur', function() {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    // Auto-capitalize father name
+    $('input[name="father_name"]').on('blur', function() {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    // Format phone number
+    $('#phoneInput').on('input', function() {
+        var value = $(this).val().replace(/\D/g, '');
+        if (value.length > 0) {
+            if (value.length <= 4) {
+                $(this).val(value);
+            } else if (value.length <= 7) {
+                $(this).val(value.slice(0, 4) + '-' + value.slice(4));
+            } else {
+                $(this).val(value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11));
+            }
+        }
+    });
+
+    // Format CNIC
+    $('#cnicInput').on('input', function() {
+        var value = $(this).val().replace(/\D/g, '');
+        if (value.length > 0) {
+            if (value.length <= 5) {
+                $(this).val(value);
+            } else if (value.length <= 12) {
+                $(this).val(value.slice(0, 5) + '-' + value.slice(5));
+            } else {
+                $(this).val(value.slice(0, 5) + '-' + value.slice(5, 12) + '-' + value.slice(12, 13));
+            }
+        }
+    });
+
+    // ============================================
+    // ROOM NUMBER VALIDATION
+    // ============================================
+    $('#room_number').on('input', function() {
+        var roomNumber = $(this).val().trim();
+        var statusDiv = $('#roomStatus');
+        var submitBtn = $('#submitBtn');
+        
+        // Clear previous timer
+        if (roomValidationTimer) {
+            clearTimeout(roomValidationTimer);
+        }
+        
+        // If empty, hide status
+        if (!roomNumber) {
+            statusDiv.hide();
+            roomValid = false;
+            roomData = null;
+            $(this).removeClass('is-valid is-invalid');
+            submitBtn.prop('disabled', false);
+            return;
+        }
+        
+        // Show loading status
+        statusDiv.show();
+        statusDiv.removeClass('available full not-found loading');
+        statusDiv.addClass('loading');
+        statusDiv.html('<i class="bi bi-hourglass-split"></i> Checking room availability...');
+        $(this).removeClass('is-valid is-invalid');
+        submitBtn.prop('disabled', true);
+        
+        // Debounce validation
+        roomValidationTimer = setTimeout(function() {
+            // AJAX request to validate room
+            $.ajax({
+                url: '{{ route("student.validateRoom") }}',
+                type: 'GET',
+                data: { room_number: roomNumber },
+                success: function(response) {
+                    console.log('Room validation response:', response);
+                    
+                    if (response.success) {
+                        var room = response.data;
+                        
+                        if (room.current_occupancy < room.capacity) {
+                            // Room has space available
+                            statusDiv.removeClass('loading');
+                            statusDiv.addClass('available');
+                            statusDiv.html('<i class="bi bi-check-circle-fill"></i> Room ' + room.room_number + 
+                                ' is available! (' + room.current_occupancy + '/' + room.capacity + ' occupied)');
+                            $('#room_number').removeClass('is-invalid').addClass('is-valid');
+                            roomValid = true;
+                            roomData = room;
+                            submitBtn.prop('disabled', false);
+                        } else {
+                            // Room is full
+                            statusDiv.removeClass('loading');
+                            statusDiv.addClass('full');
+                            statusDiv.html('<i class="bi bi-x-circle-fill"></i> Room ' + room.room_number + 
+                                ' is FULL! (Capacity: ' + room.capacity + ', Occupied: ' + room.current_occupancy + ')');
+                            $('#room_number').removeClass('is-valid').addClass('is-invalid');
+                            roomValid = false;
+                            roomData = null;
+                            submitBtn.prop('disabled', true);
+                        }
+                    } else {
+                        // Room not found
+                        statusDiv.removeClass('loading');
+                        statusDiv.addClass('not-found');
+                        statusDiv.html('<i class="bi bi-exclamation-triangle-fill"></i> ' + response.message);
+                        $('#room_number').removeClass('is-valid').addClass('is-invalid');
+                        roomValid = false;
+                        roomData = null;
+                        submitBtn.prop('disabled', true);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('AJAX Error:', xhr);
+                    statusDiv.removeClass('loading');
+                    statusDiv.addClass('not-found');
+                    statusDiv.html('<i class="bi bi-exclamation-triangle-fill"></i> Error checking room. Please try again.');
+                    roomValid = false;
+                    roomData = null;
+                    submitBtn.prop('disabled', true);
+                }
+            });
+        }, 500);
+    });
+
+    // ============================================
+    // FORM SUBMISSION - Double Check Room
+    // ============================================
+    $('#addStudentForm').on('submit', function(e) {
+        var roomNumber = $('#room_number').val().trim();
+        
+        // If room number is provided, validate it's valid
+        if (roomNumber) {
+            if (!roomValid || !roomData) {
+                e.preventDefault();
+                alert('Please enter a valid room number with available space.');
+                $('#room_number').focus();
+                return false;
+            }
+            
+            // Add room_id to form data
+            var roomIdInput = $('<input>').attr({
+                type: 'hidden',
+                name: 'room_id',
+                value: roomData.id
+            });
+            $(this).append(roomIdInput);
+            
+            // Add room_type to form data
+            var roomTypeInput = $('<input>').attr({
+                type: 'hidden',
+                name: 'room_type',
+                value: roomData.room_type
+            });
+            $(this).append(roomTypeInput);
+        }
+        
+        return true;
+    });
+});
+</script>
+@endpush
