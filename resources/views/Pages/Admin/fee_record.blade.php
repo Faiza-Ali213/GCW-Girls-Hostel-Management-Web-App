@@ -81,7 +81,7 @@
                 <th style="width:100px;">Paid</th>
                 <th style="width:100px;">Pending</th>
                 <th style="width:100px;">Status</th>
-                <th style="width:180px;" class="text-center">Actions</th>
+                <th style="width:200px;" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -126,16 +126,18 @@
                             <i class="fas fa-eye"></i>
                         </a>
                         
+                        <!-- Edit Button - Always Visible -->
+                        <a href="{{ route('fee-record.edit', $record->id) }}" class="action-btn edit" title="Edit Record">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        
                         @if($record->fee_status == 'paid')
-                            <!-- When PAID: Only Show Receipt Button -->
+                            <!-- When PAID: Show Receipt Button (No Pay) -->
                             <a href="{{ route('fee-record.receipt', $record->id) }}" class="action-btn view" title="View Receipt" style="background: #ECFDF5; border-color: #10B981;">
                                 <i class="fas fa-receipt" style="color: #10B981 !important;"></i>
                             </a>
                         @elseif($record->fee_status == 'partial')
-                            <!-- When PARTIAL: Show Edit, Pay, and Receipt -->
-                            <a href="{{ route('fee-record.edit', $record->id) }}" class="action-btn edit" title="Edit Record">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            <!-- When PARTIAL: Show Pay and Receipt -->
                             <a href="{{ route('fee-record.pay', $record->id) }}" class="action-btn pay" title="Pay Fee">
                                 <i class="fas fa-hand-holding-usd"></i>
                             </a>
@@ -143,10 +145,7 @@
                                 <i class="fas fa-receipt"></i>
                             </a>
                         @else
-                            <!-- When PENDING: Show Edit and Pay -->
-                            <a href="{{ route('fee-record.edit', $record->id) }}" class="action-btn edit" title="Edit Record">
-                                <i class="fas fa-edit"></i>
-                            </a>
+                            <!-- When PENDING: Show Pay Only -->
                             <a href="{{ route('fee-record.pay', $record->id) }}" class="action-btn pay" title="Pay Fee">
                                 <i class="fas fa-hand-holding-usd"></i>
                             </a>

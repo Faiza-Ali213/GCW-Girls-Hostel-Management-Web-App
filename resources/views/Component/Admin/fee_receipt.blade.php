@@ -98,10 +98,13 @@
         border-radius: 10px;
         font-weight: 600;
         transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-block;
     }
     .receipt-footer .btn-back:hover {
         background: #e9ecef;
         color: #2c3e50 !important;
+        text-decoration: none;
     }
 </style>
 
@@ -149,7 +152,7 @@
         </div>
         <div class="info-row">
             <span class="label">Payment Method</span>
-            <span class="value">{{ ucfirst($feeRecord->payment_method ?? 'N/A') }}</span>
+            <span class="value">{{ ucfirst($feeRecord->payment_method ?? 'Cash') }}</span>
         </div>
         <div class="info-row">
             <span class="label">Status</span>

@@ -118,10 +118,14 @@
         width: 100%;
         transition: all 0.2s ease;
         margin-bottom: 10px;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
     }
     .btn-back:hover {
         background: #e9ecef;
         color: #2c3e50 !important;
+        text-decoration: none;
     }
     .status-badge {
         padding: 4px 14px;
@@ -215,8 +219,7 @@
         <div class="mb-3">
             <label for="payment_method" class="form-label fw-bold">Payment Method</label>
             <select class="form-control @error('payment_method') is-invalid @enderror" id="payment_method" name="payment_method">
-                <option value="">Select Payment Method</option>
-                <option value="cash" {{ old('payment_method') == 'cash' ? 'selected' : '' }}>Cash</option>
+                <option value="cash" {{ old('payment_method', 'cash') == 'cash' ? 'selected' : '' }}>Cash</option>
                 <option value="bank_transfer" {{ old('payment_method') == 'bank_transfer' ? 'selected' : '' }}>Bank Transfer</option>
                 <option value="easypaisa" {{ old('payment_method') == 'easypaisa' ? 'selected' : '' }}>EasyPaisa</option>
                 <option value="jazzcash" {{ old('payment_method') == 'jazzcash' ? 'selected' : '' }}>JazzCash</option>
@@ -242,7 +245,7 @@
             <button type="submit" class="btn-submit">
                 <i class="fas fa-check-circle"></i> Process Payment
             </button>
-            <a href="{{ route('fee_record') }}" class="btn-back text-center">
+            <a href="{{ route('fee_record') }}" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Cancel & Go Back
             </a>
         </div>
