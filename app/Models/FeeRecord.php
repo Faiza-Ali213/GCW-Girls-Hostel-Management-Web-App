@@ -11,18 +11,18 @@ class FeeRecord extends Model
     use HasFactory;
 
     protected $fillable = [
+        'student_id',
         'student_name',
         'room_no',
         'phone_number',
-        'fee_status',
         'fee_amount',
         'paid_amount',
         'pending_amount',
+        'fee_status',
         'payment_date',
         'payment_method',
-        'remarks'
+        'remarks',
     ];
-
     protected $casts = [
         'payment_date' => 'date',
         'fee_amount' => 'decimal:2',

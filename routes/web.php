@@ -241,6 +241,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/fee-records', [FeeRecordController::class, 'index'])->name('fee-records.index');
         Route::get('/fee-record-list', [FeeRecordController::class, 'index'])->name('fee-record-list');
         Route::post('/fee-records', [FeeRecordController::class, 'store'])->name('fee-records.store');
+        Route::get('/fee-record/sync', [FeeRecordController::class, 'syncAllStudents'])->name('fee_record.sync');
+        Route::get('/fee-record/{id}/pay', [FeeRecordController::class, 'pay'])->name('fee-record.pay');
+        Route::post('/fee-record/{id}/process-payment', [FeeRecordController::class, 'processPayment'])->name('fee-record.process-payment');
+        Route::get('/fee-record/{id}/receipt', [FeeRecordController::class, 'receipt'])->name('fee-record.receipt');
 
         // ============================================
         // Notification Management

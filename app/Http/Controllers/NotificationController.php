@@ -6,6 +6,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Models\Visitor;
 use App\Models\Complaint;
+use App\Models\FeeRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -401,6 +402,153 @@ class NotificationController extends Controller
             'link' => route('complaints.show', $complaint->id),
             'is_global' => true,
             'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    // ============================================
+    // FEE RECORD NOTIFICATIONS
+    // ============================================
+
+    /**
+     * Create notification for new fee record
+     */
+    public static function notifyFeeRecordCreated(FeeRecord $feeRecord)
+    {
+        $statusLabels = [
+            'paid' => 'Paid',
+            'pending' => 'Pending',
+            'partial' => 'Partial'
+        ];
+        $statusLabel = $statusLabels[$feeRecord->fee_status] ?? ucfirst($feeRecord->fee_status);
+        $statusEmojis = [
+            'paid' => '✅',
+            'pending' => '🟠',
+            'partial' => '🟡'
+        ];
+        $emoji = $statusEmojis[$feeRecord->fee_status] ?? '📝';
+        
+        Notification::create([
+            'title' => 'New Fee Record Created',
+            'message' => "{$emoji} Fee record for '{$feeRecord->student_name}' - Amount: PKR {$feeRecord->fee_amount} - Status: {$statusLabel}",
+            'type' => $feeRecord->fee_status == 'paid' ? 'success' : 'info',
+            'icon' => 'bi-wallet',
+            'link' => route('fee-record.show', $feeRecord->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    /**
+     * Create notification for fee status update
+     */
+    public static function notifyFeeStatusUpdated(FeeRecord $feeRecord, $oldStatus = null)
+    {
+        $statusLabels = [
+            'paid' => 'Paid',
+            'pending' => 'Pending',
+            'partial' => 'Partial'
+        ];
+        $statusLabel = $statusLabels[$feeRecord->fee_status] ?? ucfirst($feeRecord->fee_status);
+        $oldStatusLabel = $oldStatus ? ($statusLabels[$oldStatus] ?? ucfirst($oldStatus)) : null;
+        
+        $statusEmojis = [
+            'paid' => '✅',
+            'pending' => '🟠',
+            'partial' => '🟡'
+        ];
+        $emoji = $statusEmojis[$feeRecord->fee_status] ?? '📝';
+        
+        $message = "{$emoji} Fee status updated for '{$feeRecord->student_name}'";
+        $message .= " - Amount: PKR {$feeRecord->fee_amount}";
+        $message .= " - Paid: PKR {$feeRecord->paid_amount}";
+        $message .= " - Status: {$statusLabel}";
+        
+        if ($oldStatusLabel && $oldStatus != $feeRecord->fee_status) {
+            $message .= " (was {$oldStatusLabel})";
+        }
+
+        $type = 'info';
+        if ($feeRecord->fee_status == 'paid') {
+            $type = 'success';
+        } elseif ($feeRecord->fee_status == 'partial') {
+            $type = 'warning';
+        }
+        
+        Notification::create([
+            'title' => 'Fee Status Updated',
+            'message' => $message,
+            'type' => $type,
+            'icon' => 'bi-currency-exchange',
+            'link' => route('fee-record.show', $feeRecord->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    /**
+     * Create notification for fee payment received
+     */
+    public static function notifyFeePaymentReceived(FeeRecord $feeRecord, $amount)
+    {
+        $statusLabels = [
+            'paid' => 'Paid',
+            'pending' => 'Pending',
+            'partial' => 'Partial'
+        ];
+        $statusLabel = $statusLabels[$feeRecord->fee_status] ?? ucfirst($feeRecord->fee_status);
+        
+        $message = "💰 Payment of PKR {$amount} received from '{$feeRecord->student_name}'";
+        $message .= " - Total Fee: PKR {$feeRecord->fee_amount}";
+        $message .= " - Status: {$statusLabel}";
+        $message .= " - Remaining: PKR {$feeRecord->pending_amount}";
+
+        $type = 'success';
+        if ($feeRecord->fee_status == 'partial') {
+            $type = 'warning';
+        }
+        
+        Notification::create([
+            'title' => 'Fee Payment Received',
+            'message' => $message,
+            'type' => $type,
+            'icon' => 'bi-cash-stack',
+            'link' => route('fee-record.show', $feeRecord->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(7),
+        ]);
+    }
+
+    /**
+     * Create notification for overdue fee
+     */
+    public static function notifyFeeOverdue(FeeRecord $feeRecord)
+    {
+        $daysOverdue = $feeRecord->created_at ? $feeRecord->created_at->diffInDays(now()) : 0;
+        
+        Notification::create([
+            'title' => '⚠️ Fee Overdue Alert',
+            'message' => "Fee for '{$feeRecord->student_name}' is overdue by {$daysOverdue} days. Amount: PKR {$feeRecord->pending_amount}",
+            'type' => 'error',
+            'icon' => 'bi-exclamation-triangle',
+            'link' => route('fee-record.show', $feeRecord->id),
+            'is_global' => true,
+            'expires_at' => now()->addDays(3),
+        ]);
+    }
+
+    /**
+     * Create notification for bulk fee sync
+     */
+    public static function notifyFeeSyncCompleted($count)
+    {
+        Notification::create([
+            'title' => 'Fee Records Synced',
+            'message' => "Successfully synced {$count} student records to fee records.",
+            'type' => 'success',
+            'icon' => 'bi-cloud-check',
+            'link' => route('fee_record'),
+            'is_global' => true,
+            'expires_at' => now()->addDays(1),
         ]);
     }
 
