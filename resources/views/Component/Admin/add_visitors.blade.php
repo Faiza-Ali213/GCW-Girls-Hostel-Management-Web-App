@@ -2,6 +2,7 @@
 
 @section('content')
 <style>
+    /* Same CSS as before */
     .visitor-form-container {
         max-width: 800px;
         margin: 0 auto;
@@ -88,7 +89,6 @@
         border-radius: 10px;
         font-weight: 600;
         transition: all 0.3s ease;
-        text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -213,6 +213,16 @@
         min-width: 150px;
     }
 
+    .visitor-counter {
+        display: inline-block;
+        margin-left: 10px;
+        padding: 5px 12px;
+        background: #4F46E5;
+        color: white;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+
     @media (max-width: 768px) {
         .visitor-form-container {
             padding: 20px;
@@ -257,7 +267,7 @@
     <form action="{{ route('visitor.store') }}" method="POST" id="addVisitorForm">
         @csrf
 
-        <!-- Student Information (Dropdown) -->
+        <!-- Student Information -->
         <div class="form-section">
             <div class="section-title">
                 <i class="fas fa-user-graduate"></i> Student Information
@@ -296,27 +306,19 @@
                 <div class="row">
                     <div class="col-md-3 col-6">
                         <div class="info-label">Student Name</div>
-                        <div class="info-value" id="displayStudentName">
-                            {{ old('student_id') ? $students->firstWhere('id', old('student_id'))->student_name ?? '-' : '-' }}
-                        </div>
+                        <div class="info-value" id="displayStudentName">-</div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="info-label">Room</div>
-                        <div class="info-value" id="displayStudentRoom">
-                            {{ old('student_id') ? $students->firstWhere('id', old('student_id'))->room_number ?? 'N/A' : 'N/A' }}
-                        </div>
+                        <div class="info-value" id="displayStudentRoom">N/A</div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="info-label">Phone</div>
-                        <div class="info-value" id="displayStudentPhone">
-                            {{ old('student_id') ? $students->firstWhere('id', old('student_id'))->phone_number ?? 'N/A' : 'N/A' }}
-                        </div>
+                        <div class="info-value" id="displayStudentPhone">N/A</div>
                     </div>
                     <div class="col-md-3 col-6">
                         <div class="info-label">CNIC</div>
-                        <div class="info-value" id="displayStudentCnic">
-                            {{ old('student_id') ? $students->firstWhere('id', old('student_id'))->cnic_number ?? 'N/A' : 'N/A' }}
-                        </div>
+                        <div class="info-value" id="displayStudentCnic">N/A</div>
                     </div>
                 </div>
             </div>
@@ -326,68 +328,103 @@
         <div class="form-section">
             <div class="section-title">
                 <div class="section-header-actions">
-                    <span><i class="fas fa-users"></i> Visitors List</span>
-                    <button type="button" class="btn-add-visitor" id="addVisitorBtn">
+                    <span>
+                        <i class="fas fa-users"></i> Visitors List 
+                        <span class="visitor-counter" id="visitorCounter">
+                            {{ old('visitor_count', 1) }}
+                        </span>
+                    </span>
+                    
+                    <!-- This button submits the form with a parameter to add more visitors -->
+                    <button type="submit" name="add_more" value="1" class="btn-add-visitor" id="addVisitorBtn">
                         <i class="fas fa-plus-circle"></i> Add Visitor
                     </button>
                 </div>
             </div>
 
             <div id="visitorsContainer">
-                <!-- Visitor 1 (Default) -->
-                <div class="visitor-card visitor-item" data-index="0">
-                    <div class="visitor-number">
-                        <span><i class="fas fa-user"></i> Visitor #1</span>
-                        <span class="badge">Primary</span>
+                @php
+                    // Get the number of visitors from old input or default to 1
+                    $visitorCount = old('visitor_count', 1);
+                    
+                    // If there are validation errors, use the count from the request
+                    if (old('visitors')) {
+                        $visitorCount = count(old('visitors'));
+                    }
+                @endphp
+
+                @for($i = 0; $i < $visitorCount; $i++)
+                    <div class="visitor-card visitor-item" data-index="{{ $i }}">
+                        <div class="visitor-number">
+                            <span><i class="fas fa-user"></i> Visitor #{{ $i + 1 }}</span>
+                            <span class="badge">{{ $i == 0 ? 'Primary' : 'Additional' }}</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label" style="font-size:0.85rem;">Visitor Name <span class="required-star">*</span></label>
+                                <input type="text" class="form-control visitor-name @error('visitors.'.$i.'.visitor_name') is-invalid @enderror" 
+                                       name="visitors[{{ $i }}][visitor_name]" 
+                                       placeholder="Enter visitor name" 
+                                       value="{{ old('visitors.'.$i.'.visitor_name') }}" required>
+                                @error('visitors.'.$i.'.visitor_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label" style="font-size:0.85rem;">Relationship <span class="required-star">*</span></label>
+                                <select class="form-control visitor-relationship @error('visitors.'.$i.'.relationship') is-invalid @enderror" 
+                                        name="visitors[{{ $i }}][relationship]" required>
+                                    <option value="">Select</option>
+                                    <option value="Father" {{ old('visitors.'.$i.'.relationship') == 'Father' ? 'selected' : '' }}>Father</option>
+                                    <option value="Mother" {{ old('visitors.'.$i.'.relationship') == 'Mother' ? 'selected' : '' }}>Mother</option>
+                                    <option value="Brother" {{ old('visitors.'.$i.'.relationship') == 'Brother' ? 'selected' : '' }}>Brother</option>
+                                    <option value="Sister" {{ old('visitors.'.$i.'.relationship') == 'Sister' ? 'selected' : '' }}>Sister</option>
+                                    <option value="Uncle" {{ old('visitors.'.$i.'.relationship') == 'Uncle' ? 'selected' : '' }}>Uncle</option>
+                                    <option value="Aunt" {{ old('visitors.'.$i.'.relationship') == 'Aunt' ? 'selected' : '' }}>Aunt</option>
+                                    <option value="Cousin" {{ old('visitors.'.$i.'.relationship') == 'Cousin' ? 'selected' : '' }}>Cousin</option>
+                                    <option value="Friend" {{ old('visitors.'.$i.'.relationship') == 'Friend' ? 'selected' : '' }}>Friend</option>
+                                    <option value="Guardian" {{ old('visitors.'.$i.'.relationship') == 'Guardian' ? 'selected' : '' }}>Guardian</option>
+                                    <option value="Relative" {{ old('visitors.'.$i.'.relationship') == 'Relative' ? 'selected' : '' }}>Relative</option>
+                                    <option value="Other" {{ old('visitors.'.$i.'.relationship') == 'Other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                                @error('visitors.'.$i.'.relationship')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label" style="font-size:0.85rem;">CNIC Number</label>
+                                <input type="text" class="form-control visitor-cnic @error('visitors.'.$i.'.cnic_number') is-invalid @enderror" 
+                                       name="visitors[{{ $i }}][cnic_number]" 
+                                       placeholder="35201-1234567-8" 
+                                       value="{{ old('visitors.'.$i.'.cnic_number') }}">
+                                @error('visitors.'.$i.'.cnic_number')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label" style="font-size:0.85rem;">Phone Number</label>
+                                <input type="tel" class="form-control visitor-phone @error('visitors.'.$i.'.phone_number') is-invalid @enderror" 
+                                       name="visitors[{{ $i }}][phone_number]" 
+                                       placeholder="0300-1234567" 
+                                       value="{{ old('visitors.'.$i.'.phone_number') }}">
+                                @error('visitors.'.$i.'.phone_number')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        @if($i > 0)
+                            <div class="text-end mt-2">
+                                <button type="submit" name="remove_visitor" value="{{ $i }}" class="btn-remove-visitor">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </div>
+                        @endif
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label" style="font-size:0.85rem;">Visitor Name <span class="required-star">*</span></label>
-                            <input type="text" class="form-control visitor-name" 
-                                   name="visitors[0][visitor_name]" 
-                                   placeholder="Enter visitor name" 
-                                   value="{{ old('visitors.0.visitor_name') }}" required>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label" style="font-size:0.85rem;">Relationship <span class="required-star">*</span></label>
-                            <select class="form-control visitor-relationship" 
-                                    name="visitors[0][relationship]" required>
-                                <option value="">Select</option>
-                                <option value="Father" {{ old('visitors.0.relationship') == 'Father' ? 'selected' : '' }}>Father</option>
-                                <option value="Mother" {{ old('visitors.0.relationship') == 'Mother' ? 'selected' : '' }}>Mother</option>
-                                <option value="Brother" {{ old('visitors.0.relationship') == 'Brother' ? 'selected' : '' }}>Brother</option>
-                                <option value="Sister" {{ old('visitors.0.relationship') == 'Sister' ? 'selected' : '' }}>Sister</option>
-                                <option value="Uncle" {{ old('visitors.0.relationship') == 'Uncle' ? 'selected' : '' }}>Uncle</option>
-                                <option value="Aunt" {{ old('visitors.0.relationship') == 'Aunt' ? 'selected' : '' }}>Aunt</option>
-                                <option value="Cousin" {{ old('visitors.0.relationship') == 'Cousin' ? 'selected' : '' }}>Cousin</option>
-                                <option value="Friend" {{ old('visitors.0.relationship') == 'Friend' ? 'selected' : '' }}>Friend</option>
-                                <option value="Guardian" {{ old('visitors.0.relationship') == 'Guardian' ? 'selected' : '' }}>Guardian</option>
-                                <option value="Relative" {{ old('visitors.0.relationship') == 'Relative' ? 'selected' : '' }}>Relative</option>
-                                <option value="Other" {{ old('visitors.0.relationship') == 'Other' ? 'selected' : '' }}>Other</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label" style="font-size:0.85rem;">CNIC Number</label>
-                            <input type="text" class="form-control visitor-cnic" 
-                                   name="visitors[0][cnic_number]" 
-                                   placeholder="35201-1234567-8" 
-                                   value="{{ old('visitors.0.cnic_number') }}">
-                        </div>
-                        <div class="col-md-6 mb-2">
-                            <label class="form-label" style="font-size:0.85rem;">Phone Number</label>
-                            <input type="tel" class="form-control visitor-phone" 
-                                   name="visitors[0][phone_number]" 
-                                   placeholder="0300-1234567" 
-                                   value="{{ old('visitors.0.phone_number') }}">
-                        </div>
-                    </div>
-                    <div class="text-end mt-2" style="display:none;">
-                        <button type="button" class="btn-remove-visitor removeVisitorBtn">
-                            <i class="fas fa-trash"></i> Remove
-                        </button>
-                    </div>
-                </div>
+                @endfor
             </div>
+            
+            <!-- Hidden field to track visitor count -->
+            <input type="hidden" name="visitor_count" value="{{ $visitorCount }}">
         </div>
 
         <!-- Remarks -->
@@ -428,251 +465,20 @@
 
 @push('scripts')
 <script>
-$(document).ready(function() {
-    console.log('✅ Add Visitor page loaded');
-
-    // ============================================
-    // STUDENT SELECT - UPDATE DISPLAY
-    // ============================================
-    $('#student_id').on('change', function() {
-        var selected = $(this).find('option:selected');
-        var studentName = selected.data('name') || '-';
-        var studentRoom = selected.data('room') || 'N/A';
-        var studentPhone = selected.data('phone') || 'N/A';
-        var studentCnic = selected.data('cnic') || 'N/A';
-        
-        $('#displayStudentName').text(studentName);
-        $('#displayStudentRoom').text(studentRoom);
-        $('#displayStudentPhone').text(studentPhone);
-        $('#displayStudentCnic').text(studentCnic);
-        
-        if ($(this).val()) {
-            $('#selectedStudentInfo').show();
-        } else {
-            $('#selectedStudentInfo').hide();
-        }
-    });
-
-    // ============================================
-    // ADD VISITOR - FIXED
-    // ============================================
-    $('#addVisitorBtn').on('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('✅ Add Visitor button clicked');
-        
-        // Get the current count of visitor cards
-        var totalVisitors = $('.visitor-item').length;
-        var newIndex = totalVisitors; // This will be the next index
-        
-        console.log('Current visitors:', totalVisitors, 'New index:', newIndex);
-        
-        var visitorNumber = totalVisitors + 1;
-        var badgeText = visitorNumber === 1 ? 'Primary' : 'Additional';
-        
-        var newVisitor = `
-            <div class="visitor-card visitor-item" data-index="${newIndex}">
-                <div class="visitor-number">
-                    <span><i class="fas fa-user"></i> Visitor #${visitorNumber}</span>
-                    <span class="badge">${badgeText}</span>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label" style="font-size:0.85rem;">Visitor Name <span class="required-star">*</span></label>
-                        <input type="text" class="form-control visitor-name" 
-                               name="visitors[${newIndex}][visitor_name]" 
-                               placeholder="Enter visitor name" required>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label" style="font-size:0.85rem;">Relationship <span class="required-star">*</span></label>
-                        <select class="form-control visitor-relationship" 
-                                name="visitors[${newIndex}][relationship]" required>
-                            <option value="">Select</option>
-                            <option value="Father">Father</option>
-                            <option value="Mother">Mother</option>
-                            <option value="Brother">Brother</option>
-                            <option value="Sister">Sister</option>
-                            <option value="Uncle">Uncle</option>
-                            <option value="Aunt">Aunt</option>
-                            <option value="Cousin">Cousin</option>
-                            <option value="Friend">Friend</option>
-                            <option value="Guardian">Guardian</option>
-                            <option value="Relative">Relative</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label" style="font-size:0.85rem;">CNIC Number</label>
-                        <input type="text" class="form-control visitor-cnic" 
-                               name="visitors[${newIndex}][cnic_number]" 
-                               placeholder="35201-1234567-8">
-                    </div>
-                    <div class="col-md-6 mb-2">
-                        <label class="form-label" style="font-size:0.85rem;">Phone Number</label>
-                        <input type="tel" class="form-control visitor-phone" 
-                               name="visitors[${newIndex}][phone_number]" 
-                               placeholder="0300-1234567">
-                    </div>
-                </div>
-                <div class="text-end mt-2">
-                    <button type="button" class="btn-remove-visitor removeVisitorBtn">
-                        <i class="fas fa-trash"></i> Remove
-                    </button>
-                </div>
-            </div>
-        `;
-        
-        $('#visitorsContainer').append(newVisitor);
-        
-        // Auto-capitalize name for the new visitor
-        $('.visitor-name').last().on('blur', function() {
-            $(this).val($(this).val().toUpperCase());
+// Simple JavaScript just for student selection display (no jQuery)
+document.addEventListener('DOMContentLoaded', function() {
+    var studentSelect = document.getElementById('student_id');
+    if (studentSelect) {
+        studentSelect.addEventListener('change', function() {
+            var selected = this.options[this.selectedIndex];
+            document.getElementById('displayStudentName').textContent = selected.dataset.name || '-';
+            document.getElementById('displayStudentRoom').textContent = selected.dataset.room || 'N/A';
+            document.getElementById('displayStudentPhone').textContent = selected.dataset.phone || 'N/A';
+            document.getElementById('displayStudentCnic').textContent = selected.dataset.cnic || 'N/A';
+            
+            document.getElementById('selectedStudentInfo').style.display = this.value ? 'block' : 'none';
         });
-        
-        console.log('✅ Visitor added, total:', $('.visitor-item').length);
-    });
-
-    // ============================================
-    // REMOVE VISITOR
-    // ============================================
-    $(document).on('click', '.removeVisitorBtn', function(e) {
-        e.preventDefault();
-        var card = $(this).closest('.visitor-card');
-        var count = $('.visitor-item').length;
-        
-        if (count <= 1) {
-            alert('At least one visitor is required.');
-            return;
-        }
-        
-        if (confirm('Remove this visitor?')) {
-            card.fadeOut(300, function() {
-                $(this).remove();
-                // Update indices after removal
-                updateVisitorIndices();
-            });
-        }
-    });
-
-    // ============================================
-    // UPDATE VISITOR INDICES - FIXED
-    // ============================================
-    function updateVisitorIndices() {
-        $('.visitor-item').each(function(index) {
-            var newIndex = index;
-            var visitorNumber = index + 1;
-            
-            // Update data-index
-            $(this).attr('data-index', newIndex);
-            
-            // Update visitor number display
-            $(this).find('.visitor-number span:first').html('<i class="fas fa-user"></i> Visitor #' + visitorNumber);
-            
-            // Update badge
-            if (visitorNumber === 1) {
-                $(this).find('.visitor-number .badge').text('Primary').show();
-            } else {
-                $(this).find('.visitor-number .badge').text('Additional');
-            }
-            
-            // Update all input names to match new index
-            $(this).find('input, select').each(function() {
-                var name = $(this).attr('name');
-                if (name) {
-                    var newName = name.replace(/visitors\[\d+\]/g, 'visitors[' + newIndex + ']');
-                    $(this).attr('name', newName);
-                    console.log('Updated name:', name, '→', newName);
-                }
-            });
-        });
-        
-        console.log('✅ Visitor indices updated, total:', $('.visitor-item').length);
     }
-
-    // ============================================
-    // AUTO-CAPITALIZE VISITOR NAME
-    // ============================================
-    $(document).on('blur', '.visitor-name', function() {
-        $(this).val($(this).val().toUpperCase());
-    });
-
-    // ============================================
-    // FORMAT CNIC
-    // ============================================
-    $(document).on('input', '.visitor-cnic', function() {
-        var value = $(this).val().replace(/\D/g, '');
-        if (value.length > 0) {
-            if (value.length <= 5) {
-                $(this).val(value);
-            } else if (value.length <= 12) {
-                $(this).val(value.slice(0, 5) + '-' + value.slice(5));
-            } else {
-                $(this).val(value.slice(0, 5) + '-' + value.slice(5, 12) + '-' + value.slice(12, 13));
-            }
-        }
-    });
-
-    // ============================================
-    // FORMAT PHONE
-    // ============================================
-    $(document).on('input', '.visitor-phone', function() {
-        var value = $(this).val().replace(/\D/g, '');
-        if (value.length > 0) {
-            if (value.length <= 4) {
-                $(this).val(value);
-            } else if (value.length <= 7) {
-                $(this).val(value.slice(0, 4) + '-' + value.slice(4));
-            } else {
-                $(this).val(value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11));
-            }
-        }
-    });
-
-    // ============================================
-    // FORM SUBMISSION VALIDATION
-    // ============================================
-    $('#addVisitorForm').on('submit', function(e) {
-        // Check if student is selected
-        if (!$('#student_id').val()) {
-            e.preventDefault();
-            alert('Please select a student from the dropdown.');
-            $('#student_id').focus();
-            return false;
-        }
-
-        var hasError = false;
-        var firstError = null;
-
-        // Validate each visitor
-        $('.visitor-item').each(function() {
-            var name = $(this).find('.visitor-name').val().trim();
-            var relationship = $(this).find('.visitor-relationship').val();
-            
-            if (!name) {
-                hasError = true;
-                if (!firstError) firstError = $(this).find('.visitor-name');
-                $(this).find('.visitor-name').addClass('is-invalid');
-            } else {
-                $(this).find('.visitor-name').removeClass('is-invalid');
-            }
-            
-            if (!relationship) {
-                hasError = true;
-                if (!firstError) firstError = $(this).find('.visitor-relationship');
-                $(this).find('.visitor-relationship').addClass('is-invalid');
-            } else {
-                $(this).find('.visitor-relationship').removeClass('is-invalid');
-            }
-        });
-
-        if (hasError) {
-            e.preventDefault();
-            alert('Please fill in all required fields for each visitor.');
-            if (firstError) {
-                firstError.focus();
-            }
-        }
-    });
 });
 </script>
 @endpush

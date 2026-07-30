@@ -3,126 +3,146 @@
 namespace App\Http\Controllers;
 
 use App\Models\Visitor;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Student;
+
 class VisitorController extends Controller
 {
-   /**
- * Display a listing of visitors.
- */
-public function index(Request $request)
-{
-    $query = Visitor::query();
+    /**
+     * Display a listing of visitors.
+     */
+    public function index(Request $request)
+    {
+        $query = Visitor::query();
 
-    // Search
-    if ($request->has('search') && !empty($request->search)) {
-        $query->search($request->search);
+        // Search
+        if ($request->has('search') && !empty($request->search)) {
+            $query->search($request->search);
+        }
+
+        // Filter by date
+        if ($request->has('date') && !empty($request->date)) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $visitors = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Statistics
+        $totalVisitors = Visitor::count();
+        $todayVisitors = Visitor::whereDate('created_at', today())->count();
+        $totalVisitorsCount = Visitor::sum('number_of_visitors');
+
+        return view('Pages.Admin.vistors_records', compact(
+            'visitors',
+            'totalVisitors',
+            'todayVisitors',
+            'totalVisitorsCount'
+        ));
     }
-
-    // Filter by status
-    if ($request->has('status') && !empty($request->status)) {
-        $query->where('status', $request->status);
-    }
-
-    // Filter by date
-    if ($request->has('date') && !empty($request->date)) {
-        $query->whereDate('created_at', $request->date);
-    }
-
-    $visitors = $query->orderBy('created_at', 'desc')->paginate(10);
-
-    // Statistics - Removed checkedOutVisitors
-    $totalVisitors = Visitor::count();
-    $activeVisitors = Visitor::active()->count();
-    $todayVisitors = Visitor::whereDate('created_at', today())->count();
-    $totalVisitorsCount = Visitor::sum('number_of_visitors');
-
-    return view('Pages.Admin.vistors_records', compact(
-        'visitors',
-        'totalVisitors',
-        'activeVisitors',
-        'todayVisitors',
-        'totalVisitorsCount'
-    ));
-}
 
     /**
- * Show form to create new visitor with students list.
- */
-public function create()
-{
-    $students = Student::orderBy('student_name')->get(['id', 'student_name', 'father_name', 'room_number', 'phone_number', 'cnic_number']);
-    return view('Component.Admin.add_visitors', compact('students'));
-}
-/**
- * Store a newly created visitor.
- */
-public function store(Request $request)
-{
-    // Debug: Log the incoming data
-    \Log::info('Visitor Store Request Data:', $request->all());
-
-    $validator = Validator::make($request->all(), [
-        'student_id' => 'required|exists:students,id',
-        'visitors.*.visitor_name' => 'required|string|max:255',
-        'visitors.*.relationship' => 'required|string|max:50',
-        'visitors.*.cnic_number' => 'nullable|string|max:20',
-        'visitors.*.phone_number' => 'nullable|string|max:20',
-        'remarks' => 'nullable|string',
-    ]);
-
-    if ($validator->fails()) {
-        \Log::error('Validation failed:', $validator->errors()->toArray());
-        return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
+     * Show form to create new visitor with students list.
+     */
+    public function create(Request $request)
+    {
+        $students = Student::orderBy('student_name')->get(['id', 'student_name', 'father_name', 'room_number', 'phone_number', 'cnic_number']);
+        
+        // Check if we need to add more visitors
+        if ($request->has('add_more')) {
+            $visitorCount = old('visitor_count', 1) + 1;
+            return redirect()->back()->withInput(['visitor_count' => $visitorCount]);
+        }
+        
+        // Check if we need to remove a visitor
+        if ($request->has('remove_visitor')) {
+            $removeIndex = $request->remove_visitor;
+            $visitors = old('visitors', []);
+            if (isset($visitors[$removeIndex])) {
+                unset($visitors[$removeIndex]);
+                $visitors = array_values($visitors);
+            }
+            $visitorCount = count($visitors);
+            return redirect()->back()->withInput(['visitors' => $visitors, 'visitor_count' => $visitorCount]);
+        }
+        
+        return view('Component.Admin.add_visitors', compact('students'));
     }
 
-    try {
-        // Get all visitors from the array
-        $visitors = $request->visitors;
-        $numberOfVisitors = count($visitors);
+    /**
+     * Store a newly created visitor.
+     */
+    public function store(Request $request)
+    {
+        // Check if this is an "Add More" request
+        if ($request->has('add_more')) {
+            return redirect()->back()->withInput();
+        }
         
-        \Log::info('Number of visitors:', ['count' => $numberOfVisitors, 'visitors' => $visitors]);
-        
-        // Get student details
-        $student = \App\Models\Student::find($request->student_id);
-        
-        if (!$student) {
+        // Check if this is a "Remove" request
+        if ($request->has('remove_visitor')) {
+            return redirect()->back()->withInput();
+        }
+
+        // Log incoming data for debugging
+        \Log::info('Visitor Store Request:', $request->all());
+
+        $validator = Validator::make($request->all(), [
+            'student_id' => 'required|exists:students,id',
+            'visitors' => 'required|array|min:1',
+            'visitors.*.visitor_name' => 'required|string|max:255',
+            'visitors.*.relationship' => 'required|string|max:50',
+            'visitors.*.cnic_number' => 'nullable|string|max:20',
+            'visitors.*.phone_number' => 'nullable|string|max:20',
+            'remarks' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            \Log::error('Validation failed:', $validator->errors()->toArray());
             return redirect()->back()
-                ->with('error', 'Student not found.')
+                ->withErrors($validator)
                 ->withInput();
         }
 
-        // Create main visitor record
-        $visitor = Visitor::create([
-            'visitor_name' => $visitors[0]['visitor_name'] ?? 'N/A',
-            'cnic_number' => $visitors[0]['cnic_number'] ?? null,
-            'phone_number' => $visitors[0]['phone_number'] ?? null,
-            'student_name' => $student->student_name,
-            'student_phone' => $student->phone_number,
-            'student_room' => $student->room_number,
-            'student_cnic' => $student->cnic_number,
-            'number_of_visitors' => $numberOfVisitors,
-            'status' => 'active',
-            'check_in_time' => now(),
-            'check_in_by' => auth()->user()->name ?? 'System',
-            'remarks' => $request->remarks,
-        ]);
+        try {
+            $visitorsData = $request->visitors;
+            $numberOfVisitors = count($visitorsData);
+            
+            $student = Student::find($request->student_id);
+            
+            if (!$student) {
+                return redirect()->back()
+                    ->with('error', 'Student not found.')
+                    ->withInput();
+            }
 
-        \Log::info('Visitor created successfully:', ['id' => $visitor->id]);
+            // Create visitor record with JSON data
+            $visitor = Visitor::create([
+                'student_name' => $student->student_name,
+                'student_phone' => $student->phone_number,
+                'student_room' => $student->room_number,
+                'student_cnic' => $student->cnic_number,
+                'number_of_visitors' => $numberOfVisitors,
+                'visitor_details_json' => json_encode($visitorsData), // Store all visitors as JSON
+                'check_in_time' => now(),
+                'check_in_by' => auth()->user()->name ?? 'System',
+                'remarks' => $request->remarks,
+                'purpose_of_visit' => $request->purpose_of_visit ?? null,
+            ]);
 
-        return redirect()->route('visitors_records')
-            ->with('success', $numberOfVisitors . ' visitor(s) checked in successfully for ' . $student->student_name);
+            \Log::info('Visitor saved successfully:', ['id' => $visitor->id]);
 
-    } catch (\Exception $e) {
-        \Log::error('Error creating visitor:', ['error' => $e->getMessage()]);
-        return redirect()->back()
-            ->with('error', 'Failed to add visitor: ' . $e->getMessage())
-            ->withInput();
+            return redirect()->route('visitors_records')
+                ->with('success', $numberOfVisitors . ' visitor(s) checked in successfully for ' . $student->student_name);
+
+        } catch (\Exception $e) {
+            \Log::error('Error storing visitor:', ['error' => $e->getMessage()]);
+            return redirect()->back()
+                ->with('error', 'Failed to add visitor: ' . $e->getMessage())
+                ->withInput();
+        }
     }
-}
+
     /**
      * Display the specified visitor.
      */
@@ -130,9 +150,10 @@ public function store(Request $request)
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            return view('Component.Admin.view_visitor', compact('visitor'));
+            $visitorDetails = json_decode($visitor->visitor_details_json, true) ?? [];
+            return view('Component.Admin.view_visitor', compact('visitor', 'visitorDetails'));
         } catch (\Exception $e) {
-            return redirect()->route('visitors-records')
+            return redirect()->route('visitors_records')
                 ->with('error', 'Visitor not found');
         }
     }
@@ -144,9 +165,10 @@ public function store(Request $request)
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            return view('Component.Admin.edit_visitor', compact('visitor'));
+            $visitorDetails = json_decode($visitor->visitor_details_json, true) ?? [];
+            return view('Component.Admin.edit_visitor', compact('visitor', 'visitorDetails'));
         } catch (\Exception $e) {
-            return redirect()->route('visitors-records')
+            return redirect()->route('visitors_records')
                 ->with('error', 'Visitor not found');
         }
     }
@@ -157,11 +179,6 @@ public function store(Request $request)
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'visitor_name' => 'required|string|max:255',
-            'cnic_number' => 'nullable|string|max:20',
-            'phone_number' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'address' => 'nullable|string',
             'student_name' => 'required|string|max:255',
             'student_phone' => 'nullable|string|max:20',
             'student_room' => 'nullable|string|max:50',
@@ -172,6 +189,10 @@ public function store(Request $request)
             'remarks' => 'nullable|string',
             'id_proof_type' => 'nullable|string|max:50',
             'id_proof_number' => 'nullable|string|max:50',
+            'visitor_details.*.visitor_name' => 'required|string|max:255',
+            'visitor_details.*.relationship' => 'required|string|max:50',
+            'visitor_details.*.cnic_number' => 'nullable|string|max:20',
+            'visitor_details.*.phone_number' => 'nullable|string|max:20',
         ]);
 
         if ($validator->fails()) {
@@ -183,12 +204,8 @@ public function store(Request $request)
         try {
             $visitor = Visitor::findOrFail($id);
             
+            // Update main visitor record
             $visitor->update([
-                'visitor_name' => $request->visitor_name,
-                'cnic_number' => $request->cnic_number,
-                'phone_number' => $request->phone_number,
-                'email' => $request->email,
-                'address' => $request->address,
                 'student_name' => $request->student_name,
                 'student_phone' => $request->student_phone,
                 'student_room' => $request->student_room,
@@ -201,8 +218,15 @@ public function store(Request $request)
                 'id_proof_number' => $request->id_proof_number,
             ]);
 
-            return redirect()->route('visitors-records')
-                ->with('success', 'Visitor ' . $visitor->visitor_name . ' updated successfully!');
+            // Update visitor details JSON
+            if ($request->has('visitor_details')) {
+                $visitor->update([
+                    'visitor_details_json' => json_encode($request->visitor_details)
+                ]);
+            }
+
+            return redirect()->route('visitors_records')
+                ->with('success', 'Visitor record updated successfully!');
 
         } catch (\Exception $e) {
             return redirect()->back()
@@ -218,39 +242,16 @@ public function store(Request $request)
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            $visitorName = $visitor->visitor_name;
+            $visitorDetails = json_decode($visitor->visitor_details_json, true) ?? [];
+            $visitorName = $visitorDetails[0]['visitor_name'] ?? 'Unknown';
             $visitor->delete();
 
-            return redirect()->route('visitors-records')
-                ->with('success', 'Visitor ' . $visitorName . ' deleted successfully!');
+            return redirect()->route('visitors_records')
+                ->with('success', 'Visitor record deleted successfully!');
 
         } catch (\Exception $e) {
-            return redirect()->route('visitors-records')
+            return redirect()->route('visitors_records')
                 ->with('error', 'Failed to delete visitor: ' . $e->getMessage());
-        }
-    }
-
-    /**
-     * Check out a visitor.
-     */
-    public function checkOut(Request $request, $id)
-    {
-        try {
-            $visitor = Visitor::findOrFail($id);
-            
-            if ($visitor->isCheckedOut()) {
-                return redirect()->back()
-                    ->with('error', 'Visitor is already checked out.');
-            }
-
-            $visitor->checkOut();
-
-            return redirect()->route('visitors-records')
-                ->with('success', 'Visitor ' . $visitor->visitor_name . ' checked out successfully!');
-
-        } catch (\Exception $e) {
-            return redirect()->route('visitors-records')
-                ->with('error', 'Failed to check out visitor: ' . $e->getMessage());
         }
     }
 
@@ -261,8 +262,6 @@ public function store(Request $request)
     {
         $stats = [
             'total' => Visitor::count(),
-            'active' => Visitor::active()->count(),
-            'checked_out' => Visitor::checkedOut()->count(),
             'today' => Visitor::whereDate('created_at', today())->count(),
             'total_visitors' => Visitor::sum('number_of_visitors'),
         ];
@@ -271,15 +270,5 @@ public function store(Request $request)
             'success' => true,
             'data' => $stats
         ]);
-    }
-
-    /**
-     * Export visitors to CSV.
-     */
-    public function export()
-    {
-        $visitors = Visitor::all();
-        // Implement CSV export logic
-        return redirect()->back()->with('success', 'Export started!');
     }
 }
