@@ -5,74 +5,45 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Models\Student;
+use App\Models\VisitorDetail;
 class Visitor extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'student_id',
         'student_name',
-        'student_phone',
         'student_room',
-        'student_cnic',
         'number_of_visitors',
-        'purpose_of_visit',
-        'relationship_with_student',
+        'visitor_details_json',
         'check_in_time',
         'check_in_by',
         'remarks',
-        'id_proof_type',
-        'id_proof_number',
-        'is_verified',
-        'verified_at',
-        'verified_by',
     ];
 
     protected $casts = [
         'check_in_time' => 'datetime',
-        'verified_at' => 'datetime',
-        'is_verified' => 'boolean',
         'number_of_visitors' => 'integer',
+        'visitor_details_json' => 'array',
     ];
 
-    // RELATIONSHIP WITH VISITOR DETAILS
-    public function visitorDetails()
+    // Relationship with Student
+    public function student()
     {
-        return $this->hasMany(VisitorDetail::class);
+        return $this->belongsTo(Student::class);
     }
 
-    // Get primary visitor
-    public function getPrimaryVisitorAttribute()
+    // Get visitor details as array
+    public function getVisitorDetailsAttribute()
     {
-        return $this->visitorDetails->first();
+        return json_decode($this->visitor_details_json, true) ?? [];
     }
 
-    // Get all visitor names as comma separated
-    public function getVisitorNamesAttribute()
+    // Get primary visitor name
+    public function getPrimaryVisitorNameAttribute()
     {
-        return $this->visitorDetails->pluck('visitor_name')->implode(', ');
+        $details = $this->getVisitorDetailsAttribute();
+        return $details[0]['visitor_name'] ?? 'Unknown';
     }
-
-    // Scopes
-    public function scopeSearch($query, $search)
-    {
-        return $query->where('student_name', 'LIKE', "%{$search}%")
-                     ->orWhere('student_room', 'LIKE', "%{$search}%")
-                     ->orWhereHas('visitorDetails', function($q) use ($search) {
-                         $q->where('visitor_name', 'LIKE', "%{$search}%")
-                           ->orWhere('cnic_number', 'LIKE', "%{$search}%")
-                           ->orWhere('phone_number', 'LIKE', "%{$search}%");
-                     });
-    }
-    // Add this accessor to get visitor details as array
-public function getVisitorDetailsListAttribute()
-{
-    return json_decode($this->visitor_details_json, true) ?? [];
-}
-
-// Add this mutator to set visitor details
-public function setVisitorDetailsListAttribute($value)
-{
-    $this->attributes['visitor_details_json'] = json_encode($value);
-}
 }

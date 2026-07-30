@@ -2,483 +2,721 @@
 
 @section('content')
 <style>
-    /* Same CSS as before */
-    .visitor-form-container {
-        max-width: 800px;
-        margin: 0 auto;
-        background: white;
+    /* ===== MODERN DARK BLUE THEME ===== */
+    .visitor-card {
+        border: none;
         border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
-        border: 1px solid #f0f2f5;
-    }
-    .visitor-form-container h4 {
-        color: #0b1a33;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-    .visitor-form-container .sub-title {
-        color: #94a3b8;
-        font-size: 0.95rem;
-        margin-bottom: 25px;
-    }
-    .form-label {
-        font-weight: 600;
-        color: #0b1a33;
-        font-size: 0.9rem;
-    }
-    .form-control {
-        border: 2px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 10px 14px;
-        font-size: 0.95rem;
-        transition: all 0.2s ease;
-    }
-    .form-control:focus {
-        border-color: #4F46E5;
-        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
-    }
-    .form-control.is-invalid {
-        border-color: #EF4444;
-    }
-    .invalid-feedback {
-        font-size: 0.8rem;
-        color: #EF4444;
-        margin-top: 4px;
-    }
-    .btn-submit {
-        background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
-        color: white !important;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 1rem;
-        width: 100%;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
-    }
-    .btn-submit:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
-        color: white !important;
-    }
-    .btn-cancel {
-        background: #f1f3f5;
-        color: #495057 !important;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 10px;
-        font-weight: 600;
-        width: 100%;
-        transition: all 0.2s ease;
-        text-decoration: none;
-        display: inline-block;
-        text-align: center;
-    }
-    .btn-cancel:hover {
-        background: #e9ecef;
-        color: #2c3e50 !important;
-        text-decoration: none;
-    }
-    .btn-add-visitor {
-        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-        color: white !important;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
-        cursor: pointer;
-    }
-    .btn-add-visitor:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
-        color: white !important;
-    }
-    .btn-remove-visitor {
-        background: #FEF2F2;
-        color: #EF4444 !important;
-        border: 2px solid #EF4444;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.85rem;
-    }
-    .btn-remove-visitor:hover {
-        background: #EF4444;
-        color: white !important;
-        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        margin-top: 10px;
     }
 
-    .form-section {
-        background: #f8fafc;
-        border-radius: 12px;
-        padding: 18px 20px;
-        margin-bottom: 20px;
-        border: 1px solid #eef2f6;
+    .visitor-card .card-header {
+        background: linear-gradient(135deg, #0f1a2e 0%, #1a2a4a 100%);
+        padding: 18px 28px;
+        border: none;
     }
-    .form-section .section-title {
+
+    .visitor-card .card-header h5 {
+        color: #ffffff;
         font-weight: 600;
-        color: #0b1a33;
-        font-size: 0.9rem;
-        margin-bottom: 12px;
+        font-size: 1rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
-    .form-section .section-title i {
-        color: #4F46E5;
-        margin-right: 8px;
+
+    .visitor-card .card-header h5 i {
+        color: #60a5fa;
+        font-size: 1.2rem;
     }
-    .required-star {
-        color: #EF4444;
+
+    .visitor-card .card-header .badge-header {
+        background: rgba(255, 255, 255, 0.12);
+        color: #93bbfc;
+        font-size: 0.65rem;
+        font-weight: 500;
+        padding: 4px 14px;
+        border-radius: 20px;
+        margin-left: auto;
+        letter-spacing: 0.3px;
+    }
+
+    .visitor-card .card-body {
+        padding: 28px;
+        background: #f8faff;
+    }
+
+    /* Form Labels */
+    .form-label-modern {
+        font-weight: 600;
+        font-size: 0.82rem;
+        color: #1a2a4a;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .form-label-modern .required {
+        color: #ef4444;
         margin-left: 2px;
     }
-    .visitor-card {
-        background: white;
+
+    .form-label-modern .label-icon {
+        width: 18px;
+        color: #1a2a4a;
+        margin-right: 4px;
+    }
+
+    /* Form Controls */
+    .form-control-modern {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 16px;
+        font-size: 0.88rem;
+        color: #1a2a4a;
+        width: 100%;
+        transition: all 0.25s ease;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-control-modern:focus {
+        border-color: #1a2a4a;
+        box-shadow: 0 0 0 4px rgba(26, 42, 74, 0.08);
+        outline: none;
+    }
+
+    .form-control-modern.is-invalid {
+        border-color: #ef4444;
+    }
+
+    .form-control-modern::placeholder {
+        color: #94a3b8;
+        font-size: 0.84rem;
+    }
+
+    select.form-control-modern {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231a2a4a' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 40px;
+        cursor: pointer;
+    }
+
+    textarea.form-control-modern {
+        resize: vertical;
+        min-height: 60px;
+    }
+
+    /* Visitor Box */
+    .visitor-box {
+        background: #ffffff;
+        border: 1.5px solid #e8edf5;
         border-radius: 12px;
         padding: 18px 20px;
-        margin-bottom: 15px;
-        border: 1px solid #e2e8f0;
-        position: relative;
-        transition: all 0.3s ease;
-    }
-    .visitor-card:hover {
-        border-color: #4F46E5;
-        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
-    }
-    .visitor-card .visitor-number {
-        font-weight: 700;
-        color: #4F46E5;
-        font-size: 0.85rem;
         margin-bottom: 12px;
+        transition: all 0.25s ease;
+    }
+
+    .visitor-box:hover {
+        border-color: #1a2a4a;
+        box-shadow: 0 4px 16px rgba(26, 42, 74, 0.06);
+        transform: translateY(-1px);
+    }
+
+    .visitor-box .box-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-    .visitor-card .visitor-number .badge {
-        background: #EEF2FF;
-        color: #4F46E5;
-        padding: 2px 12px;
-        border-radius: 12px;
-        font-size: 0.75rem;
-    }
-    .visitor-card .row {
-        margin-bottom: 0;
-    }
-    .visitor-card .col-md-6 {
-        margin-bottom: 10px;
+        margin-bottom: 14px;
+        padding-bottom: 10px;
+        border-bottom: 1.5px dashed #eef2f8;
     }
 
-    .selected-student-info {
-        background: #EEF2FF;
-        border-radius: 10px;
-        padding: 12px 16px;
-        border: 1px solid #4F46E5;
-        display: none;
-    }
-    .selected-student-info .info-label {
-        font-size: 0.7rem;
-        color: #94a3b8;
-        text-transform: uppercase;
-        font-weight: 600;
-    }
-    .selected-student-info .info-value {
-        font-weight: 600;
-        color: #0b1a33;
-    }
-
-    .section-header-actions {
+    .visitor-box .box-header .title {
+        font-weight: 700;
+        font-size: 0.88rem;
+        color: #1a2a4a;
         display: flex;
         align-items: center;
         gap: 10px;
-        flex-wrap: wrap;
     }
 
-    .form-actions {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-    .form-actions .btn {
-        flex: 1;
-        min-width: 150px;
+    .visitor-box .box-header .title i {
+        color: #1a2a4a;
+        font-size: 1rem;
     }
 
-    .visitor-counter {
-        display: inline-block;
-        margin-left: 10px;
-        padding: 5px 12px;
-        background: #4F46E5;
-        color: white;
+    .visitor-box .box-header .badge-primary {
+        background: #1a2a4a;
+        color: #fff;
+        font-size: 0.58rem;
+        font-weight: 600;
+        padding: 2px 14px;
         border-radius: 20px;
-        font-size: 0.8rem;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
     }
 
+    .visitor-box .box-header .badge-additional {
+        background: #eef2f8;
+        color: #5a6a8a;
+        font-size: 0.58rem;
+        font-weight: 600;
+        padding: 2px 14px;
+        border-radius: 20px;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+    }
+
+    .visitor-box .form-label-modern {
+        font-size: 0.74rem;
+        color: #4a5a7a;
+    }
+
+    .visitor-box .form-control-modern {
+        padding: 7px 14px;
+        font-size: 0.84rem;
+    }
+
+    .visitor-box .row {
+        margin-left: -6px;
+        margin-right: -6px;
+    }
+
+    .visitor-box .row>[class*="col-"] {
+        padding-left: 6px;
+        padding-right: 6px;
+    }
+
+    /* Buttons */
+    .btn-add-visitor {
+        background: #1a2a4a;
+        color: #ffffff;
+        border: none;
+        padding: 6px 20px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.82rem;
+        transition: all 0.25s ease;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+        box-shadow: 0 2px 8px rgba(26, 42, 74, 0.15);
+    }
+
+    .btn-add-visitor:hover {
+        background: #0f1a2e;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 42, 74, 0.2);
+    }
+
+    .btn-add-visitor i {
+        font-size: 0.9rem;
+    }
+
+    .btn-remove {
+        background: #fef2f2;
+        color: #ef4444;
+        border: 1.5px solid #ef4444;
+        padding: 3px 14px;
+        border-radius: 8px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        transition: all 0.25s ease;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .btn-remove:hover {
+        background: #ef4444;
+        color: #ffffff;
+        transform: scale(1.02);
+    }
+
+    .btn-remove i {
+        font-size: 0.7rem;
+    }
+
+    .btn-cancel-modern {
+        background: #f1f4f9;
+        color: #1a2a4a;
+        border: none;
+        padding: 10px 28px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all 0.25s ease;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .btn-cancel-modern:hover {
+        background: #e5e9f0;
+        color: #0f1a2e;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    .btn-save-modern {
+        background: linear-gradient(135deg, #1a2a4a 0%, #0f1a2e 100%);
+        color: #ffffff;
+        border: none;
+        padding: 10px 32px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all 0.25s ease;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        justify-content: center;
+        box-shadow: 0 2px 12px rgba(26, 42, 74, 0.15);
+    }
+
+    .btn-save-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(26, 42, 74, 0.25);
+        color: #ffffff;
+    }
+
+    /* Counter */
+    .visitor-counter {
+        background: #eef2f8;
+        color: #1a2a4a;
+        padding: 0px 12px;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        margin-left: 6px;
+        display: inline-block;
+    }
+
+    /* Action Row */
+    .action-row {
+        display: flex;
+        gap: 14px;
+        margin-top: 6px;
+    }
+
+    /* Small Text */
+    .text-danger {
+        color: #ef4444 !important;
+    }
+
+    .small {
+        font-size: 0.72rem;
+    }
+
+    .mt-1 {
+        margin-top: 4px;
+    }
+
+    /* Hide remove button for primary visitor */
+    .visitor-box:first-child .removeVisitorBtn {
+        display: none !important;
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-        .visitor-form-container {
-            padding: 20px;
+        .visitor-card .card-body {
+            padding: 18px;
         }
-        .visitor-card .col-md-6 {
-            margin-bottom: 8px;
+
+        .visitor-box {
+            padding: 14px 16px;
         }
-        .btn-add-visitor {
-            width: 100%;
-            justify-content: center;
-        }
-        .btn-remove-visitor {
-            width: 100%;
-            justify-content: center;
-        }
-        .selected-student-info .row {
-            flex-direction: column;
+
+        .visitor-box .box-header {
+            flex-wrap: wrap;
             gap: 8px;
         }
-        .section-header-actions {
-            flex-direction: column;
-            width: 100%;
-        }
-        .section-header-actions .btn-add-visitor {
-            width: 100%;
-        }
-        .form-actions {
+
+        .action-row {
             flex-direction: column;
         }
-        .form-actions .btn {
+
+        .btn-save-modern {
+            flex: none;
             width: 100%;
+            justify-content: center;
+        }
+
+        .btn-cancel-modern {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-add-visitor {
+            font-size: 0.75rem;
+            padding: 5px 14px;
+        }
+
+        .visitor-card .card-header .badge-header {
+            display: none;
+        }
+
+        .visitor-card .card-header {
+            padding: 14px 20px;
         }
     }
 </style>
 
-<div class="visitor-form-container">
-    <div>
-        <h4><i class="fas fa-user-plus text-primary"></i> Add New Visitor</h4>
-        <div class="sub-title">Register a new visitor entry for a student</div>
-    </div>
-
-    <form action="{{ route('visitor.store') }}" method="POST" id="addVisitorForm">
-        @csrf
-
-        <!-- Student Information -->
-        <div class="form-section">
-            <div class="section-title">
-                <i class="fas fa-user-graduate"></i> Student Information
-            </div>
-            <div class="row">
-                <div class="col-12 mb-3">
-                    <label for="student_id" class="form-label">Select Student <span class="required-star">*</span></label>
-                    <select class="form-control @error('student_id') is-invalid @enderror" 
-                            id="student_id" name="student_id" required>
-                        <option value="">-- Select Student --</option>
-                        @foreach($students as $student)
-                            <option value="{{ $student->id }}" 
-                                    data-name="{{ $student->student_name }}"
-                                    data-room="{{ $student->room_number ?? 'N/A' }}"
-                                    data-phone="{{ $student->phone_number ?? 'N/A' }}"
-                                    data-cnic="{{ $student->cnic_number ?? 'N/A' }}"
-                                    {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                                {{ $student->student_name }} 
-                                @if($student->father_name)
-                                    ({{ $student->father_name }})
-                                @endif
-                                @if($student->room_number)
-                                    - Room: {{ $student->room_number }}
-                                @endif
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('student_id')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-            </div>
-
-            <div class="selected-student-info" id="selectedStudentInfo" 
-                 style="display:{{ old('student_id') ? 'block' : 'none' }};">
-                <div class="row">
-                    <div class="col-md-3 col-6">
-                        <div class="info-label">Student Name</div>
-                        <div class="info-value" id="displayStudentName">-</div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="info-label">Room</div>
-                        <div class="info-value" id="displayStudentRoom">N/A</div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="info-label">Phone</div>
-                        <div class="info-value" id="displayStudentPhone">N/A</div>
-                    </div>
-                    <div class="col-md-3 col-6">
-                        <div class="info-label">CNIC</div>
-                        <div class="info-value" id="displayStudentCnic">N/A</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Visitors List -->
-        <div class="form-section">
-            <div class="section-title">
-                <div class="section-header-actions">
-                    <span>
-                        <i class="fas fa-users"></i> Visitors List 
-                        <span class="visitor-counter" id="visitorCounter">
-                            {{ old('visitor_count', 1) }}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="visitor-card card">
+                <!-- Header -->
+                <div class="card-header">
+                    <h5>
+                        <i class="fas fa-user-plus"></i>
+                        Register Visitors
+                        <span class="badge-header">
+                            <i class="far fa-clock"></i> {{ now()->format('d M Y, h:i A') }}
                         </span>
-                    </span>
-                    
-                    <!-- This button submits the form with a parameter to add more visitors -->
-                    <button type="submit" name="add_more" value="1" class="btn-add-visitor" id="addVisitorBtn">
-                        <i class="fas fa-plus-circle"></i> Add Visitor
-                    </button>
+                    </h5>
                 </div>
-            </div>
 
-            <div id="visitorsContainer">
-                @php
-                    // Get the number of visitors from old input or default to 1
-                    $visitorCount = old('visitor_count', 1);
-                    
-                    // If there are validation errors, use the count from the request
-                    if (old('visitors')) {
-                        $visitorCount = count(old('visitors'));
-                    }
-                @endphp
+                <!-- Body -->
+                <div class="card-body">
+                    <form action="{{ route('visitor.store') }}" method="POST" id="visitorForm">
+                        @csrf
 
-                @for($i = 0; $i < $visitorCount; $i++)
-                    <div class="visitor-card visitor-item" data-index="{{ $i }}">
-                        <div class="visitor-number">
-                            <span><i class="fas fa-user"></i> Visitor #{{ $i + 1 }}</span>
-                            <span class="badge">{{ $i == 0 ? 'Primary' : 'Additional' }}</span>
+                        <!-- Student Selection -->
+                        <div class="form-group mb-4">
+                            <label class="form-label-modern">
+                                <i class="fas fa-user-graduate label-icon"></i>
+                                Select Student <span class="required">*</span>
+                            </label>
+                            <select class="form-control-modern @error('student_id') is-invalid @enderror"
+                                    name="student_id" id="student_id" required>
+                                <option value="">-- Select Student --</option>
+                                @foreach($students as $student)
+                                    <option value="{{ $student->id }}"
+                                            {{ old('student_id') == $student->id ? 'selected' : '' }}>
+                                        {{ $student->student_name }}
+                                        @if($student->room_number)
+                                            (Room: {{ $student->room_number }})
+                                        @endif
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('student_id')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="row">
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label" style="font-size:0.85rem;">Visitor Name <span class="required-star">*</span></label>
-                                <input type="text" class="form-control visitor-name @error('visitors.'.$i.'.visitor_name') is-invalid @enderror" 
-                                       name="visitors[{{ $i }}][visitor_name]" 
-                                       placeholder="Enter visitor name" 
-                                       value="{{ old('visitors.'.$i.'.visitor_name') }}" required>
-                                @error('visitors.'.$i.'.visitor_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label" style="font-size:0.85rem;">Relationship <span class="required-star">*</span></label>
-                                <select class="form-control visitor-relationship @error('visitors.'.$i.'.relationship') is-invalid @enderror" 
-                                        name="visitors[{{ $i }}][relationship]" required>
-                                    <option value="">Select</option>
-                                    <option value="Father" {{ old('visitors.'.$i.'.relationship') == 'Father' ? 'selected' : '' }}>Father</option>
-                                    <option value="Mother" {{ old('visitors.'.$i.'.relationship') == 'Mother' ? 'selected' : '' }}>Mother</option>
-                                    <option value="Brother" {{ old('visitors.'.$i.'.relationship') == 'Brother' ? 'selected' : '' }}>Brother</option>
-                                    <option value="Sister" {{ old('visitors.'.$i.'.relationship') == 'Sister' ? 'selected' : '' }}>Sister</option>
-                                    <option value="Uncle" {{ old('visitors.'.$i.'.relationship') == 'Uncle' ? 'selected' : '' }}>Uncle</option>
-                                    <option value="Aunt" {{ old('visitors.'.$i.'.relationship') == 'Aunt' ? 'selected' : '' }}>Aunt</option>
-                                    <option value="Cousin" {{ old('visitors.'.$i.'.relationship') == 'Cousin' ? 'selected' : '' }}>Cousin</option>
-                                    <option value="Friend" {{ old('visitors.'.$i.'.relationship') == 'Friend' ? 'selected' : '' }}>Friend</option>
-                                    <option value="Guardian" {{ old('visitors.'.$i.'.relationship') == 'Guardian' ? 'selected' : '' }}>Guardian</option>
-                                    <option value="Relative" {{ old('visitors.'.$i.'.relationship') == 'Relative' ? 'selected' : '' }}>Relative</option>
-                                    <option value="Other" {{ old('visitors.'.$i.'.relationship') == 'Other' ? 'selected' : '' }}>Other</option>
-                                </select>
-                                @error('visitors.'.$i.'.relationship')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label" style="font-size:0.85rem;">CNIC Number</label>
-                                <input type="text" class="form-control visitor-cnic @error('visitors.'.$i.'.cnic_number') is-invalid @enderror" 
-                                       name="visitors[{{ $i }}][cnic_number]" 
-                                       placeholder="35201-1234567-8" 
-                                       value="{{ old('visitors.'.$i.'.cnic_number') }}">
-                                @error('visitors.'.$i.'.cnic_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6 mb-2">
-                                <label class="form-label" style="font-size:0.85rem;">Phone Number</label>
-                                <input type="tel" class="form-control visitor-phone @error('visitors.'.$i.'.phone_number') is-invalid @enderror" 
-                                       name="visitors[{{ $i }}][phone_number]" 
-                                       placeholder="0300-1234567" 
-                                       value="{{ old('visitors.'.$i.'.phone_number') }}">
-                                @error('visitors.'.$i.'.phone_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        @if($i > 0)
-                            <div class="text-end mt-2">
-                                <button type="submit" name="remove_visitor" value="{{ $i }}" class="btn-remove-visitor">
-                                    <i class="fas fa-trash"></i> Remove
+
+                        <!-- Visitors List -->
+                        <div class="form-group mb-4">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                                <label class="form-label-modern mb-0">
+                                    <i class="fas fa-users label-icon"></i>
+                                    Visitors List
+                                    <span class="visitor-counter" id="visitorCountDisplay">1</span>
+                                </label>
+                                <button type="button" class="btn-add-visitor" id="addVisitorBtn">
+                                    <i class="fas fa-plus-circle"></i> Add Visitor
                                 </button>
                             </div>
-                        @endif
-                    </div>
-                @endfor
-            </div>
-            
-            <!-- Hidden field to track visitor count -->
-            <input type="hidden" name="visitor_count" value="{{ $visitorCount }}">
-        </div>
 
-        <!-- Remarks -->
-        <div class="form-section">
-            <div class="section-title">
-                <i class="fas fa-sticky-note"></i> Additional Notes
-            </div>
-            <div class="row">
-                <div class="col-12 mb-3">
-                    <label for="remarks" class="form-label">Remarks</label>
-                    <textarea class="form-control @error('remarks') is-invalid @enderror" 
-                              id="remarks" name="remarks" rows="2" 
-                              placeholder="Any additional notes...">{{ old('remarks') }}</textarea>
-                    @error('remarks')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                            <div id="visitorsContainer">
+                                <!-- Default Visitor (Always 1) -->
+                                <div class="visitor-box" data-index="0">
+                                    <div class="box-header">
+                                        <span class="title">
+                                            <i class="fas fa-user-circle"></i>
+                                            Visitor #1
+                                            <span class="badge-primary">Primary</span>
+                                        </span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label-modern">
+                                                Full Name <span class="required">*</span>
+                                            </label>
+                                            <input type="text" class="form-control-modern" 
+                                                   name="visitors[0][visitor_name]"
+                                                   placeholder="Enter full name" 
+                                                   value="{{ old('visitors.0.visitor_name') }}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label-modern">
+                                                Relationship <span class="required">*</span>
+                                            </label>
+                                            <select class="form-control-modern" 
+                                                    name="visitors[0][relationship]" required>
+                                                <option value="">Select</option>
+                                                <option value="Father">Father</option>
+                                                <option value="Mother">Mother</option>
+                                                <option value="Brother">Brother</option>
+                                                <option value="Sister">Sister</option>
+                                                <option value="Uncle">Uncle</option>
+                                                <option value="Aunt">Aunt</option>
+                                                <option value="Cousin">Cousin</option>
+                                                <option value="Friend">Friend</option>
+                                                <option value="Guardian">Guardian</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label-modern">
+                                                <i class="far fa-id-card"></i> CNIC
+                                            </label>
+                                            <input type="text" class="form-control-modern" 
+                                                   name="visitors[0][cnic_number]"
+                                                   placeholder="35201-1234567-8" 
+                                                   value="{{ old('visitors.0.cnic_number') }}">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label-modern">
+                                                <i class="fas fa-phone"></i> Phone
+                                            </label>
+                                            <input type="text" class="form-control-modern" 
+                                                   name="visitors[0][phone_number]"
+                                                   placeholder="0300-1234567" 
+                                                   value="{{ old('visitors.0.phone_number') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="visitor_count" id="visitorCount" value="1">
+                        </div>
+
+                        <!-- Remarks -->
+                        <div class="form-group mb-4">
+                            <label class="form-label-modern">
+                                <i class="fas fa-pen label-icon"></i> Remarks
+                            </label>
+                            <textarea class="form-control-modern @error('remarks') is-invalid @enderror"
+                                      name="remarks" rows="2"
+                                      placeholder="Any additional notes...">{{ old('remarks') }}</textarea>
+                            @error('remarks')
+                                <div class="text-danger small mt-1">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="action-row">
+                            <a href="{{ route('visitors_records') }}" class="btn-cancel-modern">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn-save-modern" id="submitBtn">
+                                <i class="fas fa-save"></i> Save Record
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <!-- Form Actions -->
-        <div class="row mt-3">
-            <div class="col-md-12 mb-2">
-                <div class="form-actions">
-                    <a href="{{ route('visitors_records') }}" class="btn btn-cancel">
-                        <i class="fas fa-arrow-left"></i> Cancel
-                    </a>
-                    <button type="submit" class="btn btn-submit" id="submitBtn">
-                        <i class="fas fa-save"></i> Save Record
-                    </button>
-                </div>
-            </div>
-        </div>
-    </form>
+    </div>
 </div>
-
-@endsection
 
 @push('scripts')
 <script>
-// Simple JavaScript just for student selection display (no jQuery)
 document.addEventListener('DOMContentLoaded', function() {
-    var studentSelect = document.getElementById('student_id');
-    if (studentSelect) {
-        studentSelect.addEventListener('change', function() {
-            var selected = this.options[this.selectedIndex];
-            document.getElementById('displayStudentName').textContent = selected.dataset.name || '-';
-            document.getElementById('displayStudentRoom').textContent = selected.dataset.room || 'N/A';
-            document.getElementById('displayStudentPhone').textContent = selected.dataset.phone || 'N/A';
-            document.getElementById('displayStudentCnic').textContent = selected.dataset.cnic || 'N/A';
+
+    var addBtn = document.getElementById('addVisitorBtn');
+    var container = document.getElementById('visitorsContainer');
+    var countInput = document.getElementById('visitorCount');
+    var countDisplay = document.getElementById('visitorCountDisplay');
+
+    if (!addBtn) return;
+
+    // Add visitor
+    addBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var currentBoxes = container.querySelectorAll('.visitor-box');
+        var currentCount = currentBoxes.length;
+        var newIndex = currentCount;
+        var visitorNumber = currentCount + 1;
+
+        var newBox = document.createElement('div');
+        newBox.className = 'visitor-box';
+        newBox.setAttribute('data-index', newIndex);
+        newBox.innerHTML = `
+            <div class="box-header">
+                <span class="title">
+                    <i class="fas fa-user-circle"></i>
+                    Visitor #${visitorNumber}
+                    <span class="badge-additional">Additional</span>
+                </span>
+                <button type="button" class="btn-remove removeVisitorBtn">
+                    <i class="fas fa-trash-alt"></i> Remove
+                </button>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label-modern">
+                        Full Name <span class="required">*</span>
+                    </label>
+                    <input type="text" class="form-control-modern"
+                           name="visitors[${newIndex}][visitor_name]"
+                           placeholder="Enter full name" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-modern">
+                        Relationship <span class="required">*</span>
+                    </label>
+                    <select class="form-control-modern"
+                            name="visitors[${newIndex}][relationship]" required>
+                        <option value="">Select</option>
+                        <option value="Father">Father</option>
+                        <option value="Mother">Mother</option>
+                        <option value="Brother">Brother</option>
+                        <option value="Sister">Sister</option>
+                        <option value="Uncle">Uncle</option>
+                        <option value="Aunt">Aunt</option>
+                        <option value="Cousin">Cousin</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Guardian">Guardian</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-modern">
+                        <i class="far fa-id-card"></i> CNIC
+                    </label>
+                    <input type="text" class="form-control-modern"
+                           name="visitors[${newIndex}][cnic_number]"
+                           placeholder="35201-1234567-8">
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label-modern">
+                        <i class="fas fa-phone"></i> Phone
+                    </label>
+                    <input type="text" class="form-control-modern"
+                           name="visitors[${newIndex}][phone_number]"
+                           placeholder="0300-1234567">
+                </div>
+            </div>
+        `;
+
+        container.appendChild(newBox);
+        countInput.value = currentCount + 1;
+        countDisplay.textContent = currentCount + 1;
+    });
+
+    // Remove visitor - using event delegation
+    container.addEventListener('click', function(e) {
+        var removeBtn = e.target.closest('.removeVisitorBtn');
+        if (!removeBtn) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        var box = removeBtn.closest('.visitor-box');
+        var boxes = container.querySelectorAll('.visitor-box');
+
+        if (boxes.length <= 1) {
+            alert('At least one visitor is required.');
+            return;
+        }
+
+        if (confirm('Remove this visitor?')) {
+            box.remove();
+            reindexVisitors();
+        }
+    });
+
+    function reindexVisitors() {
+        var boxes = container.querySelectorAll('.visitor-box');
+
+        boxes.forEach(function(box, index) {
+            var newIndex = index;
+            var visitorNumber = index + 1;
+
+            box.setAttribute('data-index', newIndex);
+
+            var title = box.querySelector('.title');
+            if (title) {
+                var isPrimary = visitorNumber === 1;
+                title.innerHTML = `
+                    <i class="fas fa-user-circle"></i>
+                    Visitor #${visitorNumber}
+                    <span class="${isPrimary ? 'badge-primary' : 'badge-additional'}">
+                        ${isPrimary ? 'Primary' : 'Additional'}
+                    </span>
+                `;
+            }
+
+            // Update the remove button
+            var header = box.querySelector('.box-header');
+            var existingRemoveBtn = header.querySelector('.removeVisitorBtn');
             
-            document.getElementById('selectedStudentInfo').style.display = this.value ? 'block' : 'none';
+            if (isPrimary) {
+                if (existingRemoveBtn) {
+                    existingRemoveBtn.remove();
+                }
+            } else {
+                if (!existingRemoveBtn) {
+                    var removeBtn = document.createElement('button');
+                    removeBtn.type = 'button';
+                    removeBtn.className = 'btn-remove removeVisitorBtn';
+                    removeBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Remove';
+                    header.appendChild(removeBtn);
+                }
+            }
+
+            box.querySelectorAll('input, select').forEach(function(input) {
+                var name = input.getAttribute('name');
+                if (name) {
+                    var newName = name.replace(/visitors\[\d+\]/g, 'visitors[' + newIndex + ']');
+                    input.setAttribute('name', newName);
+                }
+            });
         });
+
+        countInput.value = boxes.length;
+        countDisplay.textContent = boxes.length;
     }
+
+    // Format CNIC
+    container.addEventListener('input', function(e) {
+        if (e.target.classList.contains('form-control-modern') && e.target.placeholder && e.target.placeholder.includes('35201')) {
+            var value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 5) {
+                    e.target.value = value;
+                } else if (value.length <= 12) {
+                    e.target.value = value.slice(0, 5) + '-' + value.slice(5);
+                } else {
+                    e.target.value = value.slice(0, 5) + '-' + value.slice(5, 12) + '-' + value.slice(12, 13);
+                }
+            }
+        }
+    });
+
+    // Format Phone
+    container.addEventListener('input', function(e) {
+        if (e.target.classList.contains('form-control-modern') && e.target.placeholder && e.target.placeholder.includes('0300')) {
+            var value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 4) {
+                    e.target.value = value;
+                } else if (value.length <= 7) {
+                    e.target.value = value.slice(0, 4) + '-' + value.slice(4);
+                } else {
+                    e.target.value = value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11);
+                }
+            }
+        }
+    });
 });
 </script>
 @endpush
