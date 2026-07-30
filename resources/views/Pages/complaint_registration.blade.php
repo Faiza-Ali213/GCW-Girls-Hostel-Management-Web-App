@@ -237,6 +237,15 @@
                         @enderror
                     </div>
                     <div class="col-md-6 mb-3">
+    <label class="form-label">Email Address</label>
+    <input type="email" class="form-control @error('student_email') is-invalid @enderror" 
+           name="student_email" placeholder="student@example.com" 
+           value="{{ old('student_email') }}">
+    @error('student_email')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
+</div>
+                    <div class="col-md-6 mb-3">
                         <label class="form-label">Room Number</label>
                         <input type="text" class="form-control @error('room_number') is-invalid @enderror" 
                                name="room_number" placeholder="e.g., 101" 

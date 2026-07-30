@@ -179,22 +179,23 @@ Route::middleware('auth')->group(function () {
         // ============================================
         // Complaint Management
         // ============================================
-      // Complaint Management Routes
-Route::prefix('complaints')->name('complaints.')->group(function () {
-    Route::get('/', [ComplaintController::class, 'index'])->name('index');
-    Route::get('/create', [ComplaintController::class, 'create'])->name('create');
-    Route::post('/', [ComplaintController::class, 'store'])->name('store');
-    Route::get('/{id}', [ComplaintController::class, 'show'])->name('show');
-    Route::get('/{id}/edit', [ComplaintController::class, 'edit'])->name('edit');
-    Route::put('/', [ComplaintController::class, 'update'])->name('update'); // Bulk update
-    Route::delete('/{id}', [ComplaintController::class, 'destroy'])->name('destroy');
-});
-        Route::get('/complaint-registration', [ComplaintController::class, 'create'])->name('complaint.registration');
-        Route::post('/complaint-registration', [ComplaintController::class, 'store'])->name('complaint.store');
+        // Complaint Registration (Public - For Users) - MUST be outside Admin middleware
+        // Moved to outside Admin middleware section
+
+        // Complaint Management Routes (Admin)
+        Route::prefix('complaints')->name('complaints.')->group(function () {
+            Route::get('/', [ComplaintController::class, 'index'])->name('index');
+            Route::get('/create', [ComplaintController::class, 'create'])->name('create');
+            Route::post('/', [ComplaintController::class, 'store'])->name('store');
+            Route::get('/{id}', [ComplaintController::class, 'show'])->name('show');
+            Route::get('/{id}/edit', [ComplaintController::class, 'edit'])->name('edit');
+            Route::put('/', [ComplaintController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ComplaintController::class, 'destroy'])->name('destroy');
+        });
+
         Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
         Route::get('/Complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
         Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
-        Route::resource('complaints', ComplaintController::class);
         Route::get('/complaint-record', [ComplaintController::class, 'index'])->name('complaint-record');
 
         // ============================================
@@ -281,6 +282,13 @@ Route::prefix('complaints')->name('complaints.')->group(function () {
             }
         })->name('settings');
     });
+    
+    // ============================================
+    // Complaint Registration (Public - For Users)
+    // MUST be outside Admin middleware so users can access
+    // ============================================
+    Route::get('/complaint-registration', [ComplaintController::class, 'create'])->name('complaint.registration');
+    Route::post('/complaint-registration', [ComplaintController::class, 'store'])->name('complaint.store');
 });
 
 /*

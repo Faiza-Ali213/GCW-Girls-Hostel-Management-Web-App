@@ -17,6 +17,7 @@ class Complaint extends Model
         'student_name',
         'room_number',
         'contact_number',
+        'student_email',
         'complaint_by',
         'admin_remark',
         'resolved_at'

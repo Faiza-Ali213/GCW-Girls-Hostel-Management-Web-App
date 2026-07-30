@@ -1,100 +1,50 @@
-<?php
-
-namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-
-class ProfileController extends Controller
+/**
+ * Store a newly created complaint.
+ */
+public function store(Request $request)
 {
-    // Show profile page
-    public function show()
-    {
-        // Get statistics for profile
-        $data = [
-            'totalStudents' => \App\Models\Student::count() ?? 0,
-            'totalRooms' => \App\Models\Room::count() ?? 0,
-            'totalStaff' => \App\Models\Staff::count() ?? 0,
-        ];
-        
-        return view('Pages.profile', $data);
+    $validator = Validator::make($request->all(), [
+        'student_name' => 'required|string|max:255',
+        'student_email' => 'nullable|email|max:255',
+        'title' => 'required|string|max:255',
+        'description' => 'required|string|min:10',
+        'room_number' => 'nullable|string|max:50',
+        'contact_number' => 'nullable|string|max:20',
+        'complaint_by' => 'nullable|string|max:255',
+        'priority' => 'nullable|in:low,medium,high',
+    ]);
+
+    if ($validator->fails()) {
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
     }
 
-    // Show edit profile page
-    public function edit()
-    {
-        return view('Pages.profile-edit');
-    }
-
-    // Update profile
-    public function update(Request $request)
-    {
-        $user = Auth::user();
-
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
-        ]);
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-        ]);
-
-        return redirect()->route('profile')
-            ->with('success', 'Profile updated successfully!');
-    }
-
-    // Update password
-    public function updatePassword(Request $request)
-    {
-        $user = Auth::user();
-
-        $request->validate([
-            'current_password' => 'required|string',
-            'new_password' => 'required|string|min:8|confirmed',
-        ]);
-
-        // Check if current password is correct
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'Current password is incorrect.']);
+    try {
+        // If user is logged in, use their email
+        $email = $request->student_email;
+        if (!$email && auth()->check()) {
+            $email = auth()->user()->email;
         }
 
-        // Update password
-        $user->update([
-            'password' => Hash::make($request->new_password),
+        Complaint::create([
+            'student_name' => $request->student_name,
+            'student_email' => $email,
+            'title' => $request->title,
+            'description' => $request->description,
+            'room_number' => $request->room_number,
+            'contact_number' => $request->contact_number,
+            'complaint_by' => $request->complaint_by ?? $request->student_name,
+            'priority' => $request->priority ?? 'medium',
+            'status' => 'pending',
         ]);
 
-        return redirect()->route('profile')
-            ->with('success', 'Password updated successfully!');
-    }
+        return redirect()->route('complaint.registration')
+            ->with('success', 'Your complaint has been submitted successfully! We will review it shortly.');
 
-    // Upload profile photo
-    public function uploadPhoto(Request $request)
-    {
-        $request->validate([
-            'profile_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        $user = Auth::user();
-
-        // Delete old photo if exists
-        if ($user->profile_photo) {
-            Storage::disk('public')->delete($user->profile_photo);
-        }
-
-        // Store new photo
-        $path = $request->file('profile_photo')->store('profile_photos', 'public');
-
-        $user->update([
-            'profile_photo' => $path,
-        ]);
-
-        return redirect()->route('profile')
-            ->with('success', 'Profile photo updated successfully!');
+    } catch (\Exception $e) {
+        return redirect()->back()
+            ->with('error', 'Failed to submit complaint: ' . $e->getMessage())
+            ->withInput();
     }
 }

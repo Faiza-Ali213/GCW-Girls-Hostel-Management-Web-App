@@ -355,6 +355,136 @@
             font-weight: 600;
         }
 
+        /* ===== COMPLAINT STATUS SECTION ===== */
+        .complaint-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e8dcc8;
+        }
+
+        .complaint-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #C49A6C;
+            box-shadow: 0 2px 8px rgba(74, 50, 40, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .complaint-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(74, 50, 40, 0.1);
+        }
+
+        .complaint-card .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .complaint-card .complaint-title {
+            font-weight: 600;
+            color: #4A3228;
+            font-size: 1rem;
+        }
+
+        .complaint-card .complaint-title i {
+            color: #8B6B4A;
+            margin-right: 8px;
+        }
+
+        .complaint-card .complaint-status {
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .complaint-status.pending {
+            background: #fffbeb;
+            color: #F59E0B;
+            border: 1px solid #F59E0B;
+        }
+
+        .complaint-status.in_progress {
+            background: #e0f2fe;
+            color: #0EA5E9;
+            border: 1px solid #0EA5E9;
+        }
+
+        .complaint-status.resolved {
+            background: #ecfdf5;
+            color: #10B981;
+            border: 1px solid #10B981;
+        }
+
+        .complaint-status.rejected {
+            background: #fef2f2;
+            color: #EF4444;
+            border: 1px solid #EF4444;
+        }
+
+        .complaint-card .complaint-details {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .complaint-card .complaint-details .detail {
+            font-size: 0.85rem;
+            color: #6B5544;
+        }
+
+        .complaint-card .complaint-details .detail i {
+            color: #8B6B4A;
+            margin-right: 4px;
+            width: 16px;
+        }
+
+        .complaint-card .complaint-details .detail strong {
+            color: #4A3228;
+            font-weight: 600;
+        }
+
+        .complaint-card .complaint-description {
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #f1ece4;
+            font-size: 0.9rem;
+            color: #6B5544;
+        }
+
+        .complaint-empty {
+            text-align: center;
+            padding: 2rem;
+            color: #94a3b8;
+            background: #FFFFFF;
+            border-radius: 12px;
+            border: 2px dashed #e8dcc8;
+        }
+
+        .complaint-empty i {
+            font-size: 3rem;
+            color: #d1d5db;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .complaint-empty h6 {
+            color: #4A3228;
+            font-weight: 600;
+        }
+
+        .complaint-empty p {
+            font-size: 0.9rem;
+        }
+
         /* ===== EDIT TOGGLE BUTTON ===== */
         .btn-edit-toggle {
             background: linear-gradient(135deg, #8B6B4A, #A8825A);
@@ -582,6 +712,17 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .complaint-card .complaint-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .complaint-card .complaint-details {
+                flex-direction: column;
+                gap: 4px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -728,6 +869,10 @@
                         <strong>{{ Auth::user()->created_at ? Auth::user()->created_at->format('M d, Y') : 'N/A' }}</strong>
                         <span>Joined</span>
                     </div>
+                    <div class="stat">
+                        <strong>{{ $complaints->count() ?? 0 }}</strong>
+                        <span>Complaints</span>
+                    </div>
                 </div>
             </div>
 
@@ -803,6 +948,80 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Complaint Status Section -->
+                    <div class="complaint-section">
+                        <div class="section-title">
+                            <i class="fas fa-exclamation-triangle"></i> My Complaints
+                            <span style="font-size: 0.8rem; font-weight: 400; color: #94a3b8;">
+                                ({{ $complaints->count() ?? 0 }} total)
+                            </span>
+                        </div>
+
+                        @if(isset($complaints) && $complaints->count() > 0)
+                            @foreach($complaints as $complaint)
+                                <div class="complaint-card">
+                                    <div class="complaint-header">
+                                        <span class="complaint-title">
+                                            <i class="fas fa-file-alt"></i> {{ $complaint->title }}
+                                        </span>
+                                        <span class="complaint-status {{ $complaint->status }}">
+                                            @if($complaint->status == 'pending')
+                                                <i class="fas fa-clock"></i> Pending
+                                            @elseif($complaint->status == 'in_progress')
+                                                <i class="fas fa-spinner fa-spin"></i> In Progress
+                                            @elseif($complaint->status == 'resolved')
+                                                <i class="fas fa-check-circle"></i> Resolved
+                                            @elseif($complaint->status == 'rejected')
+                                                <i class="fas fa-times-circle"></i> Rejected
+                                            @endif
+                                        </span>
+                                    </div>
+                                    <div class="complaint-details">
+                                        <span class="detail">
+                                            <i class="fas fa-calendar-alt"></i> 
+                                            <strong>Submitted:</strong> {{ $complaint->created_at->format('d M Y, h:i A') }}
+                                        </span>
+                                        <span class="detail">
+                                            <i class="fas fa-flag"></i> 
+                                            <strong>Priority:</strong> {{ ucfirst($complaint->priority) }}
+                                        </span>
+                                        <span class="detail">
+                                            <i class="fas fa-user-tag"></i> 
+                                            <strong>Complaint By:</strong> {{ ucfirst($complaint->complaint_by ?? 'User') }}
+                                        </span>
+                                    </div>
+                                    <div class="complaint-description">
+                                        <i class="fas fa-align-left" style="color: #8B6B4A; margin-right: 6px;"></i>
+                                        {{ Str::limit($complaint->description, 150) }}
+                                    </div>
+                                    @if($complaint->admin_remark)
+                                        <div style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #f5efe6; border-radius: 8px; font-size: 0.85rem; color: #6B5544;">
+                                            <i class="fas fa-comment" style="color: #8B6B4A;"></i> 
+                                            <strong>Admin Remark:</strong> {{ $complaint->admin_remark }}
+                                        </div>
+                                    @endif
+                                    @if($complaint->resolved_at)
+                                        <div style="margin-top: 0.3rem; font-size: 0.8rem; color: #10B981;">
+                                            <i class="fas fa-check-circle"></i> 
+                                            Resolved on: {{ $complaint->resolved_at->format('d M Y, h:i A') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="complaint-empty">
+                                <i class="fas fa-inbox"></i>
+                                <h6>No Complaints Found</h6>
+                                <p>You haven't submitted any complaints yet.</p>
+                                @if(Route::has('complaint.registration'))
+                                    <a href="{{ route('complaint.registration') }}" class="btn-edit-toggle" style="display: inline-flex; padding: 0.5rem 1.5rem; font-size: 0.9rem;">
+                                        <i class="fas fa-plus-circle"></i> Submit a Complaint
+                                    </a>
+                                @endif
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Edit Button -->
