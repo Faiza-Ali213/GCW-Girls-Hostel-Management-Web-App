@@ -49,65 +49,6 @@
         background: #f8faff;
     }
 
-    /* Stats Cards */
-    .stat-card {
-        border: none;
-        border-radius: 12px;
-        padding: 0;
-        overflow: hidden;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-        transition: all 0.3s ease;
-        height: 100%;
-    }
-
-    .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    .stat-card .stat-body {
-        padding: 20px 24px;
-        position: relative;
-    }
-
-    .stat-card .stat-icon {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 2.5rem;
-        opacity: 0.2;
-    }
-
-    .stat-card .stat-label {
-        font-size: 0.82rem;
-        font-weight: 500;
-        opacity: 0.9;
-        margin-bottom: 4px;
-    }
-
-    .stat-card .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        margin: 0;
-        line-height: 1.2;
-    }
-
-    .stat-primary {
-        background: linear-gradient(135deg, #1a2a4a 0%, #2a4a7a 100%);
-        color: #ffffff;
-    }
-
-    .stat-success {
-        background: linear-gradient(135deg, #0f5c3a 0%, #1a8a5a 100%);
-        color: #ffffff;
-    }
-
-    .stat-info {
-        background: linear-gradient(135deg, #0f4a6a 0%, #1a7a9a 100%);
-        color: #ffffff;
-    }
-
     /* Search Section */
     .search-card {
         border: 1.5px solid #e8edf5;
@@ -387,14 +328,6 @@
             padding: 18px;
         }
 
-        .stat-card .stat-number {
-            font-size: 1.5rem;
-        }
-
-        .stat-card .stat-icon {
-            font-size: 1.8rem;
-        }
-
         .table-modern {
             font-size: 0.8rem;
         }
@@ -422,14 +355,6 @@
     }
 
     @media (max-width: 576px) {
-        .stat-card .stat-body {
-            padding: 16px 20px;
-        }
-
-        .stat-card .stat-number {
-            font-size: 1.2rem;
-        }
-
         .badge-visitor {
             font-size: 0.6rem;
             padding: 2px 8px;
@@ -463,37 +388,6 @@
                         <a href="{{ route('visitor.create') }}" class="btn-add-modern">
                             <i class="fas fa-plus-circle"></i> Add New Visitor
                         </a>
-                    </div>
-
-                    <!-- Statistics -->
-                    <div class="row mb-4 g-3">
-                        <div class="col-md-4 col-sm-6">
-                            <div class="stat-card stat-primary">
-                                <div class="stat-body">
-                                    <div class="stat-icon"><i class="fas fa-users"></i></div>
-                                    <div class="stat-label">Total Visitors</div>
-                                    <div class="stat-number">{{ $totalVisitors }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="stat-card stat-success">
-                                <div class="stat-body">
-                                    <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
-                                    <div class="stat-label">Today's Visitors</div>
-                                    <div class="stat-number">{{ $todayVisitors }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6">
-                            <div class="stat-card stat-info">
-                                <div class="stat-body">
-                                    <div class="stat-icon"><i class="fas fa-user-check"></i></div>
-                                    <div class="stat-label">Total Visitor Count</div>
-                                    <div class="stat-number">{{ $totalVisitorsCount }}</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <!-- Search -->

@@ -20,6 +20,7 @@ class Visitor extends Model
         'check_in_time',
         'check_in_by',
         'remarks',
+        'visitor_details_json',
     ];
 
     protected $casts = [

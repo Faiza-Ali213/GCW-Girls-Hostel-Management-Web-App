@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Validator;
 
 class VisitorController extends Controller
 {
+    /**
+     * Display a listing of visitors.
+     */
     public function index(Request $request)
     {
         $query = Visitor::with('student');
@@ -35,12 +38,18 @@ class VisitorController extends Controller
         ));
     }
 
+    /**
+     * Show the form for creating a new visitor.
+     */
     public function create()
     {
         $students = Student::orderBy('student_name')->get(['id', 'student_name', 'father_name', 'room_number', 'phone_number', 'cnic_number']);
         return view('Component.Admin.add_visitors', compact('students'));
     }
 
+    /**
+     * Store a newly created visitor.
+     */
     public function store(Request $request)
     {
         // Handle Add Visitor action
@@ -120,6 +129,8 @@ class VisitorController extends Controller
                 'student_id' => $student->id,
                 'student_name' => $student->student_name,
                 'student_room' => $student->room_number,
+                'student_phone' => $student->phone_number,
+                'student_cnic' => $student->cnic_number,
                 'number_of_visitors' => $numberOfVisitors,
                 'visitor_details_json' => json_encode($visitorsData),
                 'check_in_time' => now(),
@@ -137,6 +148,9 @@ class VisitorController extends Controller
         }
     }
 
+    /**
+     * Display the specified visitor.
+     */
     public function show($id)
     {
         try {
@@ -149,6 +163,71 @@ class VisitorController extends Controller
         }
     }
 
+    /**
+     * Show the form for editing the specified visitor.
+     */
+    public function edit($id)
+    {
+        try {
+            $visitor = Visitor::findOrFail($id);
+            $visitorDetails = json_decode($visitor->visitor_details_json, true) ?? [];
+            return view('Component.Admin.edit_visitors', compact('visitor', 'visitorDetails'));
+        } catch (\Exception $e) {
+            return redirect()->route('visitors_records')
+                ->with('error', 'Visitor not found');
+        }
+    }
+
+    /**
+     * Update the specified visitor.
+     */
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'student_name' => 'required|string|max:255',
+            'student_room' => 'nullable|string|max:50',
+            'student_phone' => 'nullable|string|max:20',
+            'student_cnic' => 'nullable|string|max:20',
+            'visitors' => 'required|array|min:1',
+            'visitors.*.visitor_name' => 'required|string|max:255',
+            'visitors.*.relationship' => 'required|string|max:50',
+            'visitors.*.cnic_number' => 'nullable|string|max:20',
+            'visitors.*.phone_number' => 'nullable|string|max:20',
+            'remarks' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        try {
+            $visitor = Visitor::findOrFail($id);
+            
+            $visitor->update([
+                'student_name' => $request->student_name,
+                'student_room' => $request->student_room,
+                'student_phone' => $request->student_phone,
+                'student_cnic' => $request->student_cnic,
+                'number_of_visitors' => count($request->visitors),
+                'visitor_details_json' => json_encode($request->visitors),
+                'remarks' => $request->remarks,
+            ]);
+
+            return redirect()->route('visitor.show', $visitor->id)
+                ->with('success', 'Visitor record updated successfully!');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to update visitor: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    /**
+     * Remove the specified visitor.
+     */
     public function destroy($id)
     {
         try {
