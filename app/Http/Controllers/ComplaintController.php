@@ -136,9 +136,18 @@ class ComplaintController extends Controller
 
     /**
      * Update the specified complaint.
+     * Supports both AJAX and traditional form submission.
      */
     public function update(Request $request, $id)
     {
+        // Log the request for debugging
+        \Log::info('Complaint Update Request:', [
+            'id' => $id,
+            'status' => $request->status,
+            'admin_remark' => $request->admin_remark,
+            'all' => $request->all()
+        ]);
+
         $validator = Validator::make($request->all(), [
             'status' => 'required|in:pending,in_progress,resolved,rejected',
             'admin_remark' => 'nullable|string',
@@ -146,6 +155,13 @@ class ComplaintController extends Controller
         ]);
 
         if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors()
+                ], 422);
+            }
             return redirect()->back()
                 ->withErrors($validator)
                 ->withInput();
@@ -156,9 +172,16 @@ class ComplaintController extends Controller
             
             $updateData = [
                 'status' => $request->status,
-                'admin_remark' => $request->admin_remark,
-                'priority' => $request->priority ?? $complaint->priority,
             ];
+
+            // Only update admin_remark if provided
+            if ($request->has('admin_remark')) {
+                $updateData['admin_remark'] = $request->admin_remark;
+            }
+
+            if ($request->has('priority')) {
+                $updateData['priority'] = $request->priority;
+            }
 
             if ($request->status == 'resolved') {
                 $updateData['resolved_at'] = now();
@@ -166,10 +189,32 @@ class ComplaintController extends Controller
 
             $complaint->update($updateData);
 
+            // Refresh the model to get updated data
+            $complaint->refresh();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Complaint status updated successfully!',
+                    'data' => $complaint
+                ]);
+            }
+
             return redirect()->route('complaints.index')
                 ->with('success', 'Complaint updated successfully!');
 
         } catch (\Exception $e) {
+            \Log::error('Complaint Update Error:', [
+                'id' => $id,
+                'error' => $e->getMessage()
+            ]);
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to update complaint: ' . $e->getMessage()
+                ], 500);
+            }
             return redirect()->back()
                 ->with('error', 'Failed to update complaint: ' . $e->getMessage())
                 ->withInput();

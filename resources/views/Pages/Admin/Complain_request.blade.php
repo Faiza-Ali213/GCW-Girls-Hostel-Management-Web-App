@@ -43,30 +43,14 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
     }
-    .stat-card.pending { 
-        border-top-color: #F59E0B; 
-    }
-    .stat-card.pending .stat-icon { 
-        color: #F59E0B; 
-    }
-    .stat-card.in-progress { 
-        border-top-color: #0EA5E9; 
-    }
-    .stat-card.in-progress .stat-icon { 
-        color: #0EA5E9; 
-    }
-    .stat-card.resolved { 
-        border-top-color: #10B981; 
-    }
-    .stat-card.resolved .stat-icon { 
-        color: #10B981; 
-    }
-    .stat-card.total { 
-        border-top-color: #4F46E5; 
-    }
-    .stat-card.total .stat-icon { 
-        color: #4F46E5; 
-    }
+    .stat-card.pending { border-top-color: #F59E0B; }
+    .stat-card.pending .stat-icon { color: #F59E0B; }
+    .stat-card.in-progress { border-top-color: #0EA5E9; }
+    .stat-card.in-progress .stat-icon { color: #0EA5E9; }
+    .stat-card.resolved { border-top-color: #10B981; }
+    .stat-card.resolved .stat-icon { color: #10B981; }
+    .stat-card.total { border-top-color: #4F46E5; }
+    .stat-card.total .stat-icon { color: #4F46E5; }
 
     /* Modern Table */
     .modern-table {
@@ -119,18 +103,9 @@
         align-items: center;
         gap: 4px;
     }
-    .priority-high { 
-        background: #FEF2F2; 
-        color: #EF4444; 
-    }
-    .priority-medium { 
-        background: #FFFBEB; 
-        color: #F59E0B; 
-    }
-    .priority-low { 
-        background: #ECFDF5; 
-        color: #10B981; 
-    }
+    .priority-high { background: #FEF2F2; color: #EF4444; }
+    .priority-medium { background: #FFFBEB; color: #F59E0B; }
+    .priority-low { background: #ECFDF5; color: #10B981; }
 
     /* Status Badges */
     .status-badge {
@@ -144,22 +119,10 @@
         align-items: center;
         gap: 4px;
     }
-    .status-pending { 
-        background: #FFFBEB; 
-        color: #F59E0B; 
-    }
-    .status-in_progress { 
-        background: #E0F2FE; 
-        color: #0EA5E9; 
-    }
-    .status-resolved { 
-        background: #ECFDF5; 
-        color: #10B981; 
-    }
-    .status-rejected { 
-        background: #FEF2F2; 
-        color: #EF4444; 
-    }
+    .status-pending { background: #FFFBEB; color: #F59E0B; }
+    .status-in_progress { background: #E0F2FE; color: #0EA5E9; }
+    .status-resolved { background: #ECFDF5; color: #10B981; }
+    .status-rejected { background: #FEF2F2; color: #EF4444; }
 
     /* Complaint By Badge */
     .complaint-by-badge {
@@ -173,14 +136,33 @@
         align-items: center;
         gap: 4px;
     }
-    .complaint-by-student {
-        background: #ECFDF5;
-        color: #10B981;
+    .complaint-by-student { background: #ECFDF5; color: #10B981; }
+    .complaint-by-user { background: #E0F2FE; color: #0EA5E9; }
+
+    /* Status Dropdown in Table */
+    .status-selector {
+        padding: 4px 8px;
+        border-radius: 6px;
+        border: 2px solid #e2e8f0;
+        font-weight: 600;
+        font-size: 0.75rem;
+        background: #ffffff;
+        color: #0f172a;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        min-width: 120px;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
     }
-    .complaint-by-user {
-        background: #E0F2FE;
-        color: #0EA5E9;
+    .status-selector:focus {
+        border-color: #1a2a4a;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(26, 42, 74, 0.1);
     }
+    .status-selector option.pending { color: #F59E0B; }
+    .status-selector option.in_progress { color: #0EA5E9; }
+    .status-selector option.resolved { color: #10B981; }
+    .status-selector option.rejected { color: #EF4444; }
 
     /* Action Buttons */
     .action-btn {
@@ -203,14 +185,8 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         text-decoration: none;
     }
-    .action-btn.view { 
-        background: #EEF2FF; 
-        color: #4F46E5; 
-    }
-    .action-btn.view:hover { 
-        background: #4F46E5; 
-        color: white; 
-    }
+    .action-btn.view { background: #EEF2FF; color: #4F46E5; }
+    .action-btn.view:hover { background: #4F46E5; color: white; }
 
     /* Header Section */
     .page-header {
@@ -234,8 +210,41 @@
         gap: 10px;
         font-size: 1.3rem;
     }
-    .page-header h4 i {
-        color: #4F46E5;
+    .page-header h4 i { color: #4F46E5; }
+
+    .page-header .header-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    /* Save Button */
+    .btn-save-status {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        color: #ffffff !important;
+        border: none;
+        padding: 10px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.25);
+        text-decoration: none;
+    }
+    .btn-save-status:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
+        color: #ffffff !important;
+    }
+    .btn-save-status:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
     }
 
     /* Avatar Circle */
@@ -284,27 +293,11 @@
         gap: 10px;
         border: none;
     }
-    .alert-success {
-        background: #ECFDF5;
-        color: #065F46;
-        border-left: 4px solid #10B981;
-    }
-    .alert-danger {
-        background: #FEF2F2;
-        color: #991B1B;
-        border-left: 4px solid #EF4444;
-    }
-    .alert i {
-        font-size: 1.2rem;
-    }
-    .alert .close {
-        margin-left: auto;
-        color: inherit;
-        opacity: 0.5;
-    }
-    .alert .close:hover {
-        opacity: 1;
-    }
+    .alert-success { background: #ECFDF5; color: #065F46; border-left: 4px solid #10B981; }
+    .alert-danger { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+    .alert i { font-size: 1.2rem; }
+    .alert .close { margin-left: auto; color: inherit; opacity: 0.5; }
+    .alert .close:hover { opacity: 1; }
 
     /* Footer Info */
     .footer-info {
@@ -314,38 +307,33 @@
         margin-top: 15px;
     }
 
+    /* Status Selector Container - Fix Alignment */
+    .status-selector-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .status-selector-wrapper select {
+        width: 100%;
+        max-width: 140px;
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
-        .stat-card .stat-number {
-            font-size: 1.5rem;
-        }
-        .page-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 15px;
-        }
-        .modern-table {
-            overflow-x: auto;
-        }
-        .modern-table table {
-            min-width: 800px;
-        }
-        .action-btn {
-            padding: 4px 10px;
-            font-size: 0.7rem;
-        }
+        .stat-card .stat-number { font-size: 1.5rem; }
+        .page-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+        .page-header .header-actions { width: 100%; }
+        .btn-save-status { width: 100%; justify-content: center; }
+        .modern-table { overflow-x: auto; }
+        .modern-table table { min-width: 900px; }
+        .action-btn { padding: 4px 10px; font-size: 0.7rem; }
+        .status-selector { min-width: 100px; font-size: 0.65rem; }
     }
 
     @media (max-width: 576px) {
-        .stat-card {
-            padding: 16px 18px;
-        }
-        .stat-card .stat-number {
-            font-size: 1.3rem;
-        }
-        .stat-card .stat-icon {
-            font-size: 2rem;
-        }
+        .stat-card { padding: 16px 18px; }
+        .stat-card .stat-number { font-size: 1.3rem; }
+        .stat-card .stat-icon { font-size: 2rem; }
     }
 </style>
 
@@ -374,6 +362,11 @@
         <i class="fas fa-clipboard-list"></i>
         Complaint Management
     </h4>
+    <div class="header-actions">
+        <button type="button" class="btn-save-status" id="saveAllStatusBtn">
+            <i class="fas fa-save"></i> Save Status Changes
+        </button>
+    </div>
 </div>
 
 <!-- Statistics Cards -->
@@ -410,7 +403,7 @@
 
 <!-- Complaints Table -->
 <div class="modern-table">
-    <table class="table table-hover">
+    <table class="table table-hover" id="complaintsTable">
         <thead>
             <tr>
                 <th>#ID</th>
@@ -425,7 +418,7 @@
         </thead>
         <tbody>
             @forelse($complaints ?? [] as $complaint)
-            <tr>
+            <tr id="complaint-row-{{ $complaint->id }}">
                 <td>
                     <span class="font-weight-bold" style="color: #4F46E5;">#{{ $complaint->id }}</span>
                 </td>
@@ -458,18 +451,14 @@
                     </span>
                 </td>
                 <td>
-                    <span class="status-badge status-{{ $complaint->status }}">
-                        @if($complaint->status == 'pending')
-                            <i class="fas fa-clock"></i>
-                        @elseif($complaint->status == 'in_progress')
-                            <i class="fas fa-spinner fa-spin"></i>
-                        @elseif($complaint->status == 'resolved')
-                            <i class="fas fa-check"></i>
-                        @else
-                            <i class="fas fa-times"></i>
-                        @endif
-                        {{ ucfirst(str_replace('_', ' ', $complaint->status)) }}
-                    </span>
+                    <div class="status-selector-wrapper">
+                        <select class="status-selector status-select" data-id="{{ $complaint->id }}" data-current="{{ $complaint->status }}" data-original="{{ $complaint->status }}">
+                            <option value="pending" class="pending" {{ $complaint->status == 'pending' ? 'selected' : '' }}>⏳ Pending</option>
+                            <option value="in_progress" class="in_progress" {{ $complaint->status == 'in_progress' ? 'selected' : '' }}>🔄 In Progress</option>
+                            <option value="resolved" class="resolved" {{ $complaint->status == 'resolved' ? 'selected' : '' }}>✅ Resolved</option>
+                            <option value="rejected" class="rejected" {{ $complaint->status == 'rejected' ? 'selected' : '' }}>❌ Rejected</option>
+                        </select>
+                    </div>
                 </td>
                 <td>
                     <div style="color: #0b1a33;">{{ $complaint->created_at->format('d-m-Y') }}</div>
@@ -507,16 +496,252 @@
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
-        
-        // Auto-dismiss alerts after 5 seconds
-        setTimeout(function() {
-            $('.alert').fadeOut('slow');
-        }, 5000);
+$(document).ready(function() {
+    // Initialize tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+    
+    // Auto-dismiss alerts after 5 seconds
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 5000);
 
-        console.log('✅ Complaint page loaded successfully');
+    console.log('✅ Complaint page loaded successfully');
+
+    var changedStatuses = {};
+
+    // ============================================
+    // TRACK STATUS CHANGES
+    // ============================================
+    $('.status-select').on('change', function() {
+        var select = $(this);
+        var complaintId = select.data('id');
+        var newStatus = select.val();
+        var originalStatus = select.data('original');
+        
+        if (newStatus !== originalStatus) {
+            // Store the changed status
+            changedStatuses[complaintId] = newStatus;
+            
+            // Add visual indicator (highlight row)
+            var row = $('#complaint-row-' + complaintId);
+            row.css('background-color', '#fffbeb');
+            row.css('border-left', '3px solid #F59E0B');
+            
+            // Update the badge temporarily
+            updateStatusBadge(row, newStatus);
+            
+            // Enable save button
+            $('#saveAllStatusBtn').prop('disabled', false);
+            $('#saveAllStatusBtn').html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
+        } else {
+            // Remove from changed statuses
+            delete changedStatuses[complaintId];
+            
+            var row = $('#complaint-row-' + complaintId);
+            row.css('background-color', '');
+            row.css('border-left', '');
+            
+            // Revert the badge
+            updateStatusBadge(row, originalStatus);
+            
+            if (Object.keys(changedStatuses).length === 0) {
+                $('#saveAllStatusBtn').prop('disabled', true);
+                $('#saveAllStatusBtn').html('<i class="fas fa-save"></i> Save Status Changes');
+            } else {
+                $('#saveAllStatusBtn').html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
+            }
+        }
     });
+
+    // ============================================
+    // SAVE ALL STATUS CHANGES
+    // ============================================
+    $('#saveAllStatusBtn').on('click', function() {
+        var btn = $(this);
+        var changes = Object.keys(changedStatuses);
+        
+        if (changes.length === 0) {
+            showToast('info', 'No changes to save');
+            return;
+        }
+
+        // Disable button and show loading
+        btn.prop('disabled', true);
+        btn.html('<i class="fas fa-spinner fa-spin"></i> Saving...');
+
+        var completed = 0;
+        var total = changes.length;
+        var errors = [];
+
+        // Process each change
+        changes.forEach(function(complaintId) {
+            var newStatus = changedStatuses[complaintId];
+            var select = $('#complaint-row-' + complaintId).find('.status-select');
+            var oldStatus = select.data('original');
+
+            // Get CSRF token
+            var token = $('meta[name="csrf-token"]').attr('content');
+            if (!token) {
+                token = '{{ csrf_token() }}';
+            }
+
+            // Build URL
+            var updateUrl = '{{ route("complaints.update", ":id") }}';
+            updateUrl = updateUrl.replace(':id', complaintId);
+
+            // Send AJAX request
+            $.ajax({
+                url: updateUrl,
+                method: 'POST',
+                data: {
+                    _token: token,
+                    _method: 'PUT',
+                    status: newStatus,
+                    admin_remark: 'Status updated from ' + oldStatus + ' to ' + newStatus
+                },
+                dataType: 'json',
+                success: function(response) {
+                    completed++;
+                    
+                    if (response.success) {
+                        // Update the original status on the select
+                        select.data('original', newStatus);
+                        select.data('current', newStatus);
+                        
+                        // Remove from changed statuses
+                        delete changedStatuses[complaintId];
+                        
+                        // Update row styling
+                        var row = $('#complaint-row-' + complaintId);
+                        row.css('background-color', '#ecfdf5');
+                        row.css('border-left', '3px solid #10B981');
+                        
+                        setTimeout(function() {
+                            row.css('background-color', '');
+                            row.css('border-left', '');
+                        }, 2000);
+                        
+                        // Update statistics
+                        updateStatistics(oldStatus, newStatus);
+                    } else {
+                        errors.push('#' + complaintId + ': ' + (response.message || 'Unknown error'));
+                    }
+                    
+                    // Check if all done
+                    if (completed === total) {
+                        finalizeSave(btn, errors);
+                    }
+                },
+                error: function(xhr) {
+                    completed++;
+                    errors.push('#' + complaintId + ': Server error');
+                    
+                    if (completed === total) {
+                        finalizeSave(btn, errors);
+                    }
+                }
+            });
+        });
+    });
+
+    function finalizeSave(btn, errors) {
+        var successCount = Object.keys(changedStatuses).length === 0 ? 
+            Object.keys($('.status-select')).length : 0;
+        
+        if (errors.length === 0) {
+            showToast('success', '✅ All status changes saved successfully!');
+            btn.html('<i class="fas fa-save"></i> Save Status Changes');
+            btn.prop('disabled', true);
+        } else {
+            var errorMsg = '⚠️ Some changes failed: ' + errors.join(', ');
+            showToast('error', errorMsg);
+            btn.html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
+            btn.prop('disabled', false);
+        }
+        
+        // Update save button text
+        if (Object.keys(changedStatuses).length === 0) {
+            btn.html('<i class="fas fa-save"></i> Save Status Changes');
+            btn.prop('disabled', true);
+        } else {
+            btn.html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
+            btn.prop('disabled', false);
+        }
+    }
+
+    // ============================================
+    // UPDATE STATUS BADGE
+    // ============================================
+    function updateStatusBadge(row, status) {
+        var statusCell = row.find('td:eq(5)'); // Status column index
+        var icon = '';
+        var label = status.replace('_', ' ');
+        
+        switch(status) {
+            case 'pending':
+                icon = '<i class="fas fa-clock"></i>';
+                break;
+            case 'in_progress':
+                icon = '<i class="fas fa-spinner fa-spin"></i>';
+                break;
+            case 'resolved':
+                icon = '<i class="fas fa-check"></i>';
+                break;
+            case 'rejected':
+                icon = '<i class="fas fa-times"></i>';
+                break;
+            default:
+                icon = '';
+        }
+        
+        var badgeHtml = '<span class="status-badge status-' + status + '">' + icon + ' ' + label.charAt(0).toUpperCase() + label.slice(1) + '</span>';
+        statusCell.html(badgeHtml);
+    }
+
+    // ============================================
+    // UPDATE STATISTICS
+    // ============================================
+    function updateStatistics(oldStatus, newStatus) {
+        var oldStatusClass = oldStatus.replace('_', '-');
+        var newStatusClass = newStatus.replace('_', '-');
+        
+        // Decrement old status count
+        var oldCard = $('.stat-card.' + oldStatusClass);
+        if (oldCard.length) {
+            var oldCount = parseInt(oldCard.find('.stat-number').text());
+            if (oldCount > 0) {
+                oldCard.find('.stat-number').text(oldCount - 1);
+            }
+        }
+        
+        // Increment new status count
+        var newCard = $('.stat-card.' + newStatusClass);
+        if (newCard.length) {
+            var newCount = parseInt(newCard.find('.stat-number').text());
+            newCard.find('.stat-number').text(newCount + 1);
+        }
+    }
+
+    // ============================================
+    // TOAST NOTIFICATION
+    // ============================================
+    function showToast(type, message) {
+        var toastHtml = '<div class="alert alert-' + (type === 'success' ? 'success' : (type === 'info' ? 'info' : 'danger')) + ' alert-dismissible fade show" role="alert" style="position:fixed;top:20px;right:20px;z-index:9999;min-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.15);">';
+        toastHtml += '<i class="fas fa-' + (type === 'success' ? 'check-circle' : (type === 'info' ? 'info-circle' : 'exclamation-circle')) + '"></i> ';
+        toastHtml += message;
+        toastHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
+        toastHtml += '<span aria-hidden="true">&times;</span>';
+        toastHtml += '</button>';
+        toastHtml += '</div>';
+        
+        $('body').append(toastHtml);
+        
+        setTimeout(function() {
+            $('.alert:last').fadeOut('slow', function() {
+                $(this).remove();
+            });
+        }, 4000);
+    }
+});
 </script>
 @endpush
