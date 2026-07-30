@@ -870,7 +870,7 @@
                         <span>Joined</span>
                     </div>
                     <div class="stat">
-                        <strong>{{ $complaints->count() ?? 0 }}</strong>
+                        <strong>{{ isset($complaints) ? $complaints->count() : 0 }}</strong>
                         <span>Complaints</span>
                     </div>
                 </div>
@@ -955,7 +955,7 @@
                         <div class="section-title">
                             <i class="fas fa-exclamation-triangle"></i> My Complaints
                             <span style="font-size: 0.8rem; font-weight: 400; color: #94a3b8;">
-                                ({{ $complaints->count() ?? 0 }} total)
+                                ({{ isset($complaints) ? $complaints->count() : 0 }} total)
                             </span>
                         </div>
 
