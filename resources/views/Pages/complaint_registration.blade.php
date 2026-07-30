@@ -14,6 +14,8 @@
         padding: 35px;
         box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
         border: 1px solid #eef2f6;
+        background: linear-gradient(135deg, #e8dcc8 0%, #f5efe6 50%, #e8dcc8 100%);
+        border-bottom: 3px solid #8B6B4A;
     }
 
     .complaint-card .card-header-custom {
@@ -24,45 +26,48 @@
     .complaint-card .card-header-custom .icon {
         width: 70px;
         height: 70px;
-        background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+        background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 15px;
         font-size: 2rem;
-        color: #4F46E5;
+        color: #ffffff;
+        box-shadow: 0 4px 15px rgba(139, 115, 85, 0.3);
     }
 
     .complaint-card .card-header-custom h3 {
-        color: #0b1a33;
+        color: #4A3228;
         font-weight: 700;
         margin-bottom: 5px;
     }
 
     .complaint-card .card-header-custom p {
-        color: #94a3b8;
+        color: #6B5544;
         font-size: 0.95rem;
         margin-bottom: 0;
     }
 
     .form-label {
         font-weight: 600;
-        color: #0b1a33;
+        color: #4A3228;
         font-size: 0.9rem;
     }
 
     .form-control {
-        border: 2px solid #e2e8f0;
+        border: 2px solid #d4c5b0;
         border-radius: 12px;
         padding: 11px 16px;
         font-size: 0.95rem;
         transition: all 0.2s ease;
+        background: #ffffff;
+        color: #4A3228;
     }
 
     .form-control:focus {
-        border-color: #4F46E5;
-        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
+        border-color: #8B6B4A;
+        box-shadow: 0 0 0 4px rgba(139, 115, 85, 0.15);
     }
 
     .form-control.is-invalid {
@@ -70,7 +75,7 @@
     }
 
     .form-control::placeholder {
-        color: #94a3b8;
+        color: #a8947a;
     }
 
     textarea.form-control {
@@ -79,7 +84,7 @@
     }
 
     .btn-submit {
-        background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
+        background: linear-gradient(135deg, #8B6B4A 0%, #A8825A 100%);
         color: white !important;
         border: none;
         padding: 14px 30px;
@@ -88,13 +93,14 @@
         font-size: 1rem;
         width: 100%;
         transition: all 0.3s ease;
-        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.25);
+        box-shadow: 0 4px 20px rgba(139, 115, 85, 0.3);
     }
 
     .btn-submit:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(79, 70, 229, 0.35);
+        box-shadow: 0 8px 30px rgba(139, 115, 85, 0.4);
         color: white !important;
+        background: linear-gradient(135deg, #6B5544 0%, #8B6B4A 100%);
     }
 
     .btn-submit i {
@@ -102,9 +108,9 @@
     }
 
     .btn-back {
-        background: #f1f3f5;
-        color: #495057 !important;
-        border: none;
+        background: #f5efe6;
+        color: #4A3228 !important;
+        border: 2px solid #d4c5b0;
         padding: 14px 30px;
         border-radius: 12px;
         font-weight: 600;
@@ -116,26 +122,31 @@
     }
 
     .btn-back:hover {
-        background: #e9ecef;
-        color: #2c3e50 !important;
+        background: #e8dcc8;
+        color: #4A3228 !important;
+        border-color: #8B6B4A;
         text-decoration: none;
     }
 
     .form-section {
         margin-bottom: 25px;
+        background: rgba(255, 255, 255, 0.6);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid rgba(139, 115, 85, 0.15);
     }
 
     .form-section .section-title {
         font-weight: 600;
-        color: #0b1a33;
+        color: #4A3228;
         font-size: 0.95rem;
         margin-bottom: 15px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #f1f3f5;
+        border-bottom: 2px solid rgba(139, 115, 85, 0.2);
     }
 
     .form-section .section-title i {
-        color: #4F46E5;
+        color: #8B6B4A;
         margin-right: 8px;
     }
 
@@ -172,6 +183,10 @@
 
         .complaint-card {
             padding: 20px;
+        }
+
+        .form-section {
+            padding: 15px;
         }
     }
 </style>
@@ -240,10 +255,13 @@
                         @enderror
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Complaint By</label>
-                        <input type="text" class="form-control @error('complaint_by') is-invalid @enderror" 
-                               name="complaint_by" placeholder="e.g., Student, Parent, Staff" 
-                               value="{{ old('complaint_by') }}">
+                        <label class="form-label">Complaint By <span class="required-star">*</span></label>
+                        <select class="form-control @error('complaint_by') is-invalid @enderror" 
+                                name="complaint_by" required>
+                            <option value="">Select Complaint Type</option>
+                            <option value="Student" {{ old('complaint_by') == 'Student' ? 'selected' : '' }}>Student</option>
+                            <option value="User" {{ old('complaint_by') == 'User' ? 'selected' : '' }}>User</option>
+                        </select>
                         @error('complaint_by')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -265,22 +283,6 @@
                         @error('title')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Priority</label>
-                        <select class="form-control @error('priority') is-invalid @enderror" name="priority">
-                            <option value="medium" {{ old('priority') == 'medium' ? 'selected' : '' }}>Medium</option>
-                            <option value="low" {{ old('priority') == 'low' ? 'selected' : '' }}>Low</option>
-                            <option value="high" {{ old('priority') == 'high' ? 'selected' : '' }}>High</option>
-                        </select>
-                        @error('priority')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Status</label>
-                        <input type="text" class="form-control" value="Pending" disabled>
-                        <small class="text-muted">Your complaint will be reviewed by admin</small>
                     </div>
                     <div class="col-12 mb-3">
                         <label class="form-label">Description <span class="required-star">*</span></label>
