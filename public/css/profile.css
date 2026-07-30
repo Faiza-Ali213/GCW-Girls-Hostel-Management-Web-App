@@ -1,66 +1,54 @@
 /* ============================================
    PROFILE PAGE - EARTHY TONES THEME
-   Location: public/css/profile.css
    ============================================ */
 
 * {
     font-family: 'Inter', sans-serif;
 }
 
-/* ===== BODY ===== */
-body {
-    background: #e8dcc8;
-    min-height: 100vh;
-    padding: 2rem 0;
-}
-
-/* ===== NAVBAR ===== */
-.navbar-custom {
-    background: #4A3228;
-    padding: 0.8rem 0;
-    box-shadow: 0 4px 20px rgba(74, 50, 40, 0.3);
-}
-
-.navbar-custom .navbar-brand {
-    color: #FFFFFF;
-    font-weight: 700;
-    font-size: 1.5rem;
-    letter-spacing: -0.5px;
-}
-
-.navbar-custom .navbar-brand i {
-    color: #C49A6C;
-    margin-right: 10px;
-}
-
-.navbar-custom .navbar-brand span {
-    color: #C49A6C;
-}
-
-.navbar-custom .nav-link {
-    color: rgba(255, 255, 255, 0.85) !important;
-    font-weight: 500;
-    padding: 0.5rem 1rem !important;
-    transition: 0.2s;
-}
-
-.navbar-custom .nav-link:hover {
-    color: #FFFFFF !important;
-    background: rgba(196, 154, 108, 0.15);
-    border-radius: 8px;
-}
-
-.navbar-custom .nav-link.active {
-    color: #FFFFFF !important;
-    background: rgba(196, 154, 108, 0.2);
-    border-radius: 8px;
-}
-
-/* ===== MAIN CONTAINER ===== */
 .profile-container {
     max-width: 1000px;
     margin: 2rem auto;
     padding: 0 1.5rem;
+}
+
+/* ===== ALERTS ===== */
+.alert-custom {
+    border-radius: 12px;
+    padding: 15px 20px;
+    border: none;
+    margin-bottom: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alert-success-custom {
+    background: #e8dcc8;
+    color: #4A3228;
+    border-left: 4px solid #C49A6C;
+}
+
+.alert-danger-custom {
+    background: #f5e6e6;
+    color: #6B2E2E;
+    border-left: 4px solid #c0392b;
+}
+
+.alert-custom ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.alert-custom .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #8B6B4A;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0 4px;
 }
 
 /* ===== BREADCRUMB ===== */
@@ -153,6 +141,14 @@ body {
     font-size: 2.2rem;
     color: #4A3228;
     border: 3px solid #C49A6C;
+    overflow: hidden;
+    position: relative;
+}
+
+.profile-header .user-info .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-header .user-info h4 {
@@ -227,10 +223,18 @@ body {
     border-radius: 12px;
     border-left: 3px solid #C49A6C;
     box-shadow: 0 2px 8px rgba(74, 50, 40, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.info-item .info-left {
+    display: flex;
+    flex-direction: column;
 }
 
 .info-item strong {
-    display: block;
     color: #6B5544;
     font-size: 0.75rem;
     text-transform: uppercase;
@@ -244,7 +248,7 @@ body {
     margin-right: 6px;
 }
 
-.info-item p {
+.info-item .info-value {
     margin: 0;
     font-size: 1rem;
     color: #4A3228;
@@ -260,7 +264,214 @@ body {
     font-weight: 600;
 }
 
-/* ===== EDIT TOGGLE BUTTON ===== */
+/* ===== COMPLAINT STATUS SECTION ===== */
+.complaint-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e8dcc8;
+}
+
+.complaint-card {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid #C49A6C;
+    box-shadow: 0 2px 8px rgba(74, 50, 40, 0.06);
+    transition: all 0.3s ease;
+}
+
+.complaint-card:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 16px rgba(74, 50, 40, 0.1);
+}
+
+.complaint-card .complaint-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.complaint-card .complaint-title {
+    font-weight: 600;
+    color: #4A3228;
+    font-size: 1rem;
+}
+
+.complaint-card .complaint-title i {
+    color: #8B6B4A;
+    margin-right: 8px;
+}
+
+.complaint-card .complaint-status {
+    padding: 0.2rem 1rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.complaint-status.pending {
+    background: #fffbeb;
+    color: #F59E0B;
+    border: 1px solid #F59E0B;
+}
+
+.complaint-status.in_progress {
+    background: #e0f2fe;
+    color: #0EA5E9;
+    border: 1px solid #0EA5E9;
+}
+
+.complaint-status.resolved {
+    background: #ecfdf5;
+    color: #10B981;
+    border: 1px solid #10B981;
+}
+
+.complaint-status.rejected {
+    background: #fef2f2;
+    color: #EF4444;
+    border: 1px solid #EF4444;
+}
+
+.complaint-card .complaint-details {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.complaint-card .complaint-details .detail {
+    font-size: 0.85rem;
+    color: #6B5544;
+}
+
+.complaint-card .complaint-details .detail i {
+    color: #8B6B4A;
+    margin-right: 4px;
+    width: 16px;
+}
+
+.complaint-card .complaint-details .detail strong {
+    color: #4A3228;
+    font-weight: 600;
+}
+
+/* Status Text Colors */
+.status-text-pending {
+    color: #F59E0B;
+}
+
+.status-text-in_progress {
+    color: #0EA5E9;
+}
+
+.status-text-resolved {
+    color: #10B981;
+}
+
+.status-text-rejected {
+    color: #EF4444;
+}
+
+.complaint-card .complaint-description {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f1ece4;
+    font-size: 0.9rem;
+    color: #6B5544;
+}
+
+.complaint-card .admin-remark {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f5efe6;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #6B5544;
+}
+
+.complaint-card .admin-remark i {
+    color: #8B6B4A;
+}
+
+.complaint-card .resolved-date {
+    margin-top: 0.3rem;
+    font-size: 0.8rem;
+    color: #10B981;
+}
+
+.complaint-empty {
+    text-align: center;
+    padding: 2rem;
+    color: #94a3b8;
+    background: #FFFFFF;
+    border-radius: 12px;
+    border: 2px dashed #e8dcc8;
+}
+
+.complaint-empty i {
+    font-size: 3rem;
+    color: #d1d5db;
+    display: block;
+    margin-bottom: 1rem;
+}
+
+.complaint-empty h6 {
+    color: #4A3228;
+    font-weight: 600;
+}
+
+.complaint-empty p {
+    font-size: 0.9rem;
+}
+
+/* ===== BUTTONS ===== */
+.btn-refresh {
+    background: #8B6B4A;
+    color: #fff !important;
+    border-radius: 8px;
+    padding: 4px 14px;
+    border: none;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-refresh:hover {
+    background: #6B5544;
+    color: #fff !important;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-submit-complaint {
+    background: linear-gradient(135deg, #8B6B4A, #A8825A);
+    color: #fff !important;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 60px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-submit-complaint:hover {
+    background: linear-gradient(135deg, #A8825A, #C49A6C);
+    transform: translateY(-2px);
+    color: #fff !important;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(139, 107, 74, 0.3);
+}
+
 .btn-edit-toggle {
     background: linear-gradient(135deg, #8B6B4A, #A8825A);
     border: none;
@@ -300,7 +511,6 @@ body {
         opacity: 0;
         transform: translateY(-20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -313,10 +523,12 @@ body {
     color: #4A3228;
     border-radius: 12px;
     padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .edit-section .alert-info i {
     color: #8B6B4A;
+    margin-right: 8px;
 }
 
 /* ===== FORM ===== */
@@ -421,45 +633,6 @@ body {
     color: #FFFFFF;
 }
 
-/* ===== FOOTER ===== */
-.footer-meta {
-    margin-top: 2rem;
-    padding: 1.2rem 2rem;
-    background: #4A3228;
-    border-radius: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    font-size: 0.85rem;
-    color: #f5efe6;
-    border: 1px solid rgba(196, 154, 108, 0.15);
-    box-shadow: 0 4px 20px rgba(74, 50, 40, 0.15);
-}
-
-.footer-meta i {
-    color: #C49A6C;
-    margin-right: 6px;
-}
-
-.footer-meta .weather i {
-    color: #f39c12;
-}
-
-.footer-meta .time-lang {
-    display: flex;
-    gap: 1.2rem;
-    align-items: center;
-}
-
-.footer-meta .time-lang span {
-    background: rgba(255, 255, 255, 0.08);
-    padding: 0.2rem 0.8rem;
-    border-radius: 20px;
-    font-weight: 500;
-    color: #f5efe6;
-}
-
 /* ===== TOGGLE SECTIONS ===== */
 .view-mode {
     display: block;
@@ -514,15 +687,26 @@ body {
         justify-content: center;
     }
 
-    .footer-meta {
+    .info-item {
         flex-direction: column;
-        gap: 0.8rem;
-        text-align: center;
+        align-items: flex-start;
+        gap: 4px;
     }
 
     .breadcrumb-custom {
         flex-direction: column;
         text-align: center;
+    }
+
+    .complaint-card .complaint-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .complaint-card .complaint-details {
+        flex-direction: column;
+        gap: 4px;
     }
 }
 
@@ -548,4 +732,38 @@ body {
     .profile-header .user-stats .stat strong {
         font-size: 1rem;
     }
+
+    .profile-container {
+        padding: 0 0.8rem;
+    }
+
+    .profile-body {
+        padding: 1rem;
+    }
+}
+/* Status Text Colors */
+.status-text-pending {
+    color: #F59E0B;
+    font-weight: 600;
+}
+
+.status-text-in_progress {
+    color: #0EA5E9;
+    font-weight: 600;
+}
+
+.status-text-resolved {
+    color: #10B981;
+    font-weight: 600;
+}
+
+.status-text-rejected {
+    color: #EF4444;
+    font-weight: 600;
+}
+
+/* Also handle inprogress without underscore */
+.status-text-inprogress {
+    color: #0EA5E9;
+    font-weight: 600;
 }

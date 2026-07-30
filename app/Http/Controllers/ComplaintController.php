@@ -137,51 +137,50 @@ public function store(Request $request)
     }
 
     /**
-     * Update the specified complaint.
-     * Handles both individual and bulk status updates.
-     */
-    public function update(Request $request)
-    {
-        $statuses = $request->statuses;
+ * Update the specified complaint.
+ * Handles both individual and bulk status updates.
+ */
+public function update(Request $request)
+{
+    $statuses = $request->statuses;
 
-        if (empty($statuses)) {
-            return redirect()->route('complaints.index')
-                ->with('error', 'No status changes to update.');
-        }
+    if (empty($statuses)) {
+        return redirect()->route('complaints.index')
+            ->with('error', 'No status changes to update.');
+    }
 
-        $updatedCount = 0;
-        $errors = [];
+    $updatedCount = 0;
+    $errors = [];
 
-        foreach ($statuses as $id => $status) {
-            try {
-                $complaint = Complaint::find($id);
-                if ($complaint) {
-                    $updateData = ['status' => $status];
-                    
-                    if ($status == 'resolved') {
-                        $updateData['resolved_at'] = now();
-                    }
-                    
-                    $complaint->update($updateData);
-                    $updatedCount++;
+    foreach ($statuses as $id => $status) {
+        try {
+            $complaint = Complaint::find($id);
+            if ($complaint) {
+                $updateData = ['status' => $status];
+                
+                if ($status == 'resolved') {
+                    $updateData['resolved_at'] = now();
                 }
-            } catch (\Exception $e) {
-                $errors[] = 'Failed to update complaint #' . $id . ': ' . $e->getMessage();
+                
+                $complaint->update($updateData);
+                $updatedCount++;
             }
-        }
-
-        if ($updatedCount > 0 && empty($errors)) {
-            return redirect()->route('complaints.index')
-                ->with('success', $updatedCount . ' complaint(s) status updated successfully!');
-        } elseif ($updatedCount > 0 && !empty($errors)) {
-            return redirect()->route('complaints.index')
-                ->with('warning', $updatedCount . ' complaint(s) updated, but some failed: ' . implode(', ', $errors));
-        } else {
-            return redirect()->route('complaints.index')
-                ->with('error', 'Failed to update statuses: ' . implode(', ', $errors));
+        } catch (\Exception $e) {
+            $errors[] = 'Failed to update complaint #' . $id . ': ' . $e->getMessage();
         }
     }
 
+    if ($updatedCount > 0 && empty($errors)) {
+        return redirect()->route('complaints.index')
+            ->with('success', $updatedCount . ' complaint(s) status updated successfully!');
+    } elseif ($updatedCount > 0 && !empty($errors)) {
+        return redirect()->route('complaints.index')
+            ->with('warning', $updatedCount . ' complaint(s) updated, but some failed: ' . implode(', ', $errors));
+    } else {
+        return redirect()->route('complaints.index')
+            ->with('error', 'Failed to update statuses: ' . implode(', ', $errors));
+    }
+}
     /**
      * Remove the specified complaint.
      */

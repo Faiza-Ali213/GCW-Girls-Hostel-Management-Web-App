@@ -16,29 +16,42 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
         
-        // Get user's complaints - Multiple ways to match
+        // Get user's complaints - Fresh data
         $complaints = Complaint::where(function($query) use ($user) {
-            // Match by student_name (user's name)
             $query->where('student_name', $user->name)
-                  // Match by complaint_by (user's name)
                   ->orWhere('complaint_by', $user->name)
-                  // Match by student_email (user's email)
                   ->orWhere('student_email', $user->email);
         })
         ->orderBy('created_at', 'desc')
         ->get();
         
-        // Also try to find complaints by student name in students table
+        // Also find by student table
         $student = Student::where('email', $user->email)->first();
         if ($student) {
             $studentComplaints = Complaint::where('student_name', $student->student_name)
                                           ->orderBy('created_at', 'desc')
                                           ->get();
-            // Merge with existing complaints
             $complaints = $complaints->merge($studentComplaints)->unique('id');
         }
         
-        // Get statistics for profile
+        // Sort by created_at
+        $complaints = $complaints->sortByDesc('created_at');
+        
+        // Debug log
+        \Log::info('Profile Complaints Data:', [
+            'user_id' => $user->id,
+            'user_name' => $user->name,
+            'complaint_count' => $complaints->count(),
+            'complaints' => $complaints->map(function($c) {
+                return [
+                    'id' => $c->id,
+                    'title' => $c->title,
+                    'status' => $c->status,
+                    'status_label' => $c->status_label,
+                ];
+            })
+        ]);
+        
         $data = [
             'totalStudents' => \App\Models\Student::count() ?? 0,
             'totalRooms' => \App\Models\Room::count() ?? 0,
@@ -49,13 +62,11 @@ class ProfileController extends Controller
         return view('Pages.profile', $data);
     }
 
-    // Show edit profile page
     public function edit()
     {
         return view('Pages.profile-edit');
     }
 
-    // Update profile
     public function update(Request $request)
     {
         $user = Auth::user();
@@ -76,7 +87,6 @@ class ProfileController extends Controller
             ->with('success', 'Profile updated successfully!');
     }
 
-    // Update password
     public function updatePassword(Request $request)
     {
         $user = Auth::user();
@@ -86,12 +96,10 @@ class ProfileController extends Controller
             'new_password' => 'required|string|min:8|confirmed',
         ]);
 
-        // Check if current password is correct
         if (!Hash::check($request->current_password, $user->password)) {
             return back()->withErrors(['current_password' => 'Current password is incorrect.']);
         }
 
-        // Update password
         $user->update([
             'password' => Hash::make($request->new_password),
         ]);
@@ -100,7 +108,6 @@ class ProfileController extends Controller
             ->with('success', 'Password updated successfully!');
     }
 
-    // Upload profile photo
     public function uploadPhoto(Request $request)
     {
         $request->validate([
@@ -109,12 +116,10 @@ class ProfileController extends Controller
 
         $user = Auth::user();
 
-        // Delete old photo if exists
         if ($user->profile_photo) {
             Storage::disk('public')->delete($user->profile_photo);
         }
 
-        // Store new photo
         $path = $request->file('profile_photo')->store('profile_photos', 'public');
 
         $user->update([
