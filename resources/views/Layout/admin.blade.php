@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @stack('styles')
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | GCW Hostel</title>
@@ -781,6 +779,7 @@
             font-weight: 600;
         }
     </style>
+    @stack('styles')
 </head>
 <body>
 @stack('scripts')

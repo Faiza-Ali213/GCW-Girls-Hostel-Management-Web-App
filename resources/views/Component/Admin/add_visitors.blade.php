@@ -2,6 +2,26 @@
 
 @section('content')
 <style>
+    /* ===== CRITICAL: Prevent flash ===== */
+    #mainCard, #mainCardBody, .visitor-card, .visitor-card .card-body,
+    .visitor-box, .form-group, .form-control-modern, .btn, .row, .col-md-6 {
+        opacity: 1 !important;
+        visibility: visible !important;
+        display: block !important;
+    }
+    
+    .visitor-box .row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+    }
+
     /* ===== MODERN DARK BLUE THEME ===== */
     .visitor-card {
         border: none;
@@ -9,6 +29,7 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
         overflow: hidden;
         margin-top: 10px;
+        background: #f8faff;
     }
 
     .visitor-card .card-header {
@@ -79,6 +100,7 @@
         width: 100%;
         transition: all 0.25s ease;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        height: 42px;
     }
 
     .form-control-modern:focus {
@@ -104,11 +126,23 @@
         background-position: right 14px center;
         padding-right: 40px;
         cursor: pointer;
+        color: #1a2a4a;
+    }
+
+    select.form-control-modern option {
+        color: #1a2a4a;
+        background: #ffffff;
+        padding: 8px;
+    }
+
+    select.form-control-modern option:disabled {
+        color: #94a3b8;
     }
 
     textarea.form-control-modern {
         resize: vertical;
         min-height: 60px;
+        height: auto;
     }
 
     /* Visitor Box */
@@ -119,6 +153,7 @@
         padding: 18px 20px;
         margin-bottom: 12px;
         transition: all 0.25s ease;
+        width: 100%;
     }
 
     .visitor-box:hover {
@@ -134,6 +169,8 @@
         margin-bottom: 14px;
         padding-bottom: 10px;
         border-bottom: 1.5px dashed #eef2f8;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .visitor-box .box-header .title {
@@ -180,6 +217,7 @@
     .visitor-box .form-control-modern {
         padding: 7px 14px;
         font-size: 0.84rem;
+        height: 38px;
     }
 
     .visitor-box .row {
@@ -208,6 +246,7 @@
         gap: 8px;
         white-space: nowrap;
         box-shadow: 0 2px 8px rgba(26, 42, 74, 0.15);
+        height: 36px;
     }
 
     .btn-add-visitor:hover {
@@ -234,6 +273,7 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
+        height: 30px;
     }
 
     .btn-remove:hover {
@@ -260,6 +300,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        height: 44px;
     }
 
     .btn-cancel-modern:hover {
@@ -285,6 +326,7 @@
         flex: 1;
         justify-content: center;
         box-shadow: 0 2px 12px rgba(26, 42, 74, 0.15);
+        height: 44px;
     }
 
     .btn-save-modern:hover {
@@ -303,6 +345,10 @@
         font-weight: 700;
         margin-left: 6px;
         display: inline-block;
+        min-width: 24px;
+        text-align: center;
+        height: 22px;
+        line-height: 22px;
     }
 
     /* Action Row */
@@ -310,6 +356,7 @@
         display: flex;
         gap: 14px;
         margin-top: 6px;
+        flex-wrap: wrap;
     }
 
     /* Small Text */
@@ -328,6 +375,11 @@
     /* Hide remove button for primary visitor */
     .visitor-box:first-child .removeVisitorBtn {
         display: none !important;
+    }
+
+    /* Fix for form group spacing */
+    .form-group {
+        margin-bottom: 1.5rem;
     }
 
     /* ===== RESPONSIVE ===== */
@@ -372,13 +424,18 @@
         .visitor-card .card-header {
             padding: 14px 20px;
         }
+        
+        .col-md-6 {
+            flex: 0 0 100% !important;
+            max-width: 100% !important;
+        }
     }
 </style>
 
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-8 mx-auto">
-            <div class="visitor-card card">
+            <div class="visitor-card card" id="mainCard">
                 <!-- Header -->
                 <div class="card-header">
                     <h5>
@@ -391,13 +448,13 @@
                 </div>
 
                 <!-- Body -->
-                <div class="card-body">
-                    <form action="{{ route('visitor.store') }}" method="POST" id="visitorForm">
+                <div class="card-body" id="mainCardBody">
+                    <form action="{{ route('visitor.store') }}" method="POST" id="visitorForm" novalidate>
                         @csrf
 
                         <!-- Student Selection -->
                         <div class="form-group mb-4">
-                            <label class="form-label-modern">
+                            <label class="form-label-modern" for="student_id">
                                 <i class="fas fa-user-graduate label-icon"></i>
                                 Select Student <span class="required">*</span>
                             </label>
@@ -433,76 +490,150 @@
                             </div>
 
                             <div id="visitorsContainer">
-                                <!-- Default Visitor (Always 1) -->
-                                <div class="visitor-box" data-index="0">
-                                    <div class="box-header">
-                                        <span class="title">
-                                            <i class="fas fa-user-circle"></i>
-                                            Visitor #1
-                                            <span class="badge-primary">Primary</span>
-                                        </span>
+                                @php
+                                    $oldVisitors = old('visitors', []);
+                                    $visitorCount = max(count($oldVisitors), 1);
+                                @endphp
+
+                                @if(count($oldVisitors) > 0)
+                                    @foreach($oldVisitors as $index => $visitor)
+                                        <div class="visitor-box" data-index="{{ $index }}">
+                                            <div class="box-header">
+                                                <span class="title">
+                                                    <i class="fas fa-user-circle"></i>
+                                                    Visitor #{{ $index + 1 }}
+                                                    <span class="{{ $index == 0 ? 'badge-primary' : 'badge-additional' }}">
+                                                        {{ $index == 0 ? 'Primary' : 'Additional' }}
+                                                    </span>
+                                                </span>
+                                                @if($index > 0)
+                                                    <button type="button" class="btn-remove removeVisitorBtn">
+                                                        <i class="fas fa-trash-alt"></i> Remove
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label class="form-label-modern">
+                                                        Full Name <span class="required">*</span>
+                                                    </label>
+                                                    <input type="text" class="form-control-modern @error('visitors.'.$index.'.visitor_name') is-invalid @enderror" 
+                                                           name="visitors[{{ $index }}][visitor_name]"
+                                                           placeholder="Enter full name" 
+                                                           value="{{ $visitor['visitor_name'] ?? '' }}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label-modern">
+                                                        Relationship <span class="required">*</span>
+                                                    </label>
+                                                    <select class="form-control-modern @error('visitors.'.$index.'.relationship') is-invalid @enderror" 
+                                                            name="visitors[{{ $index }}][relationship]" required>
+                                                        <option value="">Select</option>
+                                                        <option value="Father" {{ ($visitor['relationship'] ?? '') == 'Father' ? 'selected' : '' }}>Father</option>
+                                                        <option value="Mother" {{ ($visitor['relationship'] ?? '') == 'Mother' ? 'selected' : '' }}>Mother</option>
+                                                        <option value="Brother" {{ ($visitor['relationship'] ?? '') == 'Brother' ? 'selected' : '' }}>Brother</option>
+                                                        <option value="Sister" {{ ($visitor['relationship'] ?? '') == 'Sister' ? 'selected' : '' }}>Sister</option>
+                                                        <option value="Uncle" {{ ($visitor['relationship'] ?? '') == 'Uncle' ? 'selected' : '' }}>Uncle</option>
+                                                        <option value="Aunt" {{ ($visitor['relationship'] ?? '') == 'Aunt' ? 'selected' : '' }}>Aunt</option>
+                                                        <option value="Cousin" {{ ($visitor['relationship'] ?? '') == 'Cousin' ? 'selected' : '' }}>Cousin</option>
+                                                        <option value="Friend" {{ ($visitor['relationship'] ?? '') == 'Friend' ? 'selected' : '' }}>Friend</option>
+                                                        <option value="Guardian" {{ ($visitor['relationship'] ?? '') == 'Guardian' ? 'selected' : '' }}>Guardian</option>
+                                                        <option value="Other" {{ ($visitor['relationship'] ?? '') == 'Other' ? 'selected' : '' }}>Other</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label-modern">
+                                                        <i class="far fa-id-card"></i> CNIC
+                                                    </label>
+                                                    <input type="text" class="form-control-modern @error('visitors.'.$index.'.cnic_number') is-invalid @enderror" 
+                                                           name="visitors[{{ $index }}][cnic_number]"
+                                                           placeholder="35201-1234567-8" 
+                                                           value="{{ $visitor['cnic_number'] ?? '' }}">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="form-label-modern">
+                                                        <i class="fas fa-phone"></i> Phone
+                                                    </label>
+                                                    <input type="text" class="form-control-modern @error('visitors.'.$index.'.phone_number') is-invalid @enderror" 
+                                                           name="visitors[{{ $index }}][phone_number]"
+                                                           placeholder="0300-1234567" 
+                                                           value="{{ $visitor['phone_number'] ?? '' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <!-- Default Visitor (Always 1) -->
+                                    <div class="visitor-box" data-index="0">
+                                        <div class="box-header">
+                                            <span class="title">
+                                                <i class="fas fa-user-circle"></i>
+                                                Visitor #1
+                                                <span class="badge-primary">Primary</span>
+                                            </span>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label class="form-label-modern">
+                                                    Full Name <span class="required">*</span>
+                                                </label>
+                                                <input type="text" class="form-control-modern @error('visitors.0.visitor_name') is-invalid @enderror" 
+                                                       name="visitors[0][visitor_name]"
+                                                       placeholder="Enter full name" 
+                                                       value="{{ old('visitors.0.visitor_name') }}" required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label-modern">
+                                                    Relationship <span class="required">*</span>
+                                                </label>
+                                                <select class="form-control-modern @error('visitors.0.relationship') is-invalid @enderror" 
+                                                        name="visitors[0][relationship]" required>
+                                                    <option value="">Select</option>
+                                                    <option value="Father" {{ old('visitors.0.relationship') == 'Father' ? 'selected' : '' }}>Father</option>
+                                                    <option value="Mother" {{ old('visitors.0.relationship') == 'Mother' ? 'selected' : '' }}>Mother</option>
+                                                    <option value="Brother" {{ old('visitors.0.relationship') == 'Brother' ? 'selected' : '' }}>Brother</option>
+                                                    <option value="Sister" {{ old('visitors.0.relationship') == 'Sister' ? 'selected' : '' }}>Sister</option>
+                                                    <option value="Uncle" {{ old('visitors.0.relationship') == 'Uncle' ? 'selected' : '' }}>Uncle</option>
+                                                    <option value="Aunt" {{ old('visitors.0.relationship') == 'Aunt' ? 'selected' : '' }}>Aunt</option>
+                                                    <option value="Cousin" {{ old('visitors.0.relationship') == 'Cousin' ? 'selected' : '' }}>Cousin</option>
+                                                    <option value="Friend" {{ old('visitors.0.relationship') == 'Friend' ? 'selected' : '' }}>Friend</option>
+                                                    <option value="Guardian" {{ old('visitors.0.relationship') == 'Guardian' ? 'selected' : '' }}>Guardian</option>
+                                                    <option value="Other" {{ old('visitors.0.relationship') == 'Other' ? 'selected' : '' }}>Other</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label-modern">
+                                                    <i class="far fa-id-card"></i> CNIC
+                                                </label>
+                                                <input type="text" class="form-control-modern @error('visitors.0.cnic_number') is-invalid @enderror" 
+                                                       name="visitors[0][cnic_number]"
+                                                       placeholder="35201-1234567-8" 
+                                                       value="{{ old('visitors.0.cnic_number') }}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label-modern">
+                                                    <i class="fas fa-phone"></i> Phone
+                                                </label>
+                                                <input type="text" class="form-control-modern @error('visitors.0.phone_number') is-invalid @enderror" 
+                                                       name="visitors[0][phone_number]"
+                                                       placeholder="0300-1234567" 
+                                                       value="{{ old('visitors.0.phone_number') }}">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">
-                                                Full Name <span class="required">*</span>
-                                            </label>
-                                            <input type="text" class="form-control-modern" 
-                                                   name="visitors[0][visitor_name]"
-                                                   placeholder="Enter full name" 
-                                                   value="{{ old('visitors.0.visitor_name') }}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">
-                                                Relationship <span class="required">*</span>
-                                            </label>
-                                            <select class="form-control-modern" 
-                                                    name="visitors[0][relationship]" required>
-                                                <option value="">Select</option>
-                                                <option value="Father">Father</option>
-                                                <option value="Mother">Mother</option>
-                                                <option value="Brother">Brother</option>
-                                                <option value="Sister">Sister</option>
-                                                <option value="Uncle">Uncle</option>
-                                                <option value="Aunt">Aunt</option>
-                                                <option value="Cousin">Cousin</option>
-                                                <option value="Friend">Friend</option>
-                                                <option value="Guardian">Guardian</option>
-                                                <option value="Other">Other</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">
-                                                <i class="far fa-id-card"></i> CNIC
-                                            </label>
-                                            <input type="text" class="form-control-modern" 
-                                                   name="visitors[0][cnic_number]"
-                                                   placeholder="35201-1234567-8" 
-                                                   value="{{ old('visitors.0.cnic_number') }}">
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="form-label-modern">
-                                                <i class="fas fa-phone"></i> Phone
-                                            </label>
-                                            <input type="text" class="form-control-modern" 
-                                                   name="visitors[0][phone_number]"
-                                                   placeholder="0300-1234567" 
-                                                   value="{{ old('visitors.0.phone_number') }}">
-                                        </div>
-                                    </div>
-                                </div>
+                                @endif
                             </div>
 
-                            <input type="hidden" name="visitor_count" id="visitorCount" value="1">
+                            <input type="hidden" name="visitor_count" id="visitorCount" value="{{ max(count(old('visitors', [])), 1) }}">
                         </div>
 
                         <!-- Remarks -->
                         <div class="form-group mb-4">
-                            <label class="form-label-modern">
+                            <label class="form-label-modern" for="remarks">
                                 <i class="fas fa-pen label-icon"></i> Remarks
                             </label>
                             <textarea class="form-control-modern @error('remarks') is-invalid @enderror"
-                                      name="remarks" rows="2"
+                                      name="remarks" id="remarks" rows="2"
                                       placeholder="Any additional notes...">{{ old('remarks') }}</textarea>
                             @error('remarks')
                                 <div class="text-danger small mt-1">{{ $message }}</div>
@@ -525,28 +656,97 @@
     </div>
 </div>
 
-@push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    if (window._visitorFormInitialized) return;
+    window._visitorFormInitialized = true;
 
-    var addBtn = document.getElementById('addVisitorBtn');
-    var container = document.getElementById('visitorsContainer');
-    var countInput = document.getElementById('visitorCount');
-    var countDisplay = document.getElementById('visitorCountDisplay');
+    const addBtn = document.getElementById('addVisitorBtn');
+    const container = document.getElementById('visitorsContainer');
+    const countInput = document.getElementById('visitorCount');
+    const countDisplay = document.getElementById('visitorCountDisplay');
+    const form = document.getElementById('visitorForm');
 
-    if (!addBtn) return;
+    if (!addBtn || !container) return;
 
-    // Add visitor
+    function getVisitorCount() {
+        return container.querySelectorAll('.visitor-box').length;
+    }
+
+    function updateCounter() {
+        const count = getVisitorCount();
+        if (countInput) countInput.value = count;
+        if (countDisplay) countDisplay.textContent = count;
+    }
+
+    function updateRemoveButtons() {
+        const boxes = container.querySelectorAll('.visitor-box');
+        boxes.forEach((box, index) => {
+            const removeBtn = box.querySelector('.removeVisitorBtn');
+            if (index === 0) {
+                if (removeBtn) removeBtn.style.display = 'none';
+            } else {
+                if (removeBtn) removeBtn.style.display = 'inline-flex';
+            }
+        });
+    }
+
+    function reindexVisitors() {
+        const boxes = container.querySelectorAll('.visitor-box');
+        boxes.forEach((box, index) => {
+            const newIndex = index;
+            const visitorNumber = index + 1;
+            box.setAttribute('data-index', newIndex);
+            
+            const title = box.querySelector('.title');
+            if (title) {
+                const isPrimary = visitorNumber === 1;
+                title.innerHTML = `
+                    <i class="fas fa-user-circle"></i>
+                    Visitor #${visitorNumber}
+                    <span class="${isPrimary ? 'badge-primary' : 'badge-additional'}">
+                        ${isPrimary ? 'Primary' : 'Additional'}
+                    </span>
+                `;
+            }
+
+            box.querySelectorAll('input, select').forEach(function(input) {
+                const name = input.getAttribute('name');
+                if (name) {
+                    const newName = name.replace(/visitors\[\d+\]/g, 'visitors[' + newIndex + ']');
+                    input.setAttribute('name', newName);
+                }
+            });
+
+            const header = box.querySelector('.box-header');
+            if (header) {
+                let removeBtn = header.querySelector('.removeVisitorBtn');
+                if (index === 0) {
+                    if (removeBtn) removeBtn.style.display = 'none';
+                } else {
+                    if (!removeBtn) {
+                        removeBtn = document.createElement('button');
+                        removeBtn.type = 'button';
+                        removeBtn.className = 'btn-remove removeVisitorBtn';
+                        removeBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Remove';
+                        header.appendChild(removeBtn);
+                    } else {
+                        removeBtn.style.display = 'inline-flex';
+                    }
+                }
+            }
+        });
+        updateCounter();
+    }
+
     addBtn.addEventListener('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
+        const currentCount = container.querySelectorAll('.visitor-box').length;
+        const newIndex = currentCount;
+        const visitorNumber = currentCount + 1;
 
-        var currentBoxes = container.querySelectorAll('.visitor-box');
-        var currentCount = currentBoxes.length;
-        var newIndex = currentCount;
-        var visitorNumber = currentCount + 1;
-
-        var newBox = document.createElement('div');
+        const newBox = document.createElement('div');
         newBox.className = 'visitor-box';
         newBox.setAttribute('data-index', newIndex);
         newBox.innerHTML = `
@@ -606,117 +806,85 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         `;
-
         container.appendChild(newBox);
-        countInput.value = currentCount + 1;
-        countDisplay.textContent = currentCount + 1;
+        updateCounter();
+        updateRemoveButtons();
     });
 
-    // Remove visitor - using event delegation
     container.addEventListener('click', function(e) {
-        var removeBtn = e.target.closest('.removeVisitorBtn');
+        const removeBtn = e.target.closest('.removeVisitorBtn');
         if (!removeBtn) return;
-
         e.preventDefault();
         e.stopPropagation();
-
-        var box = removeBtn.closest('.visitor-box');
-        var boxes = container.querySelectorAll('.visitor-box');
-
+        const box = removeBtn.closest('.visitor-box');
+        const boxes = container.querySelectorAll('.visitor-box');
         if (boxes.length <= 1) {
             alert('At least one visitor is required.');
             return;
         }
-
         if (confirm('Remove this visitor?')) {
             box.remove();
             reindexVisitors();
+            updateRemoveButtons();
         }
     });
 
-    function reindexVisitors() {
-        var boxes = container.querySelectorAll('.visitor-box');
-
-        boxes.forEach(function(box, index) {
-            var newIndex = index;
-            var visitorNumber = index + 1;
-
-            box.setAttribute('data-index', newIndex);
-
-            var title = box.querySelector('.title');
-            if (title) {
-                var isPrimary = visitorNumber === 1;
-                title.innerHTML = `
-                    <i class="fas fa-user-circle"></i>
-                    Visitor #${visitorNumber}
-                    <span class="${isPrimary ? 'badge-primary' : 'badge-additional'}">
-                        ${isPrimary ? 'Primary' : 'Additional'}
-                    </span>
-                `;
-            }
-
-            // Update the remove button
-            var header = box.querySelector('.box-header');
-            var existingRemoveBtn = header.querySelector('.removeVisitorBtn');
-            
-            if (isPrimary) {
-                if (existingRemoveBtn) {
-                    existingRemoveBtn.remove();
+    container.addEventListener('input', function(e) {
+        const input = e.target;
+        if (input.classList.contains('form-control-modern') && input.placeholder) {
+            if (input.placeholder.includes('35201')) {
+                let value = input.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    if (value.length <= 5) input.value = value;
+                    else if (value.length <= 12) input.value = value.slice(0, 5) + '-' + value.slice(5);
+                    else input.value = value.slice(0, 5) + '-' + value.slice(5, 12) + '-' + value.slice(12, 13);
                 }
-            } else {
-                if (!existingRemoveBtn) {
-                    var removeBtn = document.createElement('button');
-                    removeBtn.type = 'button';
-                    removeBtn.className = 'btn-remove removeVisitorBtn';
-                    removeBtn.innerHTML = '<i class="fas fa-trash-alt"></i> Remove';
-                    header.appendChild(removeBtn);
+            } else if (input.placeholder.includes('0300')) {
+                let value = input.value.replace(/\D/g, '');
+                if (value.length > 0) {
+                    if (value.length <= 4) input.value = value;
+                    else if (value.length <= 7) input.value = value.slice(0, 4) + '-' + value.slice(4);
+                    else input.value = value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11);
                 }
             }
+        }
+    });
 
-            box.querySelectorAll('input, select').forEach(function(input) {
-                var name = input.getAttribute('name');
-                if (name) {
-                    var newName = name.replace(/visitors\[\d+\]/g, 'visitors[' + newIndex + ']');
-                    input.setAttribute('name', newName);
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            container.querySelectorAll('.visitor-box').forEach(function(box) {
+                const nameInput = box.querySelector('input[name*="[visitor_name]"]');
+                const relationSelect = box.querySelector('select[name*="[relationship]"]');
+                if (nameInput && !nameInput.value.trim()) {
+                    isValid = false;
+                    nameInput.classList.add('is-invalid');
+                } else if (nameInput) {
+                    nameInput.classList.remove('is-invalid');
+                }
+                if (relationSelect && !relationSelect.value) {
+                    isValid = false;
+                    relationSelect.classList.add('is-invalid');
+                } else if (relationSelect) {
+                    relationSelect.classList.remove('is-invalid');
                 }
             });
+            const studentSelect = document.getElementById('student_id');
+            if (studentSelect && !studentSelect.value) {
+                isValid = false;
+                studentSelect.classList.add('is-invalid');
+            } else if (studentSelect) {
+                studentSelect.classList.remove('is-invalid');
+            }
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+            }
         });
-
-        countInput.value = boxes.length;
-        countDisplay.textContent = boxes.length;
     }
 
-    // Format CNIC
-    container.addEventListener('input', function(e) {
-        if (e.target.classList.contains('form-control-modern') && e.target.placeholder && e.target.placeholder.includes('35201')) {
-            var value = e.target.value.replace(/\D/g, '');
-            if (value.length > 0) {
-                if (value.length <= 5) {
-                    e.target.value = value;
-                } else if (value.length <= 12) {
-                    e.target.value = value.slice(0, 5) + '-' + value.slice(5);
-                } else {
-                    e.target.value = value.slice(0, 5) + '-' + value.slice(5, 12) + '-' + value.slice(12, 13);
-                }
-            }
-        }
-    });
-
-    // Format Phone
-    container.addEventListener('input', function(e) {
-        if (e.target.classList.contains('form-control-modern') && e.target.placeholder && e.target.placeholder.includes('0300')) {
-            var value = e.target.value.replace(/\D/g, '');
-            if (value.length > 0) {
-                if (value.length <= 4) {
-                    e.target.value = value;
-                } else if (value.length <= 7) {
-                    e.target.value = value.slice(0, 4) + '-' + value.slice(4);
-                } else {
-                    e.target.value = value.slice(0, 4) + '-' + value.slice(4, 7) + '-' + value.slice(7, 11);
-                }
-            }
-        }
-    });
+    updateCounter();
+    updateRemoveButtons();
 });
 </script>
-@endpush
+@endsection
