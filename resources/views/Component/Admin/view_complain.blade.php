@@ -20,17 +20,53 @@
         font-size: 1.2rem;
     }
     .breadcrumb-custom .breadcrumb-item a {
-        color: #0B2E33;
+        color: #1a2a4a;
         text-decoration: none;
         font-weight: 500;
         transition: color 0.2s;
     }
     .breadcrumb-custom .breadcrumb-item a:hover {
-        color: #1a5a6e;
+        color: #0f1a2e;
     }
     .breadcrumb-custom .breadcrumb-item.active {
         color: #64748b;
         font-weight: 500;
+    }
+
+    /* ===== TOP ACTION BAR ===== */
+    .top-action-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .btn-back-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.6rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        background: #1a2a4a;
+        color: #ffffff;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(26, 42, 74, 0.2);
+    }
+    .btn-back-top:hover {
+        background: #0f1a2e;
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(26, 42, 74, 0.3);
+        text-decoration: none;
+    }
+    .btn-back-top i {
+        font-size: 0.95rem;
     }
 
     /* ===== MAIN CARD ===== */
@@ -48,7 +84,7 @@
 
     /* ===== HEADER ===== */
     .detail-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #1a2a4a 0%, #0f1a2e 100%);
         padding: 2rem 2.5rem;
         position: relative;
         overflow: hidden;
@@ -60,7 +96,7 @@
         right: -10%;
         width: 300px;
         height: 300px;
-        background: rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.03);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -71,7 +107,7 @@
         left: -5%;
         width: 200px;
         height: 200px;
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(255, 255, 255, 0.02);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -93,7 +129,7 @@
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 255, 255, 0.1);
         backdrop-filter: blur(10px);
         display: flex;
         align-items: center;
@@ -101,7 +137,7 @@
         font-size: 1.2rem;
         font-weight: 700;
         color: #ffffff;
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.15);
         flex-shrink: 0;
     }
     .detail-title h2 {
@@ -112,7 +148,7 @@
         letter-spacing: -0.3px;
     }
     .detail-title .sub-info {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.7);
         font-size: 0.85rem;
         margin-top: 4px;
     }
@@ -137,47 +173,47 @@
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        background: rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.08);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         color: #ffffff;
     }
     .badge-header i {
         font-size: 0.7rem;
     }
     .badge-header.priority-high {
-        background: rgba(239, 68, 68, 0.25);
-        border-color: rgba(239, 68, 68, 0.3);
+        background: rgba(239, 68, 68, 0.2);
+        border-color: rgba(239, 68, 68, 0.2);
         color: #fca5a5;
     }
     .badge-header.priority-medium {
-        background: rgba(251, 191, 36, 0.2);
-        border-color: rgba(251, 191, 36, 0.25);
+        background: rgba(251, 191, 36, 0.15);
+        border-color: rgba(251, 191, 36, 0.15);
         color: #fcd34d;
     }
     .badge-header.priority-low {
-        background: rgba(34, 197, 94, 0.2);
-        border-color: rgba(34, 197, 94, 0.25);
+        background: rgba(34, 197, 94, 0.15);
+        border-color: rgba(34, 197, 94, 0.15);
         color: #86efac;
     }
     .badge-header.status-pending {
-        background: rgba(251, 191, 36, 0.2);
-        border-color: rgba(251, 191, 36, 0.25);
+        background: rgba(251, 191, 36, 0.15);
+        border-color: rgba(251, 191, 36, 0.15);
         color: #fcd34d;
     }
     .badge-header.status-in_progress {
-        background: rgba(96, 165, 250, 0.2);
-        border-color: rgba(96, 165, 250, 0.25);
+        background: rgba(96, 165, 250, 0.15);
+        border-color: rgba(96, 165, 250, 0.15);
         color: #93c5fd;
     }
     .badge-header.status-resolved {
-        background: rgba(34, 197, 94, 0.2);
-        border-color: rgba(34, 197, 94, 0.25);
+        background: rgba(34, 197, 94, 0.15);
+        border-color: rgba(34, 197, 94, 0.15);
         color: #86efac;
     }
     .badge-header.status-rejected {
-        background: rgba(239, 68, 68, 0.2);
-        border-color: rgba(239, 68, 68, 0.25);
+        background: rgba(239, 68, 68, 0.15);
+        border-color: rgba(239, 68, 68, 0.15);
         color: #fca5a5;
     }
     .badge-dot {
@@ -236,12 +272,6 @@
         .detail-header {
             padding: 1.5rem;
         }
-        .action-buttons {
-            flex-direction: column;
-        }
-        .action-buttons .btn-custom {
-            justify-content: center;
-        }
     }
 
     .info-item {
@@ -270,7 +300,7 @@
     }
     .info-item .label i {
         font-size: 0.8rem;
-        color: #667eea;
+        color: #1a2a4a;
         width: 16px;
     }
     .info-item .value {
@@ -314,68 +344,25 @@
         font-style: italic;
     }
 
-    /* ===== ACTION BUTTONS ===== */
-    .action-buttons {
-        display: flex;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-        padding-top: 1.5rem;
-        border-top: 2px solid #f1f5f9;
-        margin-top: 0.5rem;
-    }
-    .btn-custom {
+    /* Complaint By badge in info grid */
+    .complaint-by-badge-detail {
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
-        padding: 0.6rem 1.8rem;
+        gap: 6px;
+        padding: 3px 14px;
         border-radius: 50px;
         font-weight: 600;
-        font-size: 0.9rem;
-        transition: all 0.25s ease;
-        text-decoration: none;
-        border: none;
-        cursor: pointer;
+        font-size: 0.8rem;
+        background: #eef2ff;
+        color: #4f46e5;
     }
-    .btn-custom i {
-        font-size: 0.95rem;
+    .complaint-by-badge-detail.student {
+        background: #ecfdf5;
+        color: #059669;
     }
-    .btn-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        text-decoration: none;
-    }
-    .btn-custom:active {
-        transform: scale(0.97);
-    }
-    .btn-edit {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: #ffffff;
-    }
-    .btn-edit:hover {
-        color: #ffffff;
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
-    }
-    .btn-back {
-        background: #f1f5f9;
-        color: #475569;
-    }
-    .btn-back:hover {
-        background: #e2e8f0;
-        color: #0f172a;
-    }
-    .btn-delete {
-        background: #fef2f2;
-        color: #dc2626;
-    }
-    .btn-delete:hover {
-        background: #fecaca;
-        color: #b91c1c;
-        box-shadow: 0 8px 25px rgba(220, 38, 38, 0.15);
-    }
-    .delete-form {
-        display: inline;
-        margin: 0;
-        padding: 0;
+    .complaint-by-badge-detail.user {
+        background: #eff6ff;
+        color: #2563eb;
     }
 
     /* ===== FOOTER INFO ===== */
@@ -415,20 +402,30 @@
             font-size: 0.65rem;
             padding: 0.3rem 0.8rem;
         }
-        .action-buttons .btn-custom {
-            width: 100%;
-            justify-content: center;
-        }
         .detail-footer {
             flex-direction: column;
             text-align: center;
             padding: 1rem 1.5rem;
+        }
+        .top-action-bar {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .btn-back-top {
+            justify-content: center;
         }
     }
 </style>
 
 <div class="complaint-details-container">
     <div class="container-fluid px-0">
+        <!-- Top Action Bar -->
+        <div class="top-action-bar">
+            <a href="{{ route('complaints.index') }}" class="btn-back-top">
+                <i class="fas fa-arrow-left"></i> Back to Complaints
+            </a>
+        </div>
+
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb" class="breadcrumb-custom">
             <ol class="breadcrumb">
@@ -521,7 +518,16 @@
                         <span class="label">
                             <i class="fas fa-user-tag"></i> Complaint By
                         </span>
-                        <span class="value">{{ $complaint->complaint_by ?? '<span class="text-muted">Not specified</span>' }}</span>
+                        <span class="value">
+                            @if($complaint->complaint_by)
+                                <span class="complaint-by-badge-detail {{ strtolower($complaint->complaint_by) }}">
+                                    <i class="fas fa-user-{{ strtolower($complaint->complaint_by) == 'student' ? 'graduate' : 'circle' }}"></i>
+                                    {{ ucfirst($complaint->complaint_by) }}
+                                </span>
+                            @else
+                                <span class="text-muted">Not specified</span>
+                            @endif
+                        </span>
                     </div>
 
                     <!-- Submitted Date -->
@@ -550,25 +556,6 @@
                         <span class="value">{{ $complaint->admin_remark ?? 'No remarks yet' }}</span>
                     </div>
                 </div>
-
-                <!-- Action Buttons -->
-                <div class="action-buttons">
-                    <a href="{{ route('complaints.edit', $complaint->id) }}" class="btn-custom btn-edit">
-                        <i class="fas fa-edit"></i> Edit Complaint
-                    </a>
-                    
-                    <a href="{{ route('complaints.index') }}" class="btn-custom btn-back">
-                        <i class="fas fa-arrow-left"></i> Back to List
-                    </a>
-
-                    <form action="{{ route('complaints.destroy', $complaint->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this complaint: {{ addslashes($complaint->title) }}? This action cannot be undone.');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn-custom btn-delete">
-                            <i class="fas fa-trash-alt"></i> Delete Complaint
-                        </button>
-                    </form>
-                </div>
             </div>
 
             <!-- Footer -->
@@ -591,9 +578,6 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
-        
         console.log('✅ Complaint details page loaded successfully');
     });
 </script>

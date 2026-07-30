@@ -113,7 +113,7 @@ class ComplaintController extends Controller
     {
         try {
             $complaint = Complaint::findOrFail($id);
-            return view('Component.Admin.view_complaint', compact('complaint'));
+            return view('Component.Admin.view_complain', compact('complaint'));
         } catch (\Exception $e) {
             return redirect()->route('complaints.index')
                 ->with('error', 'Complaint not found');
