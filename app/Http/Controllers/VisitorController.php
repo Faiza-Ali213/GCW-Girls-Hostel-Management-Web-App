@@ -1,140 +1,128 @@
 <?php
-// app/Http/Controllers/VisitorController.php
 
 namespace App\Http\Controllers;
 
 use App\Models\Visitor;
-use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-
+use App\Models\Student;
 class VisitorController extends Controller
 {
+   /**
+ * Display a listing of visitors.
+ */
+public function index(Request $request)
+{
+    $query = Visitor::query();
+
+    // Search
+    if ($request->has('search') && !empty($request->search)) {
+        $query->search($request->search);
+    }
+
+    // Filter by status
+    if ($request->has('status') && !empty($request->status)) {
+        $query->where('status', $request->status);
+    }
+
+    // Filter by date
+    if ($request->has('date') && !empty($request->date)) {
+        $query->whereDate('created_at', $request->date);
+    }
+
+    $visitors = $query->orderBy('created_at', 'desc')->paginate(10);
+
+    // Statistics - Removed checkedOutVisitors
+    $totalVisitors = Visitor::count();
+    $activeVisitors = Visitor::active()->count();
+    $todayVisitors = Visitor::whereDate('created_at', today())->count();
+    $totalVisitorsCount = Visitor::sum('number_of_visitors');
+
+    return view('Pages.Admin.vistors_records', compact(
+        'visitors',
+        'totalVisitors',
+        'activeVisitors',
+        'todayVisitors',
+        'totalVisitorsCount'
+    ));
+}
+
     /**
-     * Display a listing of visitors.
-     */
-    public function index(Request $request)
-    {
-        $query = Visitor::query();
+ * Show form to create new visitor with students list.
+ */
+public function create()
+{
+    $students = Student::orderBy('student_name')->get(['id', 'student_name', 'father_name', 'room_number', 'phone_number', 'cnic_number']);
+    return view('Component.Admin.add_visitors', compact('students'));
+}
+/**
+ * Store a newly created visitor.
+ */
+public function store(Request $request)
+{
+    // Debug: Log the incoming data
+    \Log::info('Visitor Store Request Data:', $request->all());
 
-        // Search functionality
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('visitor_name', 'LIKE', "%{$search}%")
-                  ->orWhere('phone_number', 'LIKE', "%{$search}%")
-                  ->orWhere('student_name', 'LIKE', "%{$search}%")
-                  ->orWhere('purpose_of_visit', 'LIKE', "%{$search}%");
-            });
-        }
+    $validator = Validator::make($request->all(), [
+        'student_id' => 'required|exists:students,id',
+        'visitors.*.visitor_name' => 'required|string|max:255',
+        'visitors.*.relationship' => 'required|string|max:50',
+        'visitors.*.cnic_number' => 'nullable|string|max:20',
+        'visitors.*.phone_number' => 'nullable|string|max:20',
+        'remarks' => 'nullable|string',
+    ]);
 
-        // Filter by status
-        if ($request->has('status') && !empty($request->status)) {
-            $query->where('status', $request->status);
-        }
+    if ($validator->fails()) {
+        \Log::error('Validation failed:', $validator->errors()->toArray());
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
 
-        $visitors = $query->orderBy('created_at', 'desc')->paginate(10);
+    try {
+        // Get all visitors from the array
+        $visitors = $request->visitors;
+        $numberOfVisitors = count($visitors);
         
-        // Statistics
-        $totalVisitors = Visitor::count();
-        $totalActive = Visitor::where('status', 'active')->count();
-        $totalCheckedOut = Visitor::where('status', 'checked_out')->count();
-        $todayVisitors = Visitor::whereDate('created_at', today())->count();
+        \Log::info('Number of visitors:', ['count' => $numberOfVisitors, 'visitors' => $visitors]);
+        
+        // Get student details
+        $student = \App\Models\Student::find($request->student_id);
+        
+        if (!$student) {
+            return redirect()->back()
+                ->with('error', 'Student not found.')
+                ->withInput();
+        }
 
-        return view('Pages.Admin.vistors_records', compact(
-            'visitors',
-            'totalVisitors',
-            'totalActive',
-            'totalCheckedOut',
-            'todayVisitors'
-        ));
-    }
-
-    /**
-     * Show the form for creating a new visitor.
-     */
-    public function create()
-    {
-        return view('Component.Admin.add_visitors');
-    }
-
-    /**
-     * Store a newly created visitor.
-     */
-    public function store(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'visitor_name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'id_card_number' => 'nullable|string|max:50',
-            'purpose_of_visit' => 'required|string|max:255',
-            'room_no' => 'nullable|string|max:50',
-            'student_id' => 'nullable|exists:students,id',
-            'student_name' => 'nullable|string|max:255',
-            'student_room' => 'nullable|string|max:50',
-            'check_in_time' => 'nullable|date',
-            'expected_checkout' => 'nullable|date|after:check_in_time',
-            'remarks' => 'nullable|string',
-            'who_to_meet' => 'nullable|string|max:255',
-            'vehicle_number' => 'nullable|string|max:50',
+        // Create main visitor record
+        $visitor = Visitor::create([
+            'visitor_name' => $visitors[0]['visitor_name'] ?? 'N/A',
+            'cnic_number' => $visitors[0]['cnic_number'] ?? null,
+            'phone_number' => $visitors[0]['phone_number'] ?? null,
+            'student_name' => $student->student_name,
+            'student_phone' => $student->phone_number,
+            'student_room' => $student->room_number,
+            'student_cnic' => $student->cnic_number,
+            'number_of_visitors' => $numberOfVisitors,
+            'status' => 'active',
+            'check_in_time' => now(),
+            'check_in_by' => auth()->user()->name ?? 'System',
+            'remarks' => $request->remarks,
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
-        }
+        \Log::info('Visitor created successfully:', ['id' => $visitor->id]);
 
-        try {
-            // Prepare visitor data
-            $visitorData = [
-                'visitor_name' => $request->visitor_name,
-                'phone_number' => $request->phone_number,
-                'email' => $request->email,
-                'id_card_number' => $request->id_card_number,
-                'purpose_of_visit' => $request->purpose_of_visit,
-                'room_no' => $request->room_no,
-                'student_name' => $request->student_name,
-                'student_room' => $request->student_room,
-                'student_id' => $request->student_id,
-                'check_in_time' => $request->check_in_time ?? now(),
-                'expected_checkout' => $request->expected_checkout,
-                'status' => 'active',
-                'remarks' => $request->remarks,
-                'who_to_meet' => $request->who_to_meet,
-                'vehicle_number' => $request->vehicle_number,
-                'checked_in_by' => Auth::id(),
-            ];
+        return redirect()->route('visitors_records')
+            ->with('success', $numberOfVisitors . ' visitor(s) checked in successfully for ' . $student->student_name);
 
-            // If student_id is provided, fetch student details
-            if ($request->filled('student_id')) {
-                $student = Student::find($request->student_id);
-                if ($student) {
-                    $visitorData['student_name'] = $student->name;
-                    $visitorData['student_room'] = $student->room_number ?? $visitorData['student_room'];
-                }
-            }
-
-            // Create visitor
-            $visitor = Visitor::create($visitorData);
-
-            // Send notification - Fixed: Check if class exists
-            if (class_exists('App\Http\Controllers\NotificationController')) {
-                \App\Http\Controllers\NotificationController::notifyVisitorAdded($visitor);
-            }
-
-            return redirect()->route('vistors_records')
-                ->with('success', 'Visitor "' . $visitor->visitor_name . '" checked in successfully!');
-
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Failed to add visitor: ' . $e->getMessage())
-                ->withInput();
-        }
+    } catch (\Exception $e) {
+        \Log::error('Error creating visitor:', ['error' => $e->getMessage()]);
+        return redirect()->back()
+            ->with('error', 'Failed to add visitor: ' . $e->getMessage())
+            ->withInput();
     }
-
+}
     /**
      * Display the specified visitor.
      */
@@ -142,10 +130,10 @@ class VisitorController extends Controller
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            return view('Component.Admin.view_visitors', compact('visitor'));
+            return view('Component.Admin.view_visitor', compact('visitor'));
         } catch (\Exception $e) {
-            return redirect()->route('vistors_records')
-                ->with('error', 'Visitor record not found');
+            return redirect()->route('visitors-records')
+                ->with('error', 'Visitor not found');
         }
     }
 
@@ -156,10 +144,10 @@ class VisitorController extends Controller
     {
         try {
             $visitor = Visitor::findOrFail($id);
-            return view('Component.Admin.edit_visitors', compact('visitor'));
+            return view('Component.Admin.edit_visitor', compact('visitor'));
         } catch (\Exception $e) {
-            return redirect()->route('vistors_records')
-                ->with('error', 'Visitor record not found');
+            return redirect()->route('visitors-records')
+                ->with('error', 'Visitor not found');
         }
     }
 
@@ -170,17 +158,20 @@ class VisitorController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'visitor_name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
+            'cnic_number' => 'nullable|string|max:20',
+            'phone_number' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
-            'id_card_number' => 'nullable|string|max:50',
-            'purpose_of_visit' => 'required|string|max:255',
-            'room_no' => 'nullable|string|max:50',
-            'student_name' => 'nullable|string|max:255',
+            'address' => 'nullable|string',
+            'student_name' => 'required|string|max:255',
+            'student_phone' => 'nullable|string|max:20',
             'student_room' => 'nullable|string|max:50',
-            'status' => 'required|in:active,checked_out,pending',
+            'student_cnic' => 'nullable|string|max:20',
+            'number_of_visitors' => 'required|integer|min:1',
+            'purpose_of_visit' => 'nullable|string',
+            'relationship_with_student' => 'nullable|string',
             'remarks' => 'nullable|string',
-            'who_to_meet' => 'nullable|string|max:255',
-            'vehicle_number' => 'nullable|string|max:50',
+            'id_proof_type' => 'nullable|string|max:50',
+            'id_proof_number' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -191,40 +182,27 @@ class VisitorController extends Controller
 
         try {
             $visitor = Visitor::findOrFail($id);
-            $oldStatus = $visitor->status;
             
-            $updateData = [
+            $visitor->update([
                 'visitor_name' => $request->visitor_name,
+                'cnic_number' => $request->cnic_number,
                 'phone_number' => $request->phone_number,
                 'email' => $request->email,
-                'id_card_number' => $request->id_card_number,
-                'purpose_of_visit' => $request->purpose_of_visit,
-                'room_no' => $request->room_no,
+                'address' => $request->address,
                 'student_name' => $request->student_name,
+                'student_phone' => $request->student_phone,
                 'student_room' => $request->student_room,
-                'status' => $request->status,
+                'student_cnic' => $request->student_cnic,
+                'number_of_visitors' => $request->number_of_visitors,
+                'purpose_of_visit' => $request->purpose_of_visit,
+                'relationship_with_student' => $request->relationship_with_student,
                 'remarks' => $request->remarks,
-                'who_to_meet' => $request->who_to_meet,
-                'vehicle_number' => $request->vehicle_number,
-            ];
+                'id_proof_type' => $request->id_proof_type,
+                'id_proof_number' => $request->id_proof_number,
+            ]);
 
-            // If status is checked_out and checkout time is not set
-            if ($request->status == 'checked_out' && $visitor->check_out_time == null) {
-                $updateData['check_out_time'] = now();
-                $updateData['checked_out_by'] = Auth::id();
-            }
-
-            $visitor->update($updateData);
-
-            // Send notification for checkout
-            if ($request->status == 'checked_out' && $oldStatus != 'checked_out') {
-                if (class_exists('App\Http\Controllers\NotificationController')) {
-                    \App\Http\Controllers\NotificationController::notifyVisitorCheckedOut($visitor);
-                }
-            }
-
-            return redirect()->route('vistors_records')
-                ->with('success', 'Visitor record updated successfully!');
+            return redirect()->route('visitors-records')
+                ->with('success', 'Visitor ' . $visitor->visitor_name . ' updated successfully!');
 
         } catch (\Exception $e) {
             return redirect()->back()
@@ -240,144 +218,68 @@ class VisitorController extends Controller
     {
         try {
             $visitor = Visitor::findOrFail($id);
+            $visitorName = $visitor->visitor_name;
             $visitor->delete();
 
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Visitor record deleted successfully!'
-                ]);
-            }
-
-            return redirect()->route('vistors_records')
-                ->with('success', 'Visitor record deleted successfully!');
+            return redirect()->route('visitors-records')
+                ->with('success', 'Visitor ' . $visitorName . ' deleted successfully!');
 
         } catch (\Exception $e) {
-            if (request()->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to delete visitor: ' . $e->getMessage()
-                ], 500);
-            }
-
-            return redirect()->route('vistors_records')
+            return redirect()->route('visitors-records')
                 ->with('error', 'Failed to delete visitor: ' . $e->getMessage());
         }
     }
 
     /**
-     * Check-in a visitor.
+     * Check out a visitor.
      */
-    public function checkIn(Request $request, $id)
+    public function checkOut(Request $request, $id)
     {
         try {
             $visitor = Visitor::findOrFail($id);
             
-            if ($visitor->status == 'active') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Visitor is already checked in'
-                ], 400);
+            if ($visitor->isCheckedOut()) {
+                return redirect()->back()
+                    ->with('error', 'Visitor is already checked out.');
             }
 
-            $visitor->update([
-                'status' => 'active',
-                'check_in_time' => now(),
-                'check_out_time' => null,
-                'checked_in_by' => Auth::id(),
-            ]);
+            $visitor->checkOut();
 
-            // Send notification for check-in
-            if (class_exists('App\Http\Controllers\NotificationController')) {
-                \App\Http\Controllers\NotificationController::notifyVisitorAdded($visitor);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Visitor checked in successfully!',
-                'data' => $visitor
-            ]);
+            return redirect()->route('visitors-records')
+                ->with('success', 'Visitor ' . $visitor->visitor_name . ' checked out successfully!');
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to checkin visitor: ' . $e->getMessage()
-            ], 500);
+            return redirect()->route('visitors-records')
+                ->with('error', 'Failed to check out visitor: ' . $e->getMessage());
         }
     }
 
     /**
-     * Checkout a visitor.
+     * Get visitor statistics (AJAX).
      */
-    public function checkOut($id)
+    public function getStats()
     {
-        try {
-            $visitor = Visitor::findOrFail($id);
-            
-            if ($visitor->status == 'checked_out') {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Visitor already checked out'
-                ], 400);
-            }
-
-            $visitor->update([
-                'status' => 'checked_out',
-                'check_out_time' => now(),
-                'checked_out_by' => Auth::id(),
-            ]);
-
-            // Send notification for checkout
-            if (class_exists('App\Http\Controllers\NotificationController')) {
-                \App\Http\Controllers\NotificationController::notifyVisitorCheckedOut($visitor);
-            }
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Visitor checked out successfully!',
-                'data' => $visitor
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to checkout visitor: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Search visitors.
-     */
-    public function search(Request $request)
-    {
-        $query = Visitor::query();
-
-        if ($request->has('q') && !empty($request->q)) {
-            $search = $request->q;
-            $query->where(function($q) use ($search) {
-                $q->where('visitor_name', 'LIKE', "%{$search}%")
-                  ->orWhere('phone_number', 'LIKE', "%{$search}%")
-                  ->orWhere('student_name', 'LIKE', "%{$search}%")
-                  ->orWhere('purpose_of_visit', 'LIKE', "%{$search}%");
-            });
-        }
-
-        $visitors = $query->orderBy('created_at', 'desc')->get();
+        $stats = [
+            'total' => Visitor::count(),
+            'active' => Visitor::active()->count(),
+            'checked_out' => Visitor::checkedOut()->count(),
+            'today' => Visitor::whereDate('created_at', today())->count(),
+            'total_visitors' => Visitor::sum('number_of_visitors'),
+        ];
 
         return response()->json([
             'success' => true,
-            'data' => $visitors
+            'data' => $stats
         ]);
     }
 
     /**
-     * Export visitors.
+     * Export visitors to CSV.
      */
     public function export()
     {
-        // You can implement Excel export here
-        return redirect()->route('vistors_records')
-            ->with('info', 'Export functionality coming soon!');
+        $visitors = Visitor::all();
+        // Implement CSV export logic
+        return redirect()->back()->with('success', 'Export started!');
     }
 }

@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
         // AJAX route for getting rooms by type (for add student page)
         Route::get('/student/get-rooms-by-type', [StudentController::class, 'getRoomsByType'])->name('student.getRoomsByType');
         Route::get('/student/validate-room', [StudentController::class, 'validateRoom'])->name('student.validateRoom');
+        Route::get('/student/search', [StudentController::class, 'searchStudents'])->name('student.search');
 
         // ============================================
         // Staff Management

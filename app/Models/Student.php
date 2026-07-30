@@ -18,8 +18,8 @@ class Student extends Model
         'address',
         'email',
         'room_number',
-        'room_id',      // Add this
-        'room_type',    // Add this
+        'room_id',      
+        'room_type',    
         'date_of_birth',
         'gender',
         'hostel_status',

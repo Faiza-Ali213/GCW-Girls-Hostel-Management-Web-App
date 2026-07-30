@@ -1,68 +1,139 @@
 <?php
-// app/Models/Visitor.php
 
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Visitor extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        // Visitor Personal Information
         'visitor_name',
+        'cnic_number',
         'phone_number',
         'email',
-        'id_card_number',
-        'purpose_of_visit',
-        'room_no',
+        'address',
+        
+        // Student Visitor Information
         'student_name',
+        'student_phone',
         'student_room',
+        'student_cnic',
+        
+        // Visit Details
+        'number_of_visitors',
+        'purpose_of_visit',
+        'relationship_with_student',
+        
+        // Check-in/Check-out
         'check_in_time',
         'check_out_time',
+        'check_in_by',
+        'check_out_by',
+        
+        // Additional Info
         'status',
-        'remarks'
+        'remarks',
+        'id_proof_type',
+        'id_proof_number',
+        
+        // Security & Verification
+        'is_verified',
+        'verified_at',
+        'verified_by',
     ];
 
     protected $casts = [
         'check_in_time' => 'datetime',
         'check_out_time' => 'datetime',
+        'verified_at' => 'datetime',
+        'is_verified' => 'boolean',
+        'number_of_visitors' => 'integer',
     ];
 
-    // Status constants
-    const STATUS_ACTIVE = 'active';
-    const STATUS_CHECKED_OUT = 'checked_out';
+    // ============================================
+    // ACCESSORS
+    // ============================================
 
-    public static function getStatuses()
+    public function getStatusBadgeAttribute(): string
     {
-        return [
-            self::STATUS_ACTIVE => 'Active',
-            self::STATUS_CHECKED_OUT => 'Checked Out',
-        ];
-    }
-
-    // Accessor for status badge color
-    public function getStatusBadgeColorAttribute()
-    {
-        return match($this->status) {
-            self::STATUS_ACTIVE => 'success',
-            self::STATUS_CHECKED_OUT => 'secondary',
-            default => 'secondary',
+        return match ($this->status) {
+            'active' => 'badge bg-success',
+            'checked_out' => 'badge bg-info',
+            'cancelled' => 'badge bg-danger',
+            default => 'badge bg-secondary',
         };
     }
 
-    // Check if visitor is currently active
-    public function isActive()
+    public function getStatusLabelAttribute(): string
     {
-        return $this->status === self::STATUS_ACTIVE;
+        return ucfirst(str_replace('_', ' ', $this->status));
     }
 
-    // Check out visitor
-    public function checkout()
+    public function getVisitDurationAttribute(): string
     {
-        $this->status = self::STATUS_CHECKED_OUT;
-        $this->check_out_time = now();
-        $this->save();
+        if ($this->check_in_time && $this->check_out_time) {
+            return $this->check_in_time->diffForHumans($this->check_out_time);
+        }
+        return 'Still Active';
+    }
+
+    // ============================================
+    // SCOPES
+    // ============================================
+
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    public function scopeCheckedOut($query)
+    {
+        return $query->where('status', 'checked_out');
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('visitor_name', 'LIKE', "%{$search}%")
+                     ->orWhere('cnic_number', 'LIKE', "%{$search}%")
+                     ->orWhere('phone_number', 'LIKE', "%{$search}%")
+                     ->orWhere('student_name', 'LIKE', "%{$search}%")
+                     ->orWhere('student_room', 'LIKE', "%{$search}%");
+    }
+
+    // ============================================
+    // HELPER METHODS
+    // ============================================
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    public function isCheckedOut(): bool
+    {
+        return $this->status === 'checked_out';
+    }
+
+    public function checkIn()
+    {
+        $this->update([
+            'status' => 'active',
+            'check_in_time' => now(),
+            'check_in_by' => auth()->user()->name ?? 'System',
+        ]);
+    }
+
+    public function checkOut()
+    {
+        $this->update([
+            'status' => 'checked_out',
+            'check_out_time' => now(),
+            'check_out_by' => auth()->user()->name ?? 'System',
+        ]);
     }
 }

@@ -2,11 +2,6 @@
 
 @section('content')
 <style>
-    /* ============================================ */
-    /* VISITOR RECORDS - BLUE THEME */
-    /* ============================================ */
-    
-    /* Page Header */
     .page-header {
         background: white;
         border-radius: 16px;
@@ -30,6 +25,7 @@
     }
     .page-header h4 i {
         color: #4F46E5;
+        font-size: 1.4rem;
     }
     .page-header .sub-title {
         color: #94a3b8;
@@ -59,71 +55,57 @@
         text-decoration: none;
     }
 
-    /* Statistics Cards */
-    .stat-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        margin-bottom: 28px;
-    }
     .stat-card {
         background: white;
         border-radius: 14px;
-        padding: 20px 24px;
-        border: 1px solid #f0f2f5;
-        transition: all 0.3s ease;
+        padding: 18px 22px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        border: 1px solid #f0f2f5;
+        transition: all 0.2s ease;
         position: relative;
         overflow: hidden;
     }
     .stat-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-        border-color: #4F46E5;
-    }
-    .stat-card .stat-number {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #0b1a33;
-        line-height: 1.2;
-        letter-spacing: -0.3px;
-    }
-    .stat-card .stat-label {
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        color: #94a3b8;
-        font-weight: 600;
-        margin-top: 2px;
-    }
-    .stat-card .stat-number.active {
-        color: #10B981;
-    }
-    .stat-card .stat-number.today {
-        color: #4F46E5;
     }
     .stat-card .stat-icon {
         position: absolute;
-        right: 20px;
+        right: 15px;
         top: 50%;
         transform: translateY(-50%);
-        font-size: 2.8rem;
-        opacity: 0.06;
-        color: #4F46E5;
+        font-size: 2.5rem;
+        opacity: 0.08;
     }
+    .stat-card .stat-number {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0b1a33;
+        line-height: 1.2;
+    }
+    .stat-card .stat-label {
+        color: #94a3b8;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .stat-card.total { border-top: 3px solid #4F46E5; }
+    .stat-card.active { border-top: 3px solid #10B981; }
+    .stat-card.today { border-top: 3px solid #F59E0B; }
+    .stat-card.total-visitors { border-top: 3px solid #8B5CF6; }
 
-    /* Search and Filter */
     .filter-section {
         background: white;
         border-radius: 14px;
         padding: 16px 20px;
         margin-bottom: 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
         border: 1px solid #f0f2f5;
         display: flex;
         gap: 12px;
         flex-wrap: wrap;
         align-items: center;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
     }
     .search-box {
         flex: 1;
@@ -171,75 +153,58 @@
         box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.06);
     }
 
-    /* Table */
-    .table-wrapper {
-        background: white;
+    .modern-table {
         border-radius: 16px;
-        border: 1px solid #f0f2f5;
         overflow: hidden;
         box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        background: white;
+        border: 1px solid #f0f2f5;
     }
-    .table-wrapper thead {
+    .modern-table thead {
         background: #f8fafc;
         border-bottom: 2px solid #eef2f6;
     }
-    .table-wrapper thead th {
-        padding: 14px 20px;
+    .modern-table thead th {
+        border: none !important;
+        padding: 14px 18px !important;
+        font-weight: 700 !important;
+        text-transform: uppercase !important;
+        font-size: 0.7rem !important;
+        letter-spacing: 0.5px !important;
+        color: #64748b !important;
+        background: transparent !important;
+    }
+    .modern-table tbody tr {
+        transition: all 0.15s ease;
+        border-left: 3px solid transparent;
+    }
+    .modern-table tbody tr:hover {
+        background: #f8faff;
+        border-left-color: #4F46E5;
+    }
+    .modern-table tbody td {
+        padding: 12px 18px;
+        vertical-align: middle;
+        border-bottom: 1px solid #f1f3f5;
+        color: #0b1a33;
+        font-size: 0.9rem;
+    }
+
+    .status-badge {
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-weight: 600;
         font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        color: #64748b;
-        font-weight: 700;
-        border-bottom: none;
-    }
-    .table-wrapper tbody td {
-        padding: 12px 20px;
-        vertical-align: middle;
-        border-bottom: 1px solid #f1f3f5;
-        font-size: 0.9rem;
-        color: #0b1a33;
-    }
-    .table-wrapper tbody tr:hover {
-        background: #f8faff;
-    }
-    .table-wrapper tbody tr:last-child td {
-        border-bottom: none;
-    }
-
-    /* Badges */
-    .badge-status {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 4px 14px;
-        border-radius: 20px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        text-transform: uppercase;
     }
-    .badge-status.active {
-        background: #ECFDF5;
-        color: #10B981;
-    }
-    .badge-status.checked_out {
-        background: #F1F5F9;
-        color: #64748b;
-    }
-    .badge-status i {
-        font-size: 0.6rem;
-    }
+    .status-active { background: #ECFDF5; color: #10B981; }
+    .status-checked_out { background: #EFF6FF; color: #3B82F6; }
+    .status-cancelled { background: #FEF2F2; color: #EF4444; }
 
-    .badge-room {
-        display: inline-block;
-        padding: 3px 12px;
-        background: #EEF2FF;
-        color: #4F46E5;
-        border-radius: 6px;
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-
-    /* Action Buttons */
     .action-group {
         display: flex;
         gap: 6px;
@@ -253,62 +218,50 @@
         width: 34px;
         height: 34px;
         border-radius: 8px;
-        border: 1px solid #e2e8f0;
-        background: #ffffff;
-        color: #64748b;
-        font-size: 14px;
         transition: all 0.2s ease;
         text-decoration: none;
+        background: #f8fafc;
+        border: 1px solid #e9ecef;
+        color: #64748b !important;
         cursor: pointer;
-        line-height: 1;
-        padding: 0;
     }
     .action-btn i {
-        font-size: 14px;
-        line-height: 1;
-        color: inherit;
+        font-size: 0.9rem;
+        color: #64748b !important;
+        transition: all 0.2s ease;
     }
     .action-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 4px 10px rgba(0,0,0,0.08);
         text-decoration: none;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .action-btn.view:hover {
         border-color: #4F46E5;
-        color: #4F46E5;
         background: #EEF2FF;
+    }
+    .action-btn.view:hover i {
+        color: #4F46E5 !important;
     }
     .action-btn.edit:hover {
         border-color: #F59E0B;
-        color: #F59E0B;
         background: #FFFBEB;
+    }
+    .action-btn.edit:hover i {
+        color: #F59E0B !important;
     }
     .action-btn.delete:hover {
         border-color: #EF4444;
-        color: #EF4444;
         background: #FEF2F2;
     }
-
-    /* Delete Form Styles */
-    .delete-form {
-        display: inline;
-        margin: 0;
-        padding: 0;
-    }
-    .delete-form .action-btn {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        color: #64748b;
-    }
-    .delete-form .action-btn:hover {
-        border-color: #EF4444;
-        color: #EF4444;
-        background: #FEF2F2;
+    .action-btn.delete:hover i {
+        color: #EF4444 !important;
     }
 
-    /* Pagination */
     .pagination-wrapper {
-        padding: 15px 20px;
+        padding: 16px 20px;
+        background: white;
+        border-radius: 0 0 16px 16px;
         border-top: 1px solid #f1f3f5;
     }
     .pagination-wrapper .pagination {
@@ -323,10 +276,10 @@
     }
     .pagination-wrapper .page-link {
         color: #4F46E5;
+        border-radius: 8px;
+        margin: 0 3px;
         border: none;
         padding: 6px 14px;
-        border-radius: 8px;
-        margin: 0 2px;
         font-weight: 600;
         transition: all 0.2s ease;
     }
@@ -336,43 +289,59 @@
         border-radius: 8px;
     }
 
-    /* Empty State */
+    .visitor-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        color: white !important;
+        font-weight: 700;
+        font-size: 13px;
+        flex-shrink: 0;
+    }
+
+    .visitor-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .visitor-name {
+        font-weight: 600;
+        color: #0b1a33;
+        font-size: 0.9rem;
+    }
+
     .empty-state {
         text-align: center;
         padding: 50px 20px;
     }
     .empty-state i {
-        font-size: 3.5rem;
+        font-size: 4rem;
         color: #d1d5db;
-        margin-bottom: 15px;
+        margin-bottom: 16px;
         display: block;
     }
     .empty-state h5 {
         color: #0b1a33;
+        margin-bottom: 8px;
         font-weight: 600;
-        margin-bottom: 4px;
+        font-size: 1.1rem;
     }
     .empty-state p {
         color: #94a3b8;
+        font-size: 0.95rem;
     }
 
-    /* Footer */
-    .footer-info {
-        text-align: center;
-        color: #94a3b8;
-        font-size: 0.8rem;
-        margin-top: 15px;
-    }
-
-    /* Alert Messages */
     .alert {
+        border: none;
         padding: 15px 20px;
         border-radius: 12px;
-        margin-bottom: 16px;
         display: flex;
         align-items: center;
         gap: 10px;
-        border: none;
     }
     .alert-success {
         background: #ECFDF5;
@@ -384,9 +353,6 @@
         color: #991B1B;
         border-left: 4px solid #EF4444;
     }
-    .alert i {
-        font-size: 1.2rem;
-    }
     .alert .close {
         margin-left: auto;
         color: inherit;
@@ -396,17 +362,11 @@
         opacity: 1;
     }
 
-    /* Responsive */
-    @media (max-width: 992px) {
-        .stat-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
     @media (max-width: 768px) {
         .page-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 12px;
+            gap: 15px;
         }
         .page-header .btn-add {
             width: 100%;
@@ -414,101 +374,76 @@
         }
         .filter-section {
             flex-direction: column;
-            align-items: stretch;
+        }
+        .search-box {
+            width: 100%;
         }
         .filter-select {
             width: 100%;
         }
-        .stat-grid {
-            grid-template-columns: 1fr 1fr;
+        .modern-table {
+            font-size: 0.85rem;
         }
-        .stat-card .stat-number {
-            font-size: 1.5rem;
-        }
-    }
-    @media (max-width: 576px) {
-        .stat-grid {
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .stat-card {
-            padding: 14px 16px;
-        }
-        .stat-card .stat-number {
-            font-size: 1.3rem;
-        }
-        .stat-card .stat-icon {
-            font-size: 2rem;
-        }
-        .table-wrapper {
-            overflow-x: auto;
-        }
-        .table-wrapper table {
-            min-width: 700px;
+        .modern-table thead th,
+        .modern-table tbody td {
+            padding: 8px 10px !important;
         }
         .action-group {
-            gap: 4px;
+            gap: 3px;
         }
         .action-btn {
-            width: 30px;
-            height: 30px;
-            font-size: 12px;
+            width: 28px;
+            height: 28px;
         }
         .action-btn i {
-            font-size: 12px;
+            font-size: 0.75rem;
         }
     }
 </style>
-
-<!-- Display Flash Messages -->
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <i class="fas fa-check-circle"></i> {{ session('success') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
-
-@if(session('error'))
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-@endif
 
 <!-- Page Header -->
 <div class="page-header">
     <div>
         <h4>
-            <i class="fas fa-users"></i>
-            Visitors Records
+            <i class="fas fa-user-friends"></i>
+            Visitor Records
         </h4>
-        <div class="sub-title">Manage all visitor entries</div>
+        <div class="sub-title">Manage student visitor entries and track visitors</div>
     </div>
     <a href="{{ route('visitor.create') }}" class="btn-add">
         <i class="fas fa-plus-circle"></i> Add Visitor
     </a>
 </div>
 
-<!-- Statistics -->
-<div class="stat-grid">
-    <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-users"></i></div>
-        <div class="stat-number">{{ $totalVisitors ?? 0 }}</div>
-        <div class="stat-label">Total Visitors</div>
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card total">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number">{{ $totalVisitors ?? 0 }}</div>
+            <div class="stat-label">Total Entries</div>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-user-check"></i></div>
-        <div class="stat-number active">{{ $totalActive ?? 0 }}</div>
-        <div class="stat-label">Active Visitors</div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card active">
+            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+            <div class="stat-number">{{ $activeVisitors ?? 0 }}</div>
+            <div class="stat-label">Active</div>
+        </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
-        <div class="stat-number today">{{ $todayVisitors ?? 0 }}</div>
-        <div class="stat-label">Today's Visitors</div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card today">
+            <div class="stat-icon"><i class="fas fa-calendar-day"></i></div>
+            <div class="stat-number">{{ $todayVisitors ?? 0 }}</div>
+            <div class="stat-label">Today</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="stat-card total-visitors">
+            <div class="stat-icon"><i class="fas fa-people-arrows"></i></div>
+            <div class="stat-number">{{ $totalVisitorsCount ?? 0 }}</div>
+            <div class="stat-label">Total Visitors</div>
+        </div>
     </div>
 </div>
 
@@ -516,80 +451,79 @@
 <div class="filter-section">
     <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Search by name, phone, student..." value="{{ request('search') }}">
+        <input type="text" id="searchInput" placeholder="Search by visitor name, student name, phone..." value="{{ request('search') }}">
     </div>
     <select id="statusFilter" class="filter-select">
         <option value="">All Status</option>
         <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active</option>
         <option value="checked_out" {{ request('status') == 'checked_out' ? 'selected' : '' }}>Checked Out</option>
+        <option value="cancelled" {{ request('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
     </select>
+    <input type="date" id="dateFilter" class="filter-select" value="{{ request('date') }}" style="min-width:150px;">
 </div>
 
-<!-- Table -->
-<div class="table-wrapper">
-    <table class="table">
+<!-- Visitors Table -->
+<div class="modern-table">
+    <table class="table table-hover">
         <thead>
             <tr>
                 <th style="width:50px;">#</th>
                 <th>Visitor</th>
-                <th>Phone</th>
-                <th>Purpose</th>
-                <th>Room</th>
-                <th>Check In</th>
+                <th>Contact</th>
+                <th>Student</th>
+                <th>Visitors</th>
                 <th>Status</th>
-                <th style="width:120px;" class="text-center">Actions</th>
+                <th style="width:140px;" class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
             @forelse($visitors ?? [] as $index => $visitor)
-            <tr id="visitor-row-{{ $visitor->id }}">
-                <td>{{ $visitors->firstItem() + $index }}</td>
+            <tr>
                 <td>
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#4F46E5,#4338CA);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;">
+                    <span class="font-weight-bold" style="color: #4F46E5;">{{ $visitors->firstItem() + $index }}</span>
+                </td>
+                <td>
+                    <div class="visitor-info">
+                        <div class="visitor-avatar">
                             {{ substr($visitor->visitor_name, 0, 2) }}
                         </div>
                         <div>
-                            <div style="font-weight:600;color:#0b1a33;">{{ $visitor->visitor_name }}</div>
-                            @if($visitor->student_name)
-                                <small style="color:#94a3b8;font-size:0.75rem;">
-                                    <i class="fas fa-user-graduate"></i> {{ $visitor->student_name }}
-                                </small>
-                            @endif
+                            <div class="visitor-name">{{ $visitor->visitor_name }}</div>
                         </div>
                     </div>
                 </td>
-                <td>{{ $visitor->phone_number }}</td>
                 <td>
-                    <span style="font-size:0.85rem;color:#0b1a33;">{{ $visitor->purpose_of_visit }}</span>
-                    @if($visitor->student_name)
-                        <br><small style="color:#94a3b8;font-size:0.7rem;">
-                            <i class="fas fa-user"></i> {{ $visitor->student_name }}
-                        </small>
-                    @endif
+                    <div>
+                        <div><i class="fas fa-phone" style="color:#94a3b8;font-size:0.75rem;"></i> {{ $visitor->phone_number ?? 'N/A' }}</div>
+                        <div><i class="fas fa-id-card" style="color:#94a3b8;font-size:0.75rem;"></i> {{ $visitor->cnic_number ?? 'N/A' }}</div>
+                    </div>
                 </td>
                 <td>
-                    @if($visitor->room_no)
-                        <span class="badge-room">{{ $visitor->room_no }}</span>
-                    @else
-                        <span style="color:#94a3b8;">-</span>
-                    @endif
-                </td>
-                <td>
-                    <div style="font-size:0.85rem;color:#0b1a33;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('d M Y') : 'N/A' }}</div>
-                    <small style="color:#94a3b8;font-size:0.7rem;">{{ $visitor->check_in_time ? $visitor->check_in_time->format('h:i A') : '' }}</small>
-                </td>
-                <td>
-                    <span class="badge-status {{ $visitor->status }}">
-                        @if($visitor->status == 'active')
-                            <i class="fas fa-circle" style="font-size:0.5rem;"></i>
-                        @else
-                            <i class="fas fa-check-circle"></i>
+                    <div>
+                        <div><strong>{{ $visitor->student_name }}</strong></div>
+                        @if($visitor->student_room)
+                            <div><i class="fas fa-door-open" style="color:#94a3b8;font-size:0.75rem;"></i> Room {{ $visitor->student_room }}</div>
                         @endif
-                        {{ $visitor->status == 'active' ? 'Active' : 'Checked Out' }}
+                    </div>
+                </td>
+                <td>
+                    <span class="badge" style="background:#EEF2FF;color:#4F46E5;padding:4px 12px;border-radius:12px;font-weight:600;">
+                        {{ $visitor->number_of_visitors }}
                     </span>
                 </td>
                 <td>
+                    <span class="status-badge status-{{ $visitor->status }}">
+                        @if($visitor->status == 'active')
+                            <i class="fas fa-circle" style="font-size:0.5rem;"></i>
+                        @elseif($visitor->status == 'checked_out')
+                            <i class="fas fa-check-circle"></i>
+                        @else
+                            <i class="fas fa-times-circle"></i>
+                        @endif
+                        {{ ucfirst(str_replace('_', ' ', $visitor->status)) }}
+                    </span>
+                </td>
+                <td class="text-center">
                     <div class="action-group">
                         <a href="{{ route('visitor.show', $visitor->id) }}" class="action-btn view" title="View Details">
                             <i class="fas fa-eye"></i>
@@ -597,11 +531,11 @@
                         <a href="{{ route('visitor.edit', $visitor->id) }}" class="action-btn edit" title="Edit Visitor">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <!-- DELETE FORM -->
-                        <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this visitor: {{ addslashes($visitor->visitor_name) }}? This action cannot be undone.');">
+                        <form action="{{ route('visitor.destroy', $visitor->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="action-btn delete" title="Delete Visitor">
+                            <button type="submit" class="action-btn delete" title="Delete" 
+                                    onclick="return confirm('Delete visitor {{ $visitor->visitor_name }}?');">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>
@@ -610,13 +544,13 @@
             </tr>
             @empty
             <tr>
-                <td colspan="8">
+                <td colspan="7">
                     <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <h5>No Visitors Found</h5>
-                        <p>Start by adding your first visitor record.</p>
-                        <a href="{{ route('visitor.create') }}" class="btn-add" style="display:inline-flex;margin-top:10px;">
-                            <i class="fas fa-plus"></i> Add Visitor
+                        <i class="fas fa-user-friends"></i>
+                        <h5>No Visitor Records Found</h5>
+                        <p>Start by adding your first visitor entry using the "Add Visitor" button above.</p>
+                        <a href="{{ route('visitor.create') }}" class="btn-add" style="display:inline-flex;margin-top:15px;">
+                            <i class="fas fa-plus"></i> Add First Visitor
                         </a>
                     </div>
                 </td>
@@ -624,61 +558,73 @@
             @endforelse
         </tbody>
     </table>
-    
-    @if(isset($visitors) && $visitors->count() > 0)
-    <div class="pagination-wrapper">
-        {{ $visitors->appends(request()->query())->links() }}
-    </div>
-    @endif
 </div>
 
-<!-- Footer -->
-<div class="footer-info">
-    <i class="fas fa-info-circle"></i> 
-    Showing {{ isset($visitors) ? $visitors->count() : 0 }} visitor(s) 
-    | Total: {{ $totalVisitors ?? 0 }}
-    | Last updated: {{ now()->format('d-m-Y H:i:s') }}
+<!-- Pagination -->
+@if(isset($visitors) && $visitors->count() > 0)
+<div class="pagination-wrapper">
+    {{ $visitors->links() }}
 </div>
+@endif
+
+@if(session('success'))
+<div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <i class="fas fa-check-circle"></i> {{ session('success') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
+@if(session('error'))
+<div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="fas fa-exclamation-circle"></i> {{ session('error') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
 
 @endsection
 
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        // ========== SEARCH AND FILTER ==========
-        let searchTimeout;
-        
-        $('#searchInput').on('keyup', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(function() {
-                performSearch();
-            }, 500);
-        });
+$(document).ready(function() {
+    console.log('✅ Visitor Records page loaded');
 
-        $('#statusFilter').on('change', function() {
+    // ========== SEARCH AND FILTER ==========
+    let searchTimeout;
+    
+    $('#searchInput').on('keyup', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
             performSearch();
-        });
-
-        function performSearch() {
-            const search = $('#searchInput').val();
-            const status = $('#statusFilter').val();
-            let url = '{{ route("vistors_records") }}';
-            let params = [];
-            if (search) params.push('search=' + encodeURIComponent(search));
-            if (status) params.push('status=' + encodeURIComponent(status));
-            if (params.length > 0) {
-                url += '?' + params.join('&');
-            }
-            window.location.href = url;
-        }
-
-        // Auto-dismiss alerts after 5 seconds
-        setTimeout(function() {
-            $('.alert').fadeOut('slow');
-        }, 5000);
-
-        console.log('✅ Visitor Records page loaded successfully');
-        console.log('📍 Delete route: /visitor/{id}');
+        }, 500);
     });
+
+    $('#statusFilter').on('change', function() {
+        performSearch();
+    });
+
+    $('#dateFilter').on('change', function() {
+        performSearch();
+    });
+
+    function performSearch() {
+        const search = $('#searchInput').val();
+        const status = $('#statusFilter').val();
+        const date = $('#dateFilter').val();
+        let url = '{{ route("visitors_records") }}?';
+        if (search) url += 'search=' + encodeURIComponent(search) + '&';
+        if (status) url += 'status=' + encodeURIComponent(status) + '&';
+        if (date) url += 'date=' + encodeURIComponent(date);
+        window.location.href = url;
+    }
+
+    // Auto-dismiss alerts after 5 seconds
+    setTimeout(function() {
+        $('.alert').fadeOut('slow');
+    }, 5000);
+});
 </script>
 @endpush

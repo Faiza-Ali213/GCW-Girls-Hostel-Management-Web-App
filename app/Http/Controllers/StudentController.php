@@ -369,4 +369,31 @@ class StudentController extends Controller
         $students = Student::byRoom($roomNumber)->get();
         return response()->json($students);
     }
+    /**
+ * Search students for visitor form (AJAX).
+ */
+public function searchStudents(Request $request)
+{
+    $query = $request->get('q');
+    
+    if (empty($query)) {
+        return response()->json([
+            'success' => true,
+            'data' => []
+        ]);
+    }
+    
+    $students = Student::where('student_name', 'LIKE', "%{$query}%")
+                       ->orWhere('cnic_number', 'LIKE', "%{$query}%")
+                       ->orWhere('phone_number', 'LIKE', "%{$query}%")
+                       ->orWhere('father_name', 'LIKE', "%{$query}%")
+                       ->limit(10)
+                       ->get(['id', 'student_name', 'father_name', 'room_number', 'phone_number', 'cnic_number']);
+    
+    return response()->json([
+        'success' => true,
+        'data' => $students
+    ]);
+}
+
 }
