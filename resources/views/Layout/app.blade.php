@@ -542,6 +542,7 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 
+                                <!-- My Profile -->
                                 @if(Route::has('profile'))
                                     <a href="{{ route('profile') }}" class="dropdown-item">
                                         <i class="bi bi-person-circle"></i> My Profile
@@ -552,17 +553,24 @@
                                     </a>
                                 @endif
                                 
-                                @if(Route::has('profile.edit'))
-                                    <a href="{{ route('profile.edit') }}" class="dropdown-item">
-                                        <i class="bi bi-gear"></i> Settings
+                                <!-- Complaint Registration -->
+                                @if(Route::has('complaint.registration'))
+                                    <a href="{{ route('complaint.registration') }}" class="dropdown-item">
+                                        <i class="bi bi-exclamation-triangle"></i> Submit Complaint
                                     </a>
                                 @endif
                                 
-                                @if(isset(Auth::user()->role) && (Auth::user()->role === 'admin' || Auth::user()->role === 'staff'))
+                                <!-- Admin/Staff Dashboard -->
+                                @if(isset(Auth::user()->role) && (Auth::user()->role === 'admin' || Auth::user()->role === 'staff' || Auth::user()->role === 'warden'))
                                     <div class="dropdown-divider"></div>
                                     @if(Route::has('dashboard'))
                                         <a href="{{ route('dashboard') }}" class="dropdown-item">
                                             <i class="bi bi-speedometer2"></i> Dashboard
+                                        </a>
+                                    @endif
+                                    @if(Route::has('complaints.index'))
+                                        <a href="{{ route('complaints.index') }}" class="dropdown-item">
+                                            <i class="bi bi-list-check"></i> Manage Complaints
                                         </a>
                                     @endif
                                 @endif

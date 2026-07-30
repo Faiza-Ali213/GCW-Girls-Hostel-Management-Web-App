@@ -3,89 +3,125 @@
 namespace App\Http\Controllers;
 
 use App\Models\Complaint;
-use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class ComplaintController extends Controller
 {
     /**
-     * Display a listing of complaints.
+     * Display a listing of complaints (Admin Panel).
      */
-    public function index()
+    public function index(Request $request)
     {
-        $complaints = Complaint::orderBy('created_at', 'desc')->get();
-        $pendingCount = Complaint::where('status', 'pending')->count();
-        $inProgressCount = Complaint::where('status', 'in_progress')->count();
-        $resolvedCount = Complaint::where('status', 'resolved')->count();
-        
-        return view('Pages.Admin.Complain_request', compact('complaints', 'pendingCount', 'inProgressCount', 'resolvedCount'));
+        $query = Complaint::query();
+
+        // Search
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('student_name', 'LIKE', "%{$search}%")
+                  ->orWhere('title', 'LIKE', "%{$search}%")
+                  ->orWhere('complaint_by', 'LIKE', "%{$search}%")
+                  ->orWhere('room_number', 'LIKE', "%{$search}%");
+            });
+        }
+
+        // Filter by status
+        if ($request->has('status') && !empty($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter by priority
+        if ($request->has('priority') && !empty($request->priority)) {
+            $query->where('priority', $request->priority);
+        }
+
+        $complaints = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        // Statistics
+        $totalComplaints = Complaint::count();
+        $pendingComplaints = Complaint::pending()->count();
+        $inProgressComplaints = Complaint::inProgress()->count();
+        $resolvedComplaints = Complaint::resolved()->count();
+        $rejectedComplaints = Complaint::where('status', 'rejected')->count();
+
+        return view('Pages.Admin.Complain_request', compact(
+            'complaints',
+            'totalComplaints',
+            'pendingComplaints',
+            'inProgressComplaints',
+            'resolvedComplaints',
+            'rejectedComplaints'
+        ));
     }
 
     /**
-     * Show form to create new complaint.
+     * Show complaint registration form.
      */
     public function create()
     {
-        return view('Component.Admin.add_complaint');
+        return view('Pages.complaint_registration');
     }
 
     /**
-     * Store a new complaint.
+     * Store a newly created complaint.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'student_id' => 'nullable|exists:students,id',
+        $validator = Validator::make($request->all(), [
             'student_name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string|min:10',
             'room_number' => 'nullable|string|max:50',
             'contact_number' => 'nullable|string|max:20',
-            'priority' => 'required|in:low,medium,high',
-            'category' => 'nullable|string|max:100',
+            'complaint_by' => 'nullable|string|max:255',
+            'priority' => 'nullable|in:low,medium,high',
         ]);
 
-        // Set default status
-        $validated['status'] = 'pending';
-        
-        // If student_id is provided, fetch student details
-        if ($request->filled('student_id')) {
-            $student = Student::find($request->student_id);
-            if ($student) {
-                $validated['student_name'] = $student->name;
-                $validated['room_number'] = $student->room_number ?? $validated['room_number'];
-                $validated['contact_number'] = $student->phone ?? $validated['contact_number'];
-            }
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
         }
 
-        // Create the complaint
-        $complaint = Complaint::create($validated);
+        try {
+            Complaint::create([
+                'student_name' => $request->student_name,
+                'title' => $request->title,
+                'description' => $request->description,
+                'room_number' => $request->room_number,
+                'contact_number' => $request->contact_number,
+                'complaint_by' => $request->complaint_by ?? $request->student_name,
+                'priority' => $request->priority ?? 'medium',
+                'status' => 'pending',
+            ]);
 
-        // Send notification - Fixed: Check if class exists
-        if (class_exists('App\Http\Controllers\NotificationController')) {
-            \App\Http\Controllers\NotificationController::notifyComplaintSubmitted($complaint);
+            return redirect()->route('complaint.registration')
+                ->with('success', 'Your complaint has been submitted successfully! We will review it shortly.');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Failed to submit complaint: ' . $e->getMessage())
+                ->withInput();
         }
-
-        return redirect()->route('complaints.index')
-            ->with('success', 'Complaint #' . $complaint->id . ' submitted successfully!');
     }
 
     /**
-     * Show a specific complaint.
+     * Display the specified complaint.
      */
     public function show($id)
     {
         try {
             $complaint = Complaint::findOrFail($id);
-            return view('Component.Admin.view_complain', compact('complaint'));
+            return view('Component.Admin.view_complaint', compact('complaint'));
         } catch (\Exception $e) {
-            return redirect()->route('complaints.index')->with('error', 'Complaint not found!');
+            return redirect()->route('complaints.index')
+                ->with('error', 'Complaint not found');
         }
     }
 
     /**
-     * Show form to edit complaint.
+     * Show form to update complaint status.
      */
     public function edit($id)
     {
@@ -93,52 +129,55 @@ class ComplaintController extends Controller
             $complaint = Complaint::findOrFail($id);
             return view('Component.Admin.edit_complaint', compact('complaint'));
         } catch (\Exception $e) {
-            return redirect()->route('complaints.index')->with('error', 'Complaint not found!');
+            return redirect()->route('complaints.index')
+                ->with('error', 'Complaint not found');
         }
     }
 
     /**
-     * Update a complaint.
+     * Update the specified complaint.
      */
     public function update(Request $request, $id)
     {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required|in:pending,in_progress,resolved,rejected',
+            'admin_remark' => 'nullable|string',
+            'priority' => 'nullable|in:low,medium,high',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         try {
             $complaint = Complaint::findOrFail($id);
-            $oldStatus = $complaint->status;
             
-            $validated = $request->validate([
-                'title' => 'sometimes|required|string|max:255',
-                'description' => 'sometimes|required|string',
-                'status' => 'sometimes|required|in:pending,in_progress,resolved,rejected',
-                'priority' => 'sometimes|required|in:low,medium,high',
-                'admin_remark' => 'nullable|string',
-                'student_name' => 'sometimes|required|string|max:255',
-                'room_number' => 'nullable|string|max:50',
-                'contact_number' => 'nullable|string|max:20',
-            ]);
+            $updateData = [
+                'status' => $request->status,
+                'admin_remark' => $request->admin_remark,
+                'priority' => $request->priority ?? $complaint->priority,
+            ];
 
-            if (isset($validated['status']) && $validated['status'] == 'resolved' && $complaint->status != 'resolved') {
-                $validated['resolved_at'] = now();
-                $validated['resolved_by'] = Auth::id();
+            if ($request->status == 'resolved') {
+                $updateData['resolved_at'] = now();
             }
 
-            $complaint->update($validated);
+            $complaint->update($updateData);
 
-            // Send notification for status change
-            if (isset($validated['status']) && $oldStatus != $validated['status']) {
-                if (class_exists('App\Http\Controllers\NotificationController')) {
-                    \App\Http\Controllers\NotificationController::notifyComplaintUpdated($complaint);
-                }
-            }
+            return redirect()->route('complaints.index')
+                ->with('success', 'Complaint updated successfully!');
 
-            return redirect()->route('complaints.index')->with('success', 'Complaint updated successfully!');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to update complaint: ' . $e->getMessage());
+            return redirect()->back()
+                ->with('error', 'Failed to update complaint: ' . $e->getMessage())
+                ->withInput();
         }
     }
 
     /**
-     * Delete a complaint.
+     * Remove the specified complaint.
      */
     public function destroy($id)
     {
@@ -146,22 +185,12 @@ class ComplaintController extends Controller
             $complaint = Complaint::findOrFail($id);
             $complaint->delete();
 
-            return redirect()->route('complaints.index')->with('success', 'Complaint deleted successfully!');
-        } catch (\Exception $e) {
-            return redirect()->route('complaints.index')->with('error', 'Failed to delete complaint: ' . $e->getMessage());
-        }
-    }
+            return redirect()->route('complaints.index')
+                ->with('success', 'Complaint deleted successfully!');
 
-    /**
-     * Alternative method for complaint requests page.
-     */
-    public function Complain_request()
-    {
-        $complaints = Complaint::orderBy('created_at', 'desc')->get();
-        $pendingCount = Complaint::where('status', 'pending')->count();
-        $inProgressCount = Complaint::where('status', 'in_progress')->count();
-        $resolvedCount = Complaint::where('status', 'resolved')->count();
-        
-        return view('Pages.Admin.Complain_request', compact('complaints', 'pendingCount', 'inProgressCount', 'resolvedCount'));
+        } catch (\Exception $e) {
+            return redirect()->route('complaints.index')
+                ->with('error', 'Failed to delete complaint: ' . $e->getMessage());
+        }
     }
 }

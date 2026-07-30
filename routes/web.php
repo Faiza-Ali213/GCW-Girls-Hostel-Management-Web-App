@@ -188,7 +188,8 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}', [ComplaintController::class, 'update'])->name('update');
             Route::delete('/{id}', [ComplaintController::class, 'destroy'])->name('destroy');
         });
-
+        Route::get('/complaint-registration', [ComplaintController::class, 'create'])->name('complaint.registration');
+        Route::post('/complaint-registration', [ComplaintController::class, 'store'])->name('complaint.store');
         Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');
         Route::get('/Complain-request', [ComplaintController::class, 'index'])->name('Complain_request');
         Route::get('/complaint-management', [ComplaintController::class, 'index'])->name('complaint_management');
