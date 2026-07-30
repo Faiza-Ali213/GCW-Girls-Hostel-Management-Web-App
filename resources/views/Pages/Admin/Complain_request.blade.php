@@ -2,11 +2,6 @@
 
 @section('content')
 <style>
-    /* ============================================ */
-    /* COMPLAINT MANAGEMENT - BLUE THEME */
-    /* ============================================ */
-    
-    /* Statistics Cards */
     .stat-card {
         background: white;
         border-radius: 14px;
@@ -52,7 +47,6 @@
     .stat-card.total { border-top-color: #4F46E5; }
     .stat-card.total .stat-icon { color: #4F46E5; }
 
-    /* Modern Table */
     .modern-table {
         border-radius: 16px;
         overflow: hidden;
@@ -91,7 +85,6 @@
         border-bottom: none;
     }
 
-    /* Priority Badges */
     .priority-badge {
         padding: 4px 14px;
         border-radius: 20px;
@@ -107,7 +100,6 @@
     .priority-medium { background: #FFFBEB; color: #F59E0B; }
     .priority-low { background: #ECFDF5; color: #10B981; }
 
-    /* Status Badges */
     .status-badge {
         padding: 4px 14px;
         border-radius: 20px;
@@ -124,7 +116,6 @@
     .status-resolved { background: #ECFDF5; color: #10B981; }
     .status-rejected { background: #FEF2F2; color: #EF4444; }
 
-    /* Complaint By Badge */
     .complaint-by-badge {
         padding: 4px 14px;
         border-radius: 20px;
@@ -139,7 +130,6 @@
     .complaint-by-student { background: #ECFDF5; color: #10B981; }
     .complaint-by-user { background: #E0F2FE; color: #0EA5E9; }
 
-    /* Status Dropdown in Table */
     .status-selector {
         padding: 4px 8px;
         border-radius: 6px;
@@ -164,7 +154,6 @@
     .status-selector option.resolved { color: #10B981; }
     .status-selector option.rejected { color: #EF4444; }
 
-    /* Action Buttons */
     .action-btn {
         display: inline-flex;
         align-items: center;
@@ -180,15 +169,9 @@
         cursor: pointer;
         gap: 4px;
     }
-    .action-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        text-decoration: none;
-    }
     .action-btn.view { background: #EEF2FF; color: #4F46E5; }
     .action-btn.view:hover { background: #4F46E5; color: white; }
 
-    /* Header Section */
     .page-header {
         background: white;
         border-radius: 16px;
@@ -219,7 +202,6 @@
         flex-wrap: wrap;
     }
 
-    /* Save Button */
     .btn-save-status {
         background: linear-gradient(135deg, #10B981 0%, #059669 100%);
         color: #ffffff !important;
@@ -241,13 +223,7 @@
         box-shadow: 0 8px 25px rgba(16, 185, 129, 0.35);
         color: #ffffff !important;
     }
-    .btn-save-status:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none !important;
-    }
 
-    /* Avatar Circle */
     .avatar-circle {
         width: 34px;
         height: 34px;
@@ -262,7 +238,6 @@
         flex-shrink: 0;
     }
 
-    /* Empty State */
     .empty-state {
         text-align: center;
         padding: 50px 20px;
@@ -283,7 +258,6 @@
         margin-bottom: 15px;
     }
 
-    /* Alert Messages */
     .alert {
         padding: 15px 20px;
         border-radius: 12px;
@@ -295,11 +269,11 @@
     }
     .alert-success { background: #ECFDF5; color: #065F46; border-left: 4px solid #10B981; }
     .alert-danger { background: #FEF2F2; color: #991B1B; border-left: 4px solid #EF4444; }
+    .alert-warning { background: #FFFBEB; color: #92400E; border-left: 4px solid #F59E0B; }
     .alert i { font-size: 1.2rem; }
     .alert .close { margin-left: auto; color: inherit; opacity: 0.5; }
     .alert .close:hover { opacity: 1; }
 
-    /* Footer Info */
     .footer-info {
         text-align: center;
         color: #94a3b8;
@@ -307,7 +281,6 @@
         margin-top: 15px;
     }
 
-    /* Status Selector Container - Fix Alignment */
     .status-selector-wrapper {
         display: flex;
         align-items: center;
@@ -318,7 +291,20 @@
         max-width: 140px;
     }
 
-    /* Responsive */
+    .top-action-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+        background: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        border: 1px solid #f0f2f5;
+    }
+
     @media (max-width: 768px) {
         .stat-card .stat-number { font-size: 1.5rem; }
         .page-header { flex-direction: column; align-items: flex-start; gap: 15px; }
@@ -328,6 +314,8 @@
         .modern-table table { min-width: 900px; }
         .action-btn { padding: 4px 10px; font-size: 0.7rem; }
         .status-selector { min-width: 100px; font-size: 0.65rem; }
+        .top-action-bar { flex-direction: column; align-items: stretch; }
+        .top-action-bar .btn-save-status { width: 100%; justify-content: center; }
     }
 
     @media (max-width: 576px) {
@@ -356,17 +344,21 @@
 </div>
 @endif
 
+@if(session('warning'))
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <i class="fas fa-exclamation-triangle"></i> {{ session('warning') }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+@endif
+
 <!-- Page Header -->
 <div class="page-header">
     <h4>
         <i class="fas fa-clipboard-list"></i>
         Complaint Management
     </h4>
-    <div class="header-actions">
-        <button type="button" class="btn-save-status" id="saveAllStatusBtn">
-            <i class="fas fa-save"></i> Save Status Changes
-        </button>
-    </div>
 </div>
 
 <!-- Statistics Cards -->
@@ -401,88 +393,105 @@
     </div>
 </div>
 
+<!-- Top Action Bar with Save Button -->
+<div class="top-action-bar">
+    <div>
+        <span style="font-weight: 600; color: #0b1a33;">
+            <i class="fas fa-edit"></i> Update Complaint Statuses
+        </span>
+        <small class="text-muted d-block" style="font-size: 0.8rem;">Change statuses below and click save to update all at once</small>
+    </div>
+    <button type="submit" form="statusUpdateForm" class="btn-save-status">
+        <i class="fas fa-save"></i> Save All Status Changes
+    </button>
+</div>
+
 <!-- Complaints Table -->
 <div class="modern-table">
-    <table class="table table-hover" id="complaintsTable">
-        <thead>
-            <tr>
-                <th>#ID</th>
-                <th>Title</th>
-                <th>Student</th>
-                <th>Complaint By</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Submitted</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($complaints ?? [] as $complaint)
-            <tr id="complaint-row-{{ $complaint->id }}">
-                <td>
-                    <span class="font-weight-bold" style="color: #4F46E5;">#{{ $complaint->id }}</span>
-                </td>
-                <td>
-                    <strong style="color: #0b1a33;">{{ $complaint->title }}</strong>
-                    <div class="text-muted small" style="color: #94a3b8 !important;">{{ Str::limit($complaint->description, 50) }}</div>
-                </td>
-                <td>
-                    <div class="d-flex align-items-center" style="gap: 8px;">
-                        <div class="avatar-circle">
-                            {{ substr($complaint->student_name, 0, 2) }}
+    <form id="statusUpdateForm" action="{{ route('complaints.update') }}" method="POST">
+        @csrf
+        @method('PUT')
+        <table class="table table-hover" id="complaintsTable">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Title</th>
+                    <th>Student</th>
+                    <th>Complaint By</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($complaints ?? [] as $complaint)
+                <tr id="complaint-row-{{ $complaint->id }}">
+                    <td>
+                        <span class="font-weight-bold" style="color: #4F46E5;">#{{ $complaint->id }}</span>
+                    </td>
+                    <td>
+                        <strong style="color: #0b1a33;">{{ $complaint->title }}</strong>
+                        <div class="text-muted small" style="color: #94a3b8 !important;">{{ Str::limit($complaint->description, 50) }}</div>
+                    </td>
+                    <td>
+                        <div class="d-flex align-items-center" style="gap: 8px;">
+                            <div class="avatar-circle">
+                                {{ substr($complaint->student_name, 0, 2) }}
+                            </div>
+                            <div>
+                                <div style="font-weight: 500; color: #0b1a33;">{{ $complaint->student_name }}</div>
+                                @if($complaint->room_number)
+                                    <small style="color: #94a3b8;"><i class="fas fa-door-open"></i> Room {{ $complaint->room_number }}</small>
+                                @endif
+                            </div>
                         </div>
-                        <div>
-                            <div style="font-weight: 500; color: #0b1a33;">{{ $complaint->student_name }}</div>
-                            @if($complaint->room_number)
-                                <small style="color: #94a3b8;"><i class="fas fa-door-open"></i> Room {{ $complaint->room_number }}</small>
-                            @endif
+                    </td>
+                    <td>
+                        <span class="complaint-by-badge complaint-by-{{ strtolower($complaint->complaint_by ?? 'user') }}">
+                            <i class="fas fa-user-{{ strtolower($complaint->complaint_by ?? 'user') == 'student' ? 'graduate' : 'circle' }}"></i>
+                            {{ ucfirst($complaint->complaint_by ?? 'User') }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="priority-badge priority-{{ $complaint->priority }}">
+                            <i class="fas fa-flag"></i> {{ ucfirst($complaint->priority) }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="status-selector-wrapper">
+                            <select name="statuses[{{ $complaint->id }}]" class="status-selector" id="status-select-{{ $complaint->id }}">
+                                <option value="pending" class="pending" {{ $complaint->status == 'pending' ? 'selected' : '' }}>⏳ Pending</option>
+                                <option value="in_progress" class="in_progress" {{ $complaint->status == 'in_progress' ? 'selected' : '' }}>🔄 In Progress</option>
+                                <option value="resolved" class="resolved" {{ $complaint->status == 'resolved' ? 'selected' : '' }}>✅ Resolved</option>
+                                <option value="rejected" class="rejected" {{ $complaint->status == 'rejected' ? 'selected' : '' }}>❌ Rejected</option>
+                            </select>
                         </div>
-                    </div>
-                </td>
-                <td>
-                    <span class="complaint-by-badge complaint-by-{{ strtolower($complaint->complaint_by ?? 'user') }}">
-                        <i class="fas fa-user-{{ strtolower($complaint->complaint_by ?? 'user') == 'student' ? 'graduate' : 'circle' }}"></i>
-                        {{ ucfirst($complaint->complaint_by ?? 'User') }}
-                    </span>
-                </td>
-                <td>
-                    <span class="priority-badge priority-{{ $complaint->priority }}">
-                        <i class="fas fa-flag"></i> {{ ucfirst($complaint->priority) }}
-                    </span>
-                </td>
-                <td>
-                    <div class="status-selector-wrapper">
-                        <select class="status-selector status-select" data-id="{{ $complaint->id }}" data-current="{{ $complaint->status }}" data-original="{{ $complaint->status }}">
-                            <option value="pending" class="pending" {{ $complaint->status == 'pending' ? 'selected' : '' }}>⏳ Pending</option>
-                            <option value="in_progress" class="in_progress" {{ $complaint->status == 'in_progress' ? 'selected' : '' }}>🔄 In Progress</option>
-                            <option value="resolved" class="resolved" {{ $complaint->status == 'resolved' ? 'selected' : '' }}>✅ Resolved</option>
-                            <option value="rejected" class="rejected" {{ $complaint->status == 'rejected' ? 'selected' : '' }}>❌ Rejected</option>
-                        </select>
-                    </div>
-                </td>
-                <td>
-                    <div style="color: #0b1a33;">{{ $complaint->created_at->format('d-m-Y') }}</div>
-                    <small style="color: #94a3b8;">{{ $complaint->created_at->diffForHumans() }}</small>
-                </td>
-                <td class="text-center">
-                    <a href="{{ route('complaints.show', $complaint->id) }}" class="action-btn view" data-toggle="tooltip" title="View Details">
-                        <i class="fas fa-eye"></i> View
-                    </a>
-                </td>
-            </tr>
-            @empty
-            <tr>
-                <td colspan="8">
-                    <div class="empty-state">
-                        <i class="fas fa-inbox"></i>
-                        <h5>No Complaints Found</h5>
-                        <p>No complaints have been submitted yet.</p>
-                    </div>
-                </td>
-            </tr>
-            @endforelse
-        </tbody>
-    </table>
+                    </td>
+                    <td>
+                        <div style="color: #0b1a33;">{{ $complaint->created_at->format('d-m-Y') }}</div>
+                        <small style="color: #94a3b8;">{{ $complaint->created_at->diffForHumans() }}</small>
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ route('complaints.show', $complaint->id) }}" class="action-btn view" data-toggle="tooltip" title="View Details">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8">
+                        <div class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <h5>No Complaints Found</h5>
+                            <p>No complaints have been submitted yet.</p>
+                        </div>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </form>
 </div>
 
 <!-- Footer Info -->
@@ -506,242 +515,6 @@ $(document).ready(function() {
     }, 5000);
 
     console.log('✅ Complaint page loaded successfully');
-
-    var changedStatuses = {};
-
-    // ============================================
-    // TRACK STATUS CHANGES
-    // ============================================
-    $('.status-select').on('change', function() {
-        var select = $(this);
-        var complaintId = select.data('id');
-        var newStatus = select.val();
-        var originalStatus = select.data('original');
-        
-        if (newStatus !== originalStatus) {
-            // Store the changed status
-            changedStatuses[complaintId] = newStatus;
-            
-            // Add visual indicator (highlight row)
-            var row = $('#complaint-row-' + complaintId);
-            row.css('background-color', '#fffbeb');
-            row.css('border-left', '3px solid #F59E0B');
-            
-            // Update the badge temporarily
-            updateStatusBadge(row, newStatus);
-            
-            // Enable save button
-            $('#saveAllStatusBtn').prop('disabled', false);
-            $('#saveAllStatusBtn').html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
-        } else {
-            // Remove from changed statuses
-            delete changedStatuses[complaintId];
-            
-            var row = $('#complaint-row-' + complaintId);
-            row.css('background-color', '');
-            row.css('border-left', '');
-            
-            // Revert the badge
-            updateStatusBadge(row, originalStatus);
-            
-            if (Object.keys(changedStatuses).length === 0) {
-                $('#saveAllStatusBtn').prop('disabled', true);
-                $('#saveAllStatusBtn').html('<i class="fas fa-save"></i> Save Status Changes');
-            } else {
-                $('#saveAllStatusBtn').html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
-            }
-        }
-    });
-
-    // ============================================
-    // SAVE ALL STATUS CHANGES
-    // ============================================
-    $('#saveAllStatusBtn').on('click', function() {
-        var btn = $(this);
-        var changes = Object.keys(changedStatuses);
-        
-        if (changes.length === 0) {
-            showToast('info', 'No changes to save');
-            return;
-        }
-
-        // Disable button and show loading
-        btn.prop('disabled', true);
-        btn.html('<i class="fas fa-spinner fa-spin"></i> Saving...');
-
-        var completed = 0;
-        var total = changes.length;
-        var errors = [];
-
-        // Process each change
-        changes.forEach(function(complaintId) {
-            var newStatus = changedStatuses[complaintId];
-            var select = $('#complaint-row-' + complaintId).find('.status-select');
-            var oldStatus = select.data('original');
-
-            // Get CSRF token
-            var token = $('meta[name="csrf-token"]').attr('content');
-            if (!token) {
-                token = '{{ csrf_token() }}';
-            }
-
-            // Build URL
-            var updateUrl = '{{ route("complaints.update", ":id") }}';
-            updateUrl = updateUrl.replace(':id', complaintId);
-
-            // Send AJAX request
-            $.ajax({
-                url: updateUrl,
-                method: 'POST',
-                data: {
-                    _token: token,
-                    _method: 'PUT',
-                    status: newStatus,
-                    admin_remark: 'Status updated from ' + oldStatus + ' to ' + newStatus
-                },
-                dataType: 'json',
-                success: function(response) {
-                    completed++;
-                    
-                    if (response.success) {
-                        // Update the original status on the select
-                        select.data('original', newStatus);
-                        select.data('current', newStatus);
-                        
-                        // Remove from changed statuses
-                        delete changedStatuses[complaintId];
-                        
-                        // Update row styling
-                        var row = $('#complaint-row-' + complaintId);
-                        row.css('background-color', '#ecfdf5');
-                        row.css('border-left', '3px solid #10B981');
-                        
-                        setTimeout(function() {
-                            row.css('background-color', '');
-                            row.css('border-left', '');
-                        }, 2000);
-                        
-                        // Update statistics
-                        updateStatistics(oldStatus, newStatus);
-                    } else {
-                        errors.push('#' + complaintId + ': ' + (response.message || 'Unknown error'));
-                    }
-                    
-                    // Check if all done
-                    if (completed === total) {
-                        finalizeSave(btn, errors);
-                    }
-                },
-                error: function(xhr) {
-                    completed++;
-                    errors.push('#' + complaintId + ': Server error');
-                    
-                    if (completed === total) {
-                        finalizeSave(btn, errors);
-                    }
-                }
-            });
-        });
-    });
-
-    function finalizeSave(btn, errors) {
-        var successCount = Object.keys(changedStatuses).length === 0 ? 
-            Object.keys($('.status-select')).length : 0;
-        
-        if (errors.length === 0) {
-            showToast('success', '✅ All status changes saved successfully!');
-            btn.html('<i class="fas fa-save"></i> Save Status Changes');
-            btn.prop('disabled', true);
-        } else {
-            var errorMsg = '⚠️ Some changes failed: ' + errors.join(', ');
-            showToast('error', errorMsg);
-            btn.html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
-            btn.prop('disabled', false);
-        }
-        
-        // Update save button text
-        if (Object.keys(changedStatuses).length === 0) {
-            btn.html('<i class="fas fa-save"></i> Save Status Changes');
-            btn.prop('disabled', true);
-        } else {
-            btn.html('<i class="fas fa-save"></i> Save Changes (' + Object.keys(changedStatuses).length + ')');
-            btn.prop('disabled', false);
-        }
-    }
-
-    // ============================================
-    // UPDATE STATUS BADGE
-    // ============================================
-    function updateStatusBadge(row, status) {
-        var statusCell = row.find('td:eq(5)'); // Status column index
-        var icon = '';
-        var label = status.replace('_', ' ');
-        
-        switch(status) {
-            case 'pending':
-                icon = '<i class="fas fa-clock"></i>';
-                break;
-            case 'in_progress':
-                icon = '<i class="fas fa-spinner fa-spin"></i>';
-                break;
-            case 'resolved':
-                icon = '<i class="fas fa-check"></i>';
-                break;
-            case 'rejected':
-                icon = '<i class="fas fa-times"></i>';
-                break;
-            default:
-                icon = '';
-        }
-        
-        var badgeHtml = '<span class="status-badge status-' + status + '">' + icon + ' ' + label.charAt(0).toUpperCase() + label.slice(1) + '</span>';
-        statusCell.html(badgeHtml);
-    }
-
-    // ============================================
-    // UPDATE STATISTICS
-    // ============================================
-    function updateStatistics(oldStatus, newStatus) {
-        var oldStatusClass = oldStatus.replace('_', '-');
-        var newStatusClass = newStatus.replace('_', '-');
-        
-        // Decrement old status count
-        var oldCard = $('.stat-card.' + oldStatusClass);
-        if (oldCard.length) {
-            var oldCount = parseInt(oldCard.find('.stat-number').text());
-            if (oldCount > 0) {
-                oldCard.find('.stat-number').text(oldCount - 1);
-            }
-        }
-        
-        // Increment new status count
-        var newCard = $('.stat-card.' + newStatusClass);
-        if (newCard.length) {
-            var newCount = parseInt(newCard.find('.stat-number').text());
-            newCard.find('.stat-number').text(newCount + 1);
-        }
-    }
-
-    // ============================================
-    // TOAST NOTIFICATION
-    // ============================================
-    function showToast(type, message) {
-        var toastHtml = '<div class="alert alert-' + (type === 'success' ? 'success' : (type === 'info' ? 'info' : 'danger')) + ' alert-dismissible fade show" role="alert" style="position:fixed;top:20px;right:20px;z-index:9999;min-width:300px;box-shadow:0 4px 12px rgba(0,0,0,0.15);">';
-        toastHtml += '<i class="fas fa-' + (type === 'success' ? 'check-circle' : (type === 'info' ? 'info-circle' : 'exclamation-circle')) + '"></i> ';
-        toastHtml += message;
-        toastHtml += '<button type="button" class="close" data-dismiss="alert" aria-label="Close">';
-        toastHtml += '<span aria-hidden="true">&times;</span>';
-        toastHtml += '</button>';
-        toastHtml += '</div>';
-        
-        $('body').append(toastHtml);
-        
-        setTimeout(function() {
-            $('.alert:last').fadeOut('slow', function() {
-                $(this).remove();
-            });
-        }, 4000);
-    }
 });
 </script>
 @endpush

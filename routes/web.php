@@ -179,15 +179,16 @@ Route::middleware('auth')->group(function () {
         // ============================================
         // Complaint Management
         // ============================================
-        Route::prefix('complaint')->name('complaint.')->group(function () {
-            Route::get('/management', [ComplaintController::class, 'index'])->name('management');
-            Route::get('/request', [ComplaintController::class, 'index'])->name('request');
-            Route::get('/create', [ComplaintController::class, 'create'])->name('create');
-            Route::post('/', [ComplaintController::class, 'store'])->name('store');
-            Route::get('/{id}/edit', [ComplaintController::class, 'edit'])->name('edit');
-            Route::put('/{id}', [ComplaintController::class, 'update'])->name('update');
-            Route::delete('/{id}', [ComplaintController::class, 'destroy'])->name('destroy');
-        });
+      // Complaint Management Routes
+Route::prefix('complaints')->name('complaints.')->group(function () {
+    Route::get('/', [ComplaintController::class, 'index'])->name('index');
+    Route::get('/create', [ComplaintController::class, 'create'])->name('create');
+    Route::post('/', [ComplaintController::class, 'store'])->name('store');
+    Route::get('/{id}', [ComplaintController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [ComplaintController::class, 'edit'])->name('edit');
+    Route::put('/', [ComplaintController::class, 'update'])->name('update'); // Bulk update
+    Route::delete('/{id}', [ComplaintController::class, 'destroy'])->name('destroy');
+});
         Route::get('/complaint-registration', [ComplaintController::class, 'create'])->name('complaint.registration');
         Route::post('/complaint-registration', [ComplaintController::class, 'store'])->name('complaint.store');
         Route::get('/complaint-request', [ComplaintController::class, 'index'])->name('complaint_request');

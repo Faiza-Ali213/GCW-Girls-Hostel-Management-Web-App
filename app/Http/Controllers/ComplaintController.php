@@ -136,88 +136,47 @@ class ComplaintController extends Controller
 
     /**
      * Update the specified complaint.
-     * Supports both AJAX and traditional form submission.
+     * Handles both individual and bulk status updates.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        // Log the request for debugging
-        \Log::info('Complaint Update Request:', [
-            'id' => $id,
-            'status' => $request->status,
-            'admin_remark' => $request->admin_remark,
-            'all' => $request->all()
-        ]);
+        $statuses = $request->statuses;
 
-        $validator = Validator::make($request->all(), [
-            'status' => 'required|in:pending,in_progress,resolved,rejected',
-            'admin_remark' => 'nullable|string',
-            'priority' => 'nullable|in:low,medium,high',
-        ]);
-
-        if ($validator->fails()) {
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validation failed',
-                    'errors' => $validator->errors()
-                ], 422);
-            }
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+        if (empty($statuses)) {
+            return redirect()->route('complaints.index')
+                ->with('error', 'No status changes to update.');
         }
 
-        try {
-            $complaint = Complaint::findOrFail($id);
-            
-            $updateData = [
-                'status' => $request->status,
-            ];
+        $updatedCount = 0;
+        $errors = [];
 
-            // Only update admin_remark if provided
-            if ($request->has('admin_remark')) {
-                $updateData['admin_remark'] = $request->admin_remark;
+        foreach ($statuses as $id => $status) {
+            try {
+                $complaint = Complaint::find($id);
+                if ($complaint) {
+                    $updateData = ['status' => $status];
+                    
+                    if ($status == 'resolved') {
+                        $updateData['resolved_at'] = now();
+                    }
+                    
+                    $complaint->update($updateData);
+                    $updatedCount++;
+                }
+            } catch (\Exception $e) {
+                $errors[] = 'Failed to update complaint #' . $id . ': ' . $e->getMessage();
             }
+        }
 
-            if ($request->has('priority')) {
-                $updateData['priority'] = $request->priority;
-            }
-
-            if ($request->status == 'resolved') {
-                $updateData['resolved_at'] = now();
-            }
-
-            $complaint->update($updateData);
-
-            // Refresh the model to get updated data
-            $complaint->refresh();
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Complaint status updated successfully!',
-                    'data' => $complaint
-                ]);
-            }
-
+        if ($updatedCount > 0 && empty($errors)) {
             return redirect()->route('complaints.index')
-                ->with('success', 'Complaint updated successfully!');
-
-        } catch (\Exception $e) {
-            \Log::error('Complaint Update Error:', [
-                'id' => $id,
-                'error' => $e->getMessage()
-            ]);
-
-            if ($request->ajax()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Failed to update complaint: ' . $e->getMessage()
-                ], 500);
-            }
-            return redirect()->back()
-                ->with('error', 'Failed to update complaint: ' . $e->getMessage())
-                ->withInput();
+                ->with('success', $updatedCount . ' complaint(s) status updated successfully!');
+        } elseif ($updatedCount > 0 && !empty($errors)) {
+            return redirect()->route('complaints.index')
+                ->with('warning', $updatedCount . ' complaint(s) updated, but some failed: ' . implode(', ', $errors));
+        } else {
+            return redirect()->route('complaints.index')
+                ->with('error', 'Failed to update statuses: ' . implode(', ', $errors));
         }
     }
 
