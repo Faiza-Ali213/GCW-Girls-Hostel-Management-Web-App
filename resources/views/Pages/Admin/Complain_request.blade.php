@@ -216,27 +216,6 @@
     .page-header h4 i {
         color: #4F46E5;
     }
-    .btn-add {
-        background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
-        color: white !important;
-        border: none;
-        padding: 10px 24px;
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.25);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 0.9rem;
-    }
-    .btn-add:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.35);
-        color: white !important;
-        text-decoration: none;
-    }
 
     /* Avatar Circle */
     .avatar-circle {
@@ -272,9 +251,6 @@
     .empty-state p {
         color: #94a3b8;
         margin-bottom: 15px;
-    }
-    .empty-state .btn-add {
-        display: inline-flex;
     }
 
     /* Alert Messages */
@@ -327,10 +303,6 @@
             align-items: flex-start;
             gap: 15px;
         }
-        .page-header .btn-add {
-            width: 100%;
-            justify-content: center;
-        }
         .modern-table {
             overflow-x: auto;
         }
@@ -381,9 +353,6 @@
         <i class="fas fa-clipboard-list"></i>
         Complaint Management
     </h4>
-    <a href="{{ route('complaints.create') }}" class="btn-add">
-        <i class="fas fa-plus-circle"></i> Add New Complaint
-    </a>
 </div>
 
 <!-- Statistics Cards -->
@@ -490,10 +459,7 @@
                     <div class="empty-state">
                         <i class="fas fa-inbox"></i>
                         <h5>No Complaints Found</h5>
-                        <p>Start by adding your first complaint using the "Add New Complaint" button above.</p>
-                        <a href="{{ route('complaints.create') }}" class="btn-add" style="display:inline-flex;margin-top:10px;">
-                            <i class="fas fa-plus"></i> Add First Complaint
-                        </a>
+                        <p>No complaints have been submitted yet.</p>
                     </div>
                 </td>
             </tr>
