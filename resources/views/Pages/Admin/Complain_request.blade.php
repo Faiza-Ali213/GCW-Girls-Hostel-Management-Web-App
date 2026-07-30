@@ -161,6 +161,27 @@
         color: #EF4444; 
     }
 
+    /* Complaint By Badge */
+    .complaint-by-badge {
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .complaint-by-student {
+        background: #ECFDF5;
+        color: #10B981;
+    }
+    .complaint-by-user {
+        background: #E0F2FE;
+        color: #0EA5E9;
+    }
+
     /* Action Buttons */
     .action-btn {
         display: inline-flex;
@@ -307,7 +328,7 @@
             overflow-x: auto;
         }
         .modern-table table {
-            min-width: 700px;
+            min-width: 800px;
         }
         .action-btn {
             padding: 4px 10px;
@@ -395,6 +416,7 @@
                 <th>#ID</th>
                 <th>Title</th>
                 <th>Student</th>
+                <th>Complaint By</th>
                 <th>Priority</th>
                 <th>Status</th>
                 <th>Submitted</th>
@@ -423,6 +445,12 @@
                             @endif
                         </div>
                     </div>
+                </td>
+                <td>
+                    <span class="complaint-by-badge complaint-by-{{ strtolower($complaint->complaint_by ?? 'user') }}">
+                        <i class="fas fa-user-{{ strtolower($complaint->complaint_by ?? 'user') == 'student' ? 'graduate' : 'circle' }}"></i>
+                        {{ ucfirst($complaint->complaint_by ?? 'User') }}
+                    </span>
                 </td>
                 <td>
                     <span class="priority-badge priority-{{ $complaint->priority }}">
@@ -455,7 +483,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="7">
+                <td colspan="8">
                     <div class="empty-state">
                         <i class="fas fa-inbox"></i>
                         <h5>No Complaints Found</h5>
