@@ -190,29 +190,6 @@
         background: #4F46E5; 
         color: white; 
     }
-    .action-btn.edit { 
-        background: #FFFBEB; 
-        color: #F59E0B; 
-    }
-    .action-btn.edit:hover { 
-        background: #F59E0B; 
-        color: white; 
-    }
-    .action-btn.delete { 
-        background: #FEF2F2; 
-        color: #EF4444; 
-    }
-    .action-btn.delete:hover { 
-        background: #EF4444; 
-        color: white; 
-    }
-
-    /* Delete Form */
-    .delete-form {
-        display: inline;
-        margin: 0;
-        padding: 0;
-    }
 
     /* Header Section */
     .page-header {
@@ -503,18 +480,8 @@
                 </td>
                 <td class="text-center">
                     <a href="{{ route('complaints.show', $complaint->id) }}" class="action-btn view" data-toggle="tooltip" title="View Details">
-                        <i class="fas fa-eye"></i>
+                        <i class="fas fa-eye"></i> View
                     </a>
-                    <a href="{{ route('complaints.edit', $complaint->id) }}" class="action-btn edit" data-toggle="tooltip" title="Edit Complaint">
-                        <i class="fas fa-edit"></i>
-                    </a>
-                    <form action="{{ route('complaints.destroy', $complaint->id) }}" method="POST" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this complaint: {{ addslashes($complaint->title) }}? This action cannot be undone.');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="action-btn delete" data-toggle="tooltip" title="Delete Complaint">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
                 </td>
             </tr>
             @empty
